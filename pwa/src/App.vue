@@ -4,6 +4,6 @@
 </script>
 
 <template>
-<p>It's pizza time</p>
+<p class="text-orange-500 text-4xl font-bold">It's pizza time</p>
 </template>
 
