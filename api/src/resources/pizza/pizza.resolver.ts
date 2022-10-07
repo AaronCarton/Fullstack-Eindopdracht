@@ -15,7 +15,7 @@ export class PizzaResolver {
 
   @ResolveField()
   toppings(@Parent() pizza: Pizza): Promise<Topping>[] {
-    return this.toppingService.findAllByPizza(pizza)
+    return pizza.toppingsIds.map((toppingId) => this.toppingService.findOne(toppingId))
   }
 
   @Mutation(() => Pizza)

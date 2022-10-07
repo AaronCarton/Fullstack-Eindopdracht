@@ -36,7 +36,7 @@ export class Pizza {
   @Column()
   cheesyCrust: boolean
 
-  @Field(() => [Topping], { nullable: true })
+  @Field(() => [Topping])
   toppings: Topping[]
 
   @Column()

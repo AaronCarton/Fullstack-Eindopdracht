@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { ObjectId } from 'mongodb'
 import { Topping } from './entities/topping.entity'
-import { Pizza } from '../pizza/entities/pizza.entity'
 import { CreateToppingInput } from './dto/create-topping.input'
 import { UpdateToppingInput } from './dto/update-topping.input'
 
@@ -16,12 +15,6 @@ export class ToppingService {
 
   create(createToppingInput: CreateToppingInput) {
     return this.toppingRepo.save(createToppingInput)
-  }
-
-  findAllByPizza(pizza: Pizza) {
-    console.log(pizza.toppingsIds)
-
-    return pizza.toppingsIds.map((id) => this.toppingRepo.findOne(new ObjectId(id)))
   }
 
   findAll() {
