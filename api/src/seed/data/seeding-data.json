@@ -1,0 +1,32 @@
+{
+  "toppings": [
+    {
+      "_id": "63409b2f2bf7174a20eb7a51",
+      "category": "Meat",
+      "name": "Spicy meat",
+      "description": "The spiciest of meats",
+      "price": 1.76,
+      "stock": 0
+    }
+  ],
+  "pizzas": [
+    {
+      "_id": "63409bbd2bf7174a20eb7a52",
+      "name": "Margherita",
+      "cheesyCrust": false,
+      "description": "basic premade pizza",
+      "price": 12.43,
+      "size": "medium",
+      "toppings": ["63409b2f2bf7174a20eb7a51"],
+      "type": "pan"
+    }
+  ],
+  "orders": [
+    {
+      "_id": "63409c592bf7174a20eb7a53",
+      "status": "delivered",
+      "total": 15.32,
+      "items": ["63409bbd2bf7174a20eb7a52"]
+    }
+  ]
+}
