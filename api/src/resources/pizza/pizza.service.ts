@@ -17,8 +17,10 @@ export class PizzaService {
     return this.pizzaRepo.save(createPizzaInput)
   }
 
-  findAll() {
-    return this.pizzaRepo.find()
+  async findAll() {
+    const pizzas = await this.pizzaRepo.find()
+    console.log(pizzas)
+    return pizzas
   }
 
   findOne(id: string) {

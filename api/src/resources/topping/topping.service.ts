@@ -19,7 +19,9 @@ export class ToppingService {
   }
 
   findAllByPizza(pizza: Pizza) {
-    return this.toppingRepo.findBy({ id: pizza.toppingsIds })
+    console.log(pizza.toppingsIds)
+
+    return pizza.toppingsIds.map((id) => this.toppingRepo.findOne(new ObjectId(id)))
   }
 
   findAll() {

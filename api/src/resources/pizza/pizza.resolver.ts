@@ -14,7 +14,7 @@ export class PizzaResolver {
   ) {}
 
   @ResolveField()
-  toppings(@Parent() pizza: Pizza): Promise<Topping[]> {
+  toppings(@Parent() pizza: Pizza): Promise<Topping>[] {
     return this.toppingService.findAllByPizza(pizza)
   }
 
