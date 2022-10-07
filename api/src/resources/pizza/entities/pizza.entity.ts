@@ -1,5 +1,6 @@
 import { Topping } from 'src/resources/topping/entities/topping.entity'
 import { ObjectType, Field, ID } from '@nestjs/graphql'
+import { ObjectId } from 'mongodb'
 import {
   Column,
   CreateDateColumn,
@@ -13,7 +14,7 @@ import {
 export class Pizza {
   @Field(() => ID, { description: 'MongoDB ObjectID' })
   @ObjectIdColumn()
-  id: string
+  id: ObjectId
 
   @Field()
   @Column()

@@ -1,10 +1,11 @@
-import { Repository } from 'typeorm'
-import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Injectable } from '@nestjs/common'
+import { Repository } from 'typeorm'
+import { ObjectId } from 'mongodb'
 import { Topping } from './entities/topping.entity'
+import { Pizza } from '../pizza/entities/pizza.entity'
 import { CreateToppingInput } from './dto/create-topping.input'
 import { UpdateToppingInput } from './dto/update-topping.input'
-import { Pizza } from '../pizza/entities/pizza.entity'
 
 @Injectable()
 export class ToppingService {
@@ -26,7 +27,7 @@ export class ToppingService {
   }
 
   findOne(id: string) {
-    return this.toppingRepo.findOneBy({ id: id })
+    return this.toppingRepo.findOne(new ObjectId(id))
   }
 
   async update(id: string, updateToppingInput: UpdateToppingInput) {

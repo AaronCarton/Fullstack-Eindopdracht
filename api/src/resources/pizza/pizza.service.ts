@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Injectable } from '@nestjs/common'
+import { Repository } from 'typeorm'
 import { ObjectId } from 'mongodb'
-import { ObjectID, Repository } from 'typeorm'
+import { Pizza } from './entities/pizza.entity'
 import { CreatePizzaInput } from './dto/create-pizza.input'
 import { UpdatePizzaInput } from './dto/update-pizza.input'
-import { Pizza } from './entities/pizza.entity'
 
 @Injectable()
 export class PizzaService {
@@ -22,12 +22,12 @@ export class PizzaService {
   }
 
   findOne(id: string) {
-    return this.pizzaRepo.findOneBy({ id: id })
+    return this.pizzaRepo.findOne(new ObjectId(id))
   }
 
   async update(id: string, updatePizzaInput: UpdatePizzaInput) {
     await this.pizzaRepo.update(id, updatePizzaInput)
-    return this.pizzaRepo.findOneBy({ id: id })
+    return this.pizzaRepo.findOne(new ObjectId(id))
   }
 
   remove(id: string) {
