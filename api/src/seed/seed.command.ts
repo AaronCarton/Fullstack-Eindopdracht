@@ -27,7 +27,8 @@ export class DatabaseSeedCommand {
   })
   async delete() {
     console.log('🌱 Start deleting')
-    await this.seedService.wipeDatabase()
+    // ignore error if table doesn't exist
+    await this.seedService.wipeDatabase().catch(() => null)
     console.log('🌱 Deleting done 🏁')
   }
 }
