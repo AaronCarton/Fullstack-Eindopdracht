@@ -5,6 +5,7 @@ import { CreatePizzaInput } from './dto/create-pizza.input'
 import { UpdatePizzaInput } from './dto/update-pizza.input'
 import { Topping } from '../topping/entities/topping.entity'
 import { ToppingService } from '../topping/topping.service'
+import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
 
 @Resolver(() => Pizza)
 export class PizzaResolver {
@@ -38,8 +39,20 @@ export class PizzaResolver {
     return this.pizzaService.update(updatePizzaInput.id, updatePizzaInput)
   }
 
-  @Mutation(() => Pizza)
-  removePizza(@Args('id', { type: () => String }) id: string) {
-    return this.pizzaService.remove(id)
+  @Mutation(() => ClientMessage)
+  async removePizza(@Args('id', { type: () => String }) id: string) {
+    const deleted = await this.pizzaService.remove(id)
+    if (deleted.affected <= 1)
+      return {
+        type: MessageTypes.success,
+        message: 'Entity deleted',
+        statusCode: 200,
+      }
+
+    return {
+      type: MessageTypes.error,
+      message: "Couldn't delete entity",
+      statusCode: 400,
+    }
   }
 }
