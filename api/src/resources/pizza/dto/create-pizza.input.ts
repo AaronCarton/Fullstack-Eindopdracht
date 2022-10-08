@@ -21,5 +21,5 @@ export class CreatePizzaInput {
   toppingsIds: string[]
 
   @Field()
-  price: number // TODO: calculate price based on toppings
+  basePrice: number // TODO: calculate price based on toppings
 }

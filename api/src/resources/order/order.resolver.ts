@@ -1,7 +1,6 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { CreateOrderInput } from './dto/create-order.input'
 import { UpdateOrderInput } from './dto/update-order.input'
-import { Pizza } from '../pizza/entities/pizza.entity'
 import { PizzaService } from '../pizza/pizza.service'
 import { Order } from './entities/order.entity'
 import { OrderService } from './order.service'
@@ -13,11 +12,6 @@ export class OrderResolver {
     private readonly orderService: OrderService,
     private readonly pizzaService: PizzaService,
   ) {}
-
-  @ResolveField()
-  items(@Parent() order: Order): Promise<Pizza>[] {
-    return order.itemsIds.map((item) => this.pizzaService.findOne(item))
-  }
 
   @Mutation(() => Order)
   createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {

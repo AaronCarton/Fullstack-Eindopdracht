@@ -1,6 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql'
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -18,10 +17,8 @@ export class Order {
   id: ObjectId
 
   @Field(() => [Pizza])
+  @Column(() => Pizza)
   items: Pizza[]
-
-  @Column()
-  itemsIds: string[]
 
   @Field()
   @Column()
