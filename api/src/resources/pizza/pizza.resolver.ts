@@ -15,6 +15,16 @@ export class PizzaResolver {
   ) {}
 
   @ResolveField()
+  async totalPrice(@Parent() pizza: Pizza): Promise<number> {
+    let price = pizza.basePrice
+    for (const toppingId of pizza.toppingsIds) {
+      const topping = await this.toppingService.findOne(toppingId)
+      price += topping.price
+    }
+    return price
+  }
+
+  @ResolveField()
   toppings(@Parent() pizza: Pizza): Promise<Topping>[] {
     return pizza.toppingsIds.map((toppingId) => this.toppingService.findOne(toppingId))
   }

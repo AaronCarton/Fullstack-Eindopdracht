@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql'
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -26,9 +27,10 @@ export class Order {
   @Column()
   status: 'pending' | 'cooking' | 'delivering' | 'delivered'
 
+  // TODO: add service fees price
+
   @Field()
-  @Column()
-  total: number // TODO: calculate total based on items
+  totalPrice: number
 
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })

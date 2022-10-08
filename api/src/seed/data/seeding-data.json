@@ -15,7 +15,7 @@
       "name": "Margherita",
       "cheesyCrust": false,
       "description": "basic premade pizza",
-      "price": 12.43,
+      "basePrice": 12.43,
       "size": "medium",
       "toppingsIds": ["63409b2f2bf7174a20eb7a51"],
       "type": "pan"
@@ -25,7 +25,7 @@
     {
       "_id": "63409c592bf7174a20eb7a53",
       "status": "delivered",
-      "total": 15.32,
+      "totalPrice": 15.32,
       "itemsIds": ["63409bbd2bf7174a20eb7a52"]
     }
   ]

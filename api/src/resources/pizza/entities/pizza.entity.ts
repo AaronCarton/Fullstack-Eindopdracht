@@ -42,11 +42,12 @@ export class Pizza {
   @Column()
   toppingsIds: string[]
 
-  // TODO: create base price for each pizza size
-
   @Field()
   @Column()
-  price: number // TODO: calculate price based on toppings
+  basePrice: number // TODO: create base price for each pizza size
+
+  @Field(() => Number)
+  totalPrice: number
 
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })
