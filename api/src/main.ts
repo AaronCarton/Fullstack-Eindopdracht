@@ -4,7 +4,7 @@ import { AppModule } from './app.module'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  const PORT: number = +process.env.PORT || 3003
+  const PORT: number = +process.env.PORT || 3006
   await app.listen(PORT)
 
   console.info(`\n👋 Visit ${await app.getUrl()}/graphql`)

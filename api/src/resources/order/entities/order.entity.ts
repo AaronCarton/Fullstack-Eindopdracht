@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql'
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +8,14 @@ import {
 } from 'typeorm'
 import { ObjectId } from 'mongodb'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
+
+export enum OrderStatus {
+  'pending' = 'pending',
+  'cooking' = 'cooking',
+  'delivering' = 'delivering',
+  'delivered' = 'delivered',
+}
+registerEnumType(OrderStatus, { name: 'OrderStatus' })
 
 @Entity()
 @ObjectType()
@@ -20,9 +28,9 @@ export class Order {
   @Column(() => Pizza)
   items: Pizza[]
 
-  @Field()
+  @Field(() => OrderStatus)
   @Column()
-  status: 'pending' | 'cooking' | 'delivering' | 'delivered'
+  status: OrderStatus
 
   // TODO: add service fees price
 

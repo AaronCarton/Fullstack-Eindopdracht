@@ -1,5 +1,5 @@
 import { Topping } from 'src/resources/topping/entities/topping.entity'
-import { ObjectType, Field, ID } from '@nestjs/graphql'
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
 import { ObjectId } from 'mongodb'
 import {
   Column,
@@ -8,6 +8,18 @@ import {
   ObjectIdColumn,
   UpdateDateColumn,
 } from 'typeorm'
+
+export enum PizzaType {
+  'classic' = 'classic',
+  'pan' = 'pan',
+}
+export enum PizzaSize {
+  'small' = 'small',
+  'medium' = 'medium',
+  'large' = 'large',
+}
+registerEnumType(PizzaType, { name: 'PizzaType' })
+registerEnumType(PizzaSize, { name: 'PizzaSize' })
 
 @Entity()
 @ObjectType()
@@ -24,13 +36,13 @@ export class Pizza {
   @Column()
   description: string
 
-  @Field()
+  @Field(() => PizzaType)
   @Column()
-  type: 'classic' | 'pan'
+  type: PizzaType
 
-  @Field()
+  @Field(() => PizzaSize)
   @Column()
-  size: 'small' | 'medium' | 'large'
+  size: PizzaSize
 
   @Field()
   @Column()

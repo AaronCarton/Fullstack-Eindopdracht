@@ -1,4 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql'
+import { PizzaSize, PizzaType } from '../entities/pizza.entity'
 
 @InputType()
 export class CreatePizzaInput {
@@ -8,11 +9,11 @@ export class CreatePizzaInput {
   @Field()
   description: string
 
-  @Field()
-  type: 'classic' | 'pan'
+  @Field(() => PizzaType)
+  type: PizzaType
 
-  @Field()
-  size: 'small' | 'medium' | 'large'
+  @Field(() => PizzaSize)
+  size: PizzaSize
 
   @Field()
   cheesyCrust: boolean
