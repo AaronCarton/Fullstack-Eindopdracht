@@ -25,6 +25,10 @@ export class PizzaService {
     return this.pizzaRepo.findOne(new ObjectId(id))
   }
 
+  findAllByTopping(toppingId: string) {
+    return this.pizzaRepo.findBy({ toppingsIds: toppingId })
+  }
+
   async update(id: string, updatePizzaInput: UpdatePizzaInput) {
     await this.pizzaRepo.update(id, updatePizzaInput)
     return this.pizzaRepo.findOne(new ObjectId(id))

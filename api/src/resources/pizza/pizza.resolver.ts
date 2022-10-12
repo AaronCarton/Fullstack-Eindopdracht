@@ -39,6 +39,11 @@ export class PizzaResolver {
     return this.pizzaService.findAll()
   }
 
+  @Query(() => [Pizza], { name: 'pizzasByTopping' })
+  findAllByTopping(@Args('toppingId', { type: () => String }) toppingId: string) {
+    return this.pizzaService.findAllByTopping(toppingId)
+  }
+
   @Query(() => Pizza, { name: 'pizza' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.pizzaService.findOne(id)

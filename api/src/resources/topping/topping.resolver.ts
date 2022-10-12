@@ -4,10 +4,14 @@ import { CreateToppingInput } from './dto/create-topping.input'
 import { Topping } from './entities/topping.entity'
 import { ToppingService } from './topping.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { PizzaService } from '../pizza/pizza.service'
 
 @Resolver(() => Topping)
 export class ToppingResolver {
-  constructor(private readonly toppingService: ToppingService) {}
+  constructor(
+    private readonly toppingService: ToppingService,
+    private readonly pizzaService: PizzaService,
+  ) {}
 
   @Mutation(() => Topping)
   createTopping(@Args('createToppingInput') createToppingInput: CreateToppingInput) {
@@ -31,18 +35,34 @@ export class ToppingResolver {
 
   @Mutation(() => ClientMessage)
   async removeTopping(@Args('id', { type: () => String }) id: string) {
-    const deleted = await this.toppingService.remove(id)
-    if (deleted.affected <= 1)
-      return {
-        type: MessageTypes.success,
-        message: 'Entity deleted',
-        statusCode: 200,
-      }
-
-    return {
-      type: MessageTypes.error,
-      message: "Couldn't delete entity",
-      statusCode: 400,
-    }
+    return new Promise((resolve) =>
+      this.pizzaService
+        .findAllByTopping(id) // check if topping is used by any pizza before deleting
+        .then((pizzas) => {
+          if (pizzas.length > 0)
+            return resolve({
+              type: MessageTypes.error,
+              message: `Cannot delete topping with id ${id} because it is used by ${
+                pizzas.length
+              } pizzas (ids: ${pizzas.map((p) => p.id).join(', ')})`,
+              statusCode: 400,
+            })
+          else
+            return this.toppingService.remove(id).then(() =>
+              resolve({
+                statusCode: 200,
+                message: `Entity ${id} was deleted.`,
+                type: MessageTypes.success,
+              }),
+            )
+        })
+        .catch(() => {
+          resolve({
+            statusCode: 500,
+            message: `Entity ${id} could not be deleted.`,
+            type: MessageTypes.error,
+          })
+        }),
+    )
   }
 }
