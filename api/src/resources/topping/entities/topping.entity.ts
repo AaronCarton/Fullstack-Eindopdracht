@@ -27,9 +27,8 @@ export class Topping {
   @Column()
   category: string
 
-  @Field({ nullable: true, defaultValue: false })
-  @Column({ default: false })
-  default: boolean
+  @Field({ nullable: true })
+  default: boolean // will be filled in by PizzaService's topping resolver
 
   @Field({ nullable: true, defaultValue: 0 })
   @Column({ default: 0 })

@@ -26,7 +26,11 @@ export class PizzaResolver {
 
   @ResolveField()
   toppings(@Parent() pizza: Pizza): Promise<Topping>[] {
-    return pizza.toppingsIds.map((toppingId) => this.toppingService.findOne(toppingId))
+    return pizza.toppingsIds.map(async (toppingId) => {
+      const topping = await this.toppingService.findOne(toppingId)
+      topping.default = true
+      return topping
+    })
   }
 
   @Mutation(() => Pizza)
