@@ -5,11 +5,11 @@ services:
     image: mongo
     restart: on-failure:5
     ports:
-      - 27027:27017
+      - 27007:27017
     environment:
       MONGO_INITDB_DATABASE: project_api
     volumes:
-      - dbvolume:/data/db
+      - fswdProjectVolume:/data/db
 
 volumes:
-  dbvolume:
+  fswdProjectVolume:

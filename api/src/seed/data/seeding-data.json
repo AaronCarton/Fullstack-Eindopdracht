@@ -1,0 +1,38 @@
+{
+  "toppings": [
+    {
+      "_id": "63409b2f2bf7174a20eb7a51",
+      "category": "Sauce",
+      "name": "Tomato Sauce",
+      "description": "The classic sauce for pizza",
+      "price": 2.13,
+      "stock": 26
+    },
+    {
+      "_id": "634984c9129c7754f8e3e4db",
+      "category": "Cheese",
+      "name": "Mozzarella",
+      "description": "The cheesiest of cheeses",
+      "price": 2.43,
+      "stock": 34
+    },
+    {
+      "_id": "634984d3129c7754f8e3e4dc",
+      "category": "Meat",
+      "name": "Spicy meat",
+      "description": "Spicy meat for the spicy pizza",
+      "price": 1.76,
+      "stock": 12
+    }
+  ],
+  "pizzas": [
+    {
+      "_id": "63409bbd2bf7174a20eb7a52",
+      "name": "Margherita",
+      "description": "The classic pizza",
+      "basePrice": 12.43,
+      "toppingsIds": ["63409b2f2bf7174a20eb7a51", "634984c9129c7754f8e3e4db"]
+    }
+  ],
+  "orders": []
+}

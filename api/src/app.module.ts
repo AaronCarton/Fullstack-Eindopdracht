@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common'
+import { BootstrapModule } from './bootstrap/bootstrap.module'
+import { ToppingModule } from './resources/topping/topping.module'
+import { PizzaModule } from './resources/pizza/pizza.module'
+import { OrderModule } from './resources/order/order.module'
+import { DatabaseSeedModule } from './seed/seed.module'
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [BootstrapModule, ToppingModule, PizzaModule, OrderModule, DatabaseSeedModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
