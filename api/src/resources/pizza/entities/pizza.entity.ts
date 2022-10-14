@@ -36,15 +36,15 @@ export class Pizza {
   @Column()
   description: string
 
-  @Field(() => PizzaType)
+  @Field(() => PizzaType, { nullable: true })
   @Column()
   type: PizzaType
 
-  @Field(() => PizzaSize)
+  @Field(() => PizzaSize, { nullable: true })
   @Column()
   size: PizzaSize
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   cheesyCrust: boolean
 
