@@ -50,8 +50,12 @@ export class PizzaResolver {
   }
 
   @Mutation(() => Pizza)
-  updatePizza(@Args('updatePizzaInput') updatePizzaInput: UpdatePizzaInput) {
-    return this.pizzaService.update(updatePizzaInput.id, updatePizzaInput)
+  async updatePizza(
+    @Args('id', { type: () => String }) id: string,
+    @Args('updatePizzaInput') updatePizzaInput: UpdatePizzaInput,
+  ) {
+    await this.pizzaService.update(id, updatePizzaInput)
+    return this.pizzaService.findOne(id)
   }
 
   @Mutation(() => ClientMessage)

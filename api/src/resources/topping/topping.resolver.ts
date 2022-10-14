@@ -29,8 +29,12 @@ export class ToppingResolver {
   }
 
   @Mutation(() => Topping)
-  updateTopping(@Args('updateToppingInput') updateToppingInput: UpdateToppingInput) {
-    return this.toppingService.update(updateToppingInput.id, updateToppingInput)
+  async updateTopping(
+    @Args('id', { type: () => String }) id: string,
+    @Args('updateToppingInput') updateToppingInput: UpdateToppingInput,
+  ) {
+    await this.toppingService.update(id, updateToppingInput)
+    return this.toppingService.findOne(id)
   }
 
   @Mutation(() => ClientMessage)

@@ -29,8 +29,12 @@ export class OrderResolver {
   }
 
   @Mutation(() => Order)
-  updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
-    return this.orderService.update(updateOrderInput.id, updateOrderInput)
+  async updateOrder(
+    @Args('id', { type: () => String }) id: string,
+    @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
+  ) {
+    await this.orderService.update(id, updateOrderInput)
+    return this.orderService.findOne(id)
   }
 
   @Mutation(() => ClientMessage)
