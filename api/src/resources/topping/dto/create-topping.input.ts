@@ -11,6 +11,9 @@ export class CreateToppingInput {
   @Field()
   category: string
 
+  @Field({ nullable: true, defaultValue: false })
+  default: boolean
+
   @Field({ nullable: true, defaultValue: 0 })
   stock: number
 

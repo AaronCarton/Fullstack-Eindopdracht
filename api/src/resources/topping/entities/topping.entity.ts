@@ -27,6 +27,10 @@ export class Topping {
   @Column()
   category: string
 
+  @Field({ nullable: true, defaultValue: false })
+  @Column({ default: false })
+  default: boolean
+
   @Field({ nullable: true, defaultValue: 0 })
   @Column({ default: 0 })
   stock: number
