@@ -32,10 +32,8 @@ export class Order {
   @Column()
   status: OrderStatus
 
-  // TODO: add service fees price
-
   @Field()
-  totalPrice: number
+  totalPrice: number // TODO: add service fees price
 
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })

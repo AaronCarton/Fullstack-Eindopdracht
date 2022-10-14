@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql'
 
 @InputType()
-export class CreateToppingInput {
+export class CreateToppingOrderInput {
   @Field()
   name: string
 
@@ -11,11 +11,8 @@ export class CreateToppingInput {
   @Field()
   category: string
 
-  @Field({ nullable: true, defaultValue: true })
+  @Field({ nullable: true, defaultValue: false })
   default: boolean
-
-  @Field({ nullable: true, defaultValue: 0 })
-  stock: number
 
   @Field()
   price: number

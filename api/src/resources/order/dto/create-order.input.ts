@@ -1,11 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql'
-import { CreatePizzaInput } from 'src/resources/pizza/dto/create-pizza.input'
+import { CreatePizzaOrderInput } from 'src/resources/order/dto/create-pizzaOrder.input'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
 import { OrderStatus } from '../entities/order.entity'
 
 @InputType()
 export class CreateOrderInput {
-  @Field(() => [CreatePizzaInput])
+  @Field(() => [CreatePizzaOrderInput])
   items: Pizza[]
 
   @Field(() => OrderStatus)
