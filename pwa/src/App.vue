@@ -1,7 +1,18 @@
-<script setup lang="ts">
-export default {}
-</script>
 
 <template>
-  <p class="text-orange-500 text-4xl font-bold">It's pizza time</p>
+  <router-view></router-view>
 </template>
+
+<script lang="ts">
+import useFirebase from './composables/useFirebase';
+
+export default{
+    setup(){
+      const {app} = useFirebase()
+      return {
+
+      }
+    }
+  }
+</script>
+
