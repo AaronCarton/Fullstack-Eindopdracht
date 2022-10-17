@@ -63,19 +63,24 @@ export class PizzaResolver {
   }
 
   @Mutation(() => ClientMessage)
-  async removePizza(@Args('id', { type: () => String }) id: string) {
-    const deleted = await this.pizzaService.remove(id)
-    if (deleted.affected <= 1)
-      return {
-        type: MessageTypes.success,
-        message: 'Entity deleted',
-        statusCode: 200,
-      }
-
-    return {
-      type: MessageTypes.error,
-      message: "Couldn't delete entity",
-      statusCode: 400,
-    }
+  removePizza(@Args('id', { type: () => String }) id: string) {
+    return new Promise((resolve) =>
+      this.pizzaService
+        .remove(id)
+        .then(() =>
+          resolve({
+            type: MessageTypes.success,
+            message: 'Pizza deleted successfully',
+            statusCode: 200,
+          }),
+        )
+        .catch(() =>
+          resolve({
+            type: MessageTypes.error,
+            message: 'Pizza could not be deleted',
+            statusCode: 500,
+          }),
+        ),
+    )
   }
 }
