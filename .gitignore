@@ -1,6 +1,7 @@
 **/**/node_modules/
 **/**/dist/
 **/**/.env
+api/src/fswd-project-pizzatime-firebase-adminsdk.json
 
 
 # Logs
