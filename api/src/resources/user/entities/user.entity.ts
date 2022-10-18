@@ -19,6 +19,18 @@ export class User {
   @Column()
   uid: string
 
+  @Field()
+  @Column()
+  street: string
+
+  @Field()
+  @Column()
+  houseNumber: string
+
+  @Field()
+  @Column()
+  city: string
+
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   createdAt?: Date

@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common'
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { UpdateToppingInput } from './dto/update-topping.input'
 import { CreateToppingInput } from './dto/create-topping.input'
@@ -5,6 +6,7 @@ import { Topping } from './entities/topping.entity'
 import { ToppingService } from './topping.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
 import { PizzaService } from '../pizza/pizza.service'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 
 @Resolver(() => Topping)
 export class ToppingResolver {
@@ -13,6 +15,7 @@ export class ToppingResolver {
     private readonly pizzaService: PizzaService,
   ) {}
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Topping)
   createTopping(@Args('createToppingInput') createToppingInput: CreateToppingInput) {
     return this.toppingService.create(createToppingInput)
@@ -28,6 +31,7 @@ export class ToppingResolver {
     return this.toppingService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Topping)
   async updateTopping(
     @Args('id', { type: () => String }) id: string,
@@ -37,6 +41,7 @@ export class ToppingResolver {
     return this.toppingService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => ClientMessage)
   async removeTopping(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

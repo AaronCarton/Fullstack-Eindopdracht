@@ -1,9 +1,14 @@
-import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { UseGuards } from '@nestjs/common'
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {} from 'firebase-auth'
+import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
 import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
 import { User } from './entities/user.entity'
 import { UserService } from './user.service'
+import { CurrentUser } from 'src/auth/decorators/user.decorator'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
+import { UserRecord } from 'firebase-admin/auth'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -24,6 +29,13 @@ export class UserResolver {
     return this.userService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
+  @Query(() => User)
+  findUser(@CurrentUser() user: UserRecord) {
+    return this.userService.findByUid(user.uid)
+  }
+
+  @UseGuards(FirebaseGuard)
   @Mutation(() => User)
   updateUser(
     @Args('id', { type: () => String }) id: string,
@@ -32,6 +44,7 @@ export class UserResolver {
     return this.userService.update(id, updateUserInput)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => ClientMessage)
   removeUser(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

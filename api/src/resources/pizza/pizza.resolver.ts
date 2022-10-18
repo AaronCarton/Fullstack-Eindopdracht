@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args, Parent, ResolveField } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
 import { PizzaService } from './pizza.service'
 import { Pizza } from './entities/pizza.entity'
 import { CreatePizzaInput } from './dto/create-pizza.input'
@@ -6,6 +7,7 @@ import { UpdatePizzaInput } from './dto/update-pizza.input'
 import { Topping } from '../topping/entities/topping.entity'
 import { ToppingService } from '../topping/topping.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 
 @Resolver(() => Pizza)
 export class PizzaResolver {
@@ -33,6 +35,7 @@ export class PizzaResolver {
     })
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Pizza)
   createPizza(@Args('createPizzaInput') createPizzaInput: CreatePizzaInput) {
     return this.pizzaService.create(createPizzaInput)
@@ -53,6 +56,7 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Pizza)
   async updatePizza(
     @Args('id', { type: () => String }) id: string,
@@ -62,6 +66,7 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => ClientMessage)
   removePizza(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>
