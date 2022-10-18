@@ -25,8 +25,12 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: 'overview',
-        component: () => import('../screens/overview/index.vue'),
+        path: 'leveren',
+        component: () => import('../screens/overview/Leveren.vue'),
+      },
+      {
+        path: 'afhalen',
+        component: () => import('../screens/overview/Afhalen.vue'),
       },
 
       {
