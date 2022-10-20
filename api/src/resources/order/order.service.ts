@@ -13,8 +13,8 @@ export class OrderService {
     private readonly orderRepo: Repository<Order>,
   ) {}
 
-  create(createOrderInput: CreateOrderInput) {
-    return this.orderRepo.save(createOrderInput)
+  create(uid: string, createOrderInput: CreateOrderInput) {
+    return this.orderRepo.save({ uid, ...createOrderInput })
   }
 
   findAll() {

@@ -24,6 +24,10 @@ export class Order {
   @ObjectIdColumn()
   id: ObjectId
 
+  @Field()
+  @Column()
+  customerId: string
+
   @Field(() => [Pizza])
   @Column(() => Pizza)
   items: Pizza[]

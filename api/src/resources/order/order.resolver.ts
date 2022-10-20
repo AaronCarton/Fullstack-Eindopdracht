@@ -5,6 +5,10 @@ import { PizzaService } from '../pizza/pizza.service'
 import { Order } from './entities/order.entity'
 import { OrderService } from './order.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { CurrentUser } from 'src/auth/decorators/user.decorator'
+import { UserRecord } from 'firebase-admin/auth'
+import { UseGuards } from '@nestjs/common'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -13,15 +17,16 @@ export class OrderResolver {
     private readonly pizzaService: PizzaService,
   ) {}
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Order)
-  createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
-    return this.orderService.create(createOrderInput)
+  createOrder(
+    @CurrentUser() user: UserRecord,
+    @Args('createOrderInput') createOrderInput: CreateOrderInput,
+  ) {
+    return this.orderService.create(user.uid, createOrderInput)
   }
 
-  @Query(() => [Order], { name: 'orders' })
-  findAll() {
-    return this.orderService.findAll()
-  }
+  // TODO: Add a resolver to get all orders of a user
 
   @Query(() => Order, { name: 'order' })
   findOne(@Args('id', { type: () => String }) id: string) {
@@ -38,19 +43,24 @@ export class OrderResolver {
   }
 
   @Mutation(() => ClientMessage)
-  async removeOrder(@Args('id', { type: () => String }) id: string) {
-    const deleted = await this.orderService.remove(id)
-    if (deleted.affected <= 1)
-      return {
-        type: MessageTypes.success,
-        message: 'Entity deleted',
-        statusCode: 200,
-      }
-
-    return {
-      type: MessageTypes.error,
-      message: "Couldn't delete entity",
-      statusCode: 400,
-    }
+  removeOrder(@Args('id', { type: () => String }) id: string) {
+    return new Promise((resolve) =>
+      this.orderService
+        .remove(id)
+        .then(() =>
+          resolve({
+            type: MessageTypes.success,
+            message: 'Order deleted successfully',
+            statusCode: 200,
+          }),
+        )
+        .catch(() =>
+          resolve({
+            type: MessageTypes.error,
+            message: 'Order could not be deleted',
+            statusCode: 500,
+          }),
+        ),
+    )
   }
 }

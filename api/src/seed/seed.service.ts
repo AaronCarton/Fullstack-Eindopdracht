@@ -42,9 +42,9 @@ export class DatabaseSeedService {
   }
 
   async wipeDatabase(): Promise<void> {
-    await this.orderRepo.clear()
-    await this.pizzaRepo.clear()
-    await this.toppingRepo.clear()
+    await this.orderRepo.clear().catch(() => null)
+    await this.pizzaRepo.clear().catch(() => null)
+    await this.toppingRepo.clear().catch(() => null)
     return Promise.resolve()
   }
 }

@@ -1,6 +1,7 @@
 **/**/node_modules/
 **/**/dist/
 **/**/.env
+api/src/fswd-project-pizzatime-firebase-adminsdk.json
 
 
 # Logs
@@ -36,3 +37,4 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+api/src/pizzatime-64cef-firebase-adminsdk-4mcqz-f5108930d9.json

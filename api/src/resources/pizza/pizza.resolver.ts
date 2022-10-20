@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args, Parent, ResolveField } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
 import { PizzaService } from './pizza.service'
 import { Pizza } from './entities/pizza.entity'
 import { CreatePizzaInput } from './dto/create-pizza.input'
@@ -6,6 +7,7 @@ import { UpdatePizzaInput } from './dto/update-pizza.input'
 import { Topping } from '../topping/entities/topping.entity'
 import { ToppingService } from '../topping/topping.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 
 @Resolver(() => Pizza)
 export class PizzaResolver {
@@ -33,6 +35,7 @@ export class PizzaResolver {
     })
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Pizza)
   createPizza(@Args('createPizzaInput') createPizzaInput: CreatePizzaInput) {
     return this.pizzaService.create(createPizzaInput)
@@ -53,6 +56,7 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Pizza)
   async updatePizza(
     @Args('id', { type: () => String }) id: string,
@@ -62,20 +66,26 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard)
   @Mutation(() => ClientMessage)
-  async removePizza(@Args('id', { type: () => String }) id: string) {
-    const deleted = await this.pizzaService.remove(id)
-    if (deleted.affected <= 1)
-      return {
-        type: MessageTypes.success,
-        message: 'Entity deleted',
-        statusCode: 200,
-      }
-
-    return {
-      type: MessageTypes.error,
-      message: "Couldn't delete entity",
-      statusCode: 400,
-    }
+  removePizza(@Args('id', { type: () => String }) id: string) {
+    return new Promise((resolve) =>
+      this.pizzaService
+        .remove(id)
+        .then(() =>
+          resolve({
+            type: MessageTypes.success,
+            message: 'Pizza deleted successfully',
+            statusCode: 200,
+          }),
+        )
+        .catch(() =>
+          resolve({
+            type: MessageTypes.error,
+            message: 'Pizza could not be deleted',
+            statusCode: 500,
+          }),
+        ),
+    )
   }
 }
