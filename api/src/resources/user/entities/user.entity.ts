@@ -30,15 +30,15 @@ export class User {
   @Column()
   role: Role
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   street: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   houseNumber: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   city: string
 
