@@ -19,15 +19,15 @@ export class User {
   @Column()
   uid: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   street: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   houseNumber: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   city: string
 
