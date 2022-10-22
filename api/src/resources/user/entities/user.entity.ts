@@ -16,7 +16,7 @@ export class User {
   id: ObjectId
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   uid: string
 
   @Field({ nullable: true })

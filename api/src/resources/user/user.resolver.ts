@@ -14,9 +14,9 @@ import { UserRecord } from 'firebase-admin/auth'
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Mutation(() => User)
+  @Mutation(() => User || ClientMessage)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput)
+    return this.userService.create(createUserInput) // TODO: catch err for duplicate uid
   }
 
   @Query(() => [User], { name: 'users' })
