@@ -3,23 +3,17 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   updateProfile,
-  User as FirebaseUser,
+  User,
   UserCredential,
 } from 'firebase/auth'
 import { ref, Ref } from 'vue'
+
 import useFirebase from './useFirebase'
-import User from '../interfaces/user.interface'
-import { provideApolloClient, useQuery } from '@vue/apollo-composable'
-import { CREATE_NEW_USER } from '../graphql/mutation.user'
-import { GET_SELF_USER } from '../graphql/query.user'
-import useGraphQL from './useGraphQL'
 
 const user: Ref<User | null> = ref(null)
 
 export default () => {
   const { auth } = useFirebase()
-  const { apolloClient } = useGraphQL()
-  provideApolloClient(apolloClient)
 
   const setUser = (u: User | null) => (user.value = u)
 
@@ -35,11 +29,8 @@ export default () => {
             displayName: name,
           })
             .then(() => {
-              const { onResult } = useQuery(CREATE_NEW_USER, { uid: u.user.uid })
-              onResult((result) => {
-                setUser({ ...u.user, ...result.data.createUser } as User) // combine Firebase User with CustomUser
-                resolve(user)
-              })
+              setUser(u.user)
+              resolve(user)
             })
             .catch((error) => {
               reject(error)
@@ -55,11 +46,8 @@ export default () => {
     return new Promise((resolve, reject) => {
       signInWithEmailAndPassword(auth, email, password)
         .then((u: UserCredential) => {
-          const { onResult } = useQuery(GET_SELF_USER, { uid: u.user.uid })
-          onResult((result) => {
-            setUser({ ...u.user, ...result.data.findUser } as User) // combine Firebase User with CustomUser
-            resolve(user)
-          })
+          setUser(u.user)
+          resolve(user)
         })
         .catch((error) => {
           reject(error)
@@ -91,13 +79,10 @@ export default () => {
 
   const restoreUser = (): Promise<void> => {
     return new Promise((resolve, reject) => {
-      auth.onAuthStateChanged((u: FirebaseUser | null) => {
+      auth.onAuthStateChanged((u: User | null) => {
         if (u) {
-          const { onResult } = useQuery(GET_SELF_USER, { uid: u.uid })
-          onResult((result) => {
-            setUser({ ...u, ...result.data.findUser } as User) // combine Firebase User with CustomUser
-            resolve()
-          })
+          setUser(u)
+          resolve()
         } else {
           resolve()
         }
