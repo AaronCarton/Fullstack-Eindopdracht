@@ -18,7 +18,7 @@ export class UserResolver {
 
   @Mutation(() => User)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput)
+    return this.userService.create(createUserInput) // TODO: catch err for duplicate uid
   }
 
   @UseGuards(FirebaseGuard)
