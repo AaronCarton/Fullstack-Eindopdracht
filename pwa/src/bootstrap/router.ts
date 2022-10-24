@@ -51,7 +51,25 @@ const routes: RouteRecordRaw[] = [
 
       {
         path: 'account',
-        component: () => import('../screens/Account.vue'),
+        component: () => import('../screens/account/AccountHolder.vue'),
+        children: [
+          {
+            path: 'details',
+            component: () => import('../screens/account/AccountInfo.vue'),
+          },
+          {
+            path: 'order-history',
+            component: () => import('../screens/account/OrderHistory.vue'),
+          },
+          {
+            path: 'admin/manage-pizzas',
+            component: () => import('../screens/account/admin/ManagePizzas.vue'),
+          },
+          {
+            path: 'admin/manage-toppings',
+            component: () => import('../screens/account/admin/ManageToppings.vue'),
+          },
+        ],
         meta: {
           needsAuthentication: true,
         },
