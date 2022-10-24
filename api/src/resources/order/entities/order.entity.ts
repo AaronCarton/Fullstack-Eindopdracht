@@ -29,8 +29,10 @@ export class Order {
   customerId: string
 
   @Field(() => [Pizza])
-  @Column(() => Pizza)
   items: Pizza[]
+
+  @Column()
+  itemsIds: string[]
 
   @Field(() => OrderStatus)
   @Column()
@@ -39,7 +41,7 @@ export class Order {
   // TODO: add service fees price
 
   @Field()
-  totalPrice: number
+  total: number
 
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })
