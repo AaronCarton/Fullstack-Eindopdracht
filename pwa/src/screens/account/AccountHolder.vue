@@ -1,10 +1,8 @@
 <template>
   <div class="flex min-h-screen place-items-center bg-slate-200">
     <div class="container mx-auto w-full">
-      <div class="flex">
-        <div
-          class="mr-8 flex w-80 flex-col space-y-5 rounded-lg bg-slate-100 p-5 shadow-md"
-        >
+      <div class="flex divide-x-2 rounded-lg bg-slate-100 shadow-md">
+        <div class="mr-8 flex w-80 flex-col space-y-5 p-5">
           <router-link to="/account/details" class="mx-2" active-class="font-bold">
             Persoonlijke Informatie
           </router-link>
