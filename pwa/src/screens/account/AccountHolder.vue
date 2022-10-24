@@ -13,6 +13,13 @@
           </router-link>
           <div class="flex flex-col space-y-5" v-if="isAdmin">
             <router-link
+              to="/account/admin/manage-users"
+              class="mx-2"
+              active-class="font-bold"
+            >
+              Gebruikers instellen
+            </router-link>
+            <router-link
               to="/account/admin/manage-pizzas"
               class="mx-2"
               active-class="font-bold"

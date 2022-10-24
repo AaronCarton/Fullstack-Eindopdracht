@@ -65,6 +65,11 @@ const routes: RouteRecordRaw[] = [
             component: () => import('../screens/account/OrderHistory.vue'),
           },
           {
+            path: 'admin/manage-users',
+            component: () => import('../screens/account/admin/ManageUsers.vue'),
+            meta: { needsAdmin: true },
+          },
+          {
             path: 'admin/manage-pizzas',
             component: () => import('../screens/account/admin/ManagePizzas.vue'),
             meta: { needsAdmin: true },
