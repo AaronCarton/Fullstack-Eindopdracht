@@ -8,6 +8,8 @@ import { Topping } from '../topping/entities/topping.entity'
 import { ToppingService } from '../topping/topping.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
+import { RolesGuard } from 'src/auth/guards/role.guard'
+import { Role } from '../user/entities/user.entity'
 
 @Resolver(() => Pizza)
 export class PizzaResolver {
@@ -15,6 +17,8 @@ export class PizzaResolver {
     private readonly pizzaService: PizzaService,
     private readonly toppingService: ToppingService,
   ) {}
+
+  //////* FIELD RESOLVERS ///////
 
   @ResolveField()
   async totalPrice(@Parent() pizza: Pizza): Promise<number> {
@@ -35,11 +39,7 @@ export class PizzaResolver {
     })
   }
 
-  @UseGuards(FirebaseGuard)
-  @Mutation(() => Pizza)
-  createPizza(@Args('createPizzaInput') createPizzaInput: CreatePizzaInput) {
-    return this.pizzaService.create(createPizzaInput)
-  }
+  //////* USER ROUTES ///////
 
   @Query(() => [Pizza], { name: 'pizzas' })
   findAll() {
@@ -56,7 +56,15 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard)
+  //////* ADMIN ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @Mutation(() => Pizza)
+  createPizza(@Args('createPizzaInput') createPizzaInput: CreatePizzaInput) {
+    return this.pizzaService.create(createPizzaInput)
+  }
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
   @Mutation(() => Pizza)
   async updatePizza(
     @Args('id', { type: () => String }) id: string,
@@ -66,7 +74,7 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard)
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
   @Mutation(() => ClientMessage)
   removePizza(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

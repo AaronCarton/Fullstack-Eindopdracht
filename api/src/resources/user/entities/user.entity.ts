@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql'
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +7,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { ObjectId } from 'mongodb'
+
+export enum Role {
+  USER = 'USER',
+  DELIVERER = 'DELIVERER',
+  ADMIN = 'ADMIN',
+}
+registerEnumType(Role, { name: 'Role' })
 
 @Entity()
 @ObjectType()
@@ -18,6 +25,10 @@ export class User {
   @Field()
   @Column()
   uid: string
+
+  @Field(() => Role, { defaultValue: Role.USER })
+  @Column()
+  role: Role
 
   @Field()
   @Column()

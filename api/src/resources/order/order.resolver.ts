@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { CreateOrderInput } from './dto/create-order.input'
 import { UpdateOrderInput } from './dto/update-order.input'
 import { PizzaService } from '../pizza/pizza.service'
@@ -9,6 +9,9 @@ import { CurrentUser } from 'src/auth/decorators/user.decorator'
 import { UserRecord } from 'firebase-admin/auth'
 import { UseGuards } from '@nestjs/common'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
+import { Pizza } from '../pizza/entities/pizza.entity'
+import { RolesGuard } from 'src/auth/guards/role.guard'
+import { Role } from '../user/entities/user.entity'
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -16,6 +19,28 @@ export class OrderResolver {
     private readonly orderService: OrderService,
     private readonly pizzaService: PizzaService,
   ) {}
+
+  //////* FIELD RESOLVERS ///////
+
+  @ResolveField()
+  async total(@Parent() order: Order): Promise<number> {
+    const items = await Promise.all(
+      order.itemsIds.map((itemId) => this.pizzaService.findOne(itemId)),
+    )
+    console.log(items)
+
+    return items.reduce((total, item) => total + item.basePrice, 0)
+  }
+
+  @ResolveField()
+  items(@Parent() order: Order): Promise<Pizza>[] {
+    return order.itemsIds.map(async (itemId) => {
+      const item = await this.pizzaService.findOne(itemId)
+      return item
+    })
+  }
+
+  //////* USER ROUTES ///////
 
   @UseGuards(FirebaseGuard)
   @Mutation(() => Order)
@@ -26,13 +51,20 @@ export class OrderResolver {
     return this.orderService.create(user.uid, createOrderInput)
   }
 
-  // TODO: Add a resolver to get all orders of a user
+  @UseGuards(FirebaseGuard)
+  @Query(() => [Order])
+  findOwnOrders(@CurrentUser() user: UserRecord) {
+    return this.orderService.findOrdersByUser(user.uid)
+  }
 
   @Query(() => Order, { name: 'order' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.orderService.findOne(id)
   }
 
+  //////* DELIVERER ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.DELIVERER]))
   @Mutation(() => Order)
   async updateOrder(
     @Args('id', { type: () => String }) id: string,
@@ -42,6 +74,9 @@ export class OrderResolver {
     return this.orderService.findOne(id)
   }
 
+  //////* ADMIN ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
   @Mutation(() => ClientMessage)
   removeOrder(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>
