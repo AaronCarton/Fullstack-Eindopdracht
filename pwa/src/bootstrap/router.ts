@@ -9,7 +9,7 @@ import useAuthentication from '../composables/useAuthentication'
 import useUser from '../composables/useUser'
 
 const { user } = useAuthentication()
-const { loadUser, Role } = useUser()
+const { loadUser, Role, user: dbUser } = useUser()
 
 const routes: RouteRecordRaw[] = [
   {
@@ -128,8 +128,8 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   if (to.meta.cantAuthenticate && user.value) return '/'
   if (to.meta.needsAdmin) {
     // load db user for admin check
-    const user = await loadUser()
-    if (user.value?.role !== Role.ADMIN) return '/'
+    await loadUser()
+    if (dbUser.value?.role !== Role.ADMIN) return to.fullPath
   }
 })
 

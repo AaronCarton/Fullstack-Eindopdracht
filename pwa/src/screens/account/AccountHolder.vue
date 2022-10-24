@@ -11,20 +11,22 @@
           <router-link to="/account/order-history" class="mx-2" active-class="font-bold">
             Vorige bestellingen
           </router-link>
-          <router-link
-            to="/account/admin/manage-pizzas"
-            class="mx-2"
-            active-class="font-bold"
-          >
-            Pizzas instellen
-          </router-link>
-          <router-link
-            to="/account/admin/manage-toppings"
-            class="mx-2"
-            active-class="font-bold"
-          >
-            Toppings instellen
-          </router-link>
+          <div class="flex flex-col space-y-5" v-if="isAdmin">
+            <router-link
+              to="/account/admin/manage-pizzas"
+              class="mx-2"
+              active-class="font-bold"
+            >
+              Pizzas instellen
+            </router-link>
+            <router-link
+              to="/account/admin/manage-toppings"
+              class="mx-2"
+              active-class="font-bold"
+            >
+              Toppings instellen
+            </router-link>
+          </div>
         </div>
         <router-view></router-view>
       </div>
@@ -33,5 +35,15 @@
 </template>
 
 <script>
-export default {}
+import { useRoute, useRouter } from 'vue-router'
+import useUser from '../../composables/useUser'
+export default {
+  setup() {
+    const { user, Role } = useUser()
+
+    return {
+      isAdmin: user.value?.role === Role.Admin,
+    }
+  },
+}
 </script>

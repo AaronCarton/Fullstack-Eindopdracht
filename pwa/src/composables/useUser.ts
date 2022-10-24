@@ -1,5 +1,5 @@
-import { provideApolloClient, useQuery } from '@vue/apollo-composable'
-import { Ref, ref } from 'vue'
+import { provideApolloClient, useLazyQuery, useQuery } from '@vue/apollo-composable'
+import { Ref, ref, watch } from 'vue'
 import { GET_SELF_USER } from '../graphql/query.user'
 import { Role } from '../interfaces/user.interface'
 
@@ -14,23 +14,19 @@ export default () => {
   const { apolloClient } = useGraphQL()
   provideApolloClient(apolloClient)
 
-  const setCustomUser = (u: User) => (user.value = u)
+  const setUser = (u: User) => (user.value = u)
 
-  const loadUser = (): Promise<Ref<User | null>> => {
-    return new Promise((resolve, reject) => {
-      console.log('dddd')
-
-      const { onResult } = useQuery(GET_SELF_USER)
-      onResult((result) => {
-        const data = result.data.self
-
-        setCustomUser({ ...data, ...firebaseUser.value }) // combine Firebase User with CustomUser
-        console.log('dsds')
-
-        resolve(user)
-      })
-    })
+  const { result, load, document } = useLazyQuery(GET_SELF_USER)
+  const loadUser = () => {
+    load(document.value)
   }
+
+  watch(result, ({ self }) => {
+    console.log('watch result', self)
+
+    if (self) setUser({ ...self, ...firebaseUser })
+    console.log('user.value', user.value)
+  })
 
   return {
     user,
