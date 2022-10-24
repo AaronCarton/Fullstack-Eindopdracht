@@ -2,7 +2,7 @@
     <div>
       <form @submit.prevent="submitForm">
         <header>
-          <h2 class="mb-6 text-3xl">Forgot password</h2>
+          <h2 class="mb-6 text-3xl font-extrabold text-neutral-50">Forgot password</h2>
         </header>
   
         <div
@@ -21,10 +21,10 @@
   
         <div>
           <label
-            class="mb-1 block text-neutral-500 focus-within:text-neutral-900"
+            class="mb-1 block text-neutral-100 focus-within:text-neutral-50"
             for="email"
           >
-            <span class="mb-2 block">Email</span>
+            <span class="mb-2 block font-bold">Email</span>
   
             <input
               v-model="userInput.email"
@@ -38,7 +38,7 @@
         </div>
   
         <button
-          class="mt-6 flex w-full items-center justify-center rounded-md bg-neutral-700 py-2 px-3 text-white outline-none ring-neutral-300 hover:bg-neutral-900 focus-visible:ring"
+          class="mt-6 flex border-2 rounded-2 w-full text-xl text-neutral-50 border-neutral-50 items-center ease-out transition-all duration-250 justify-center rounded-md  py-2 px-3  outline-none ring-neutral-300 hover:bg-slate-50 hover:text-neutral-900 font-extrabold focus-visible:ring"
           :disabled="loading"
         >
           <span v-if="!loading">Send password reset link</span>
