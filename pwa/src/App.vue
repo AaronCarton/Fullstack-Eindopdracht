@@ -16,8 +16,6 @@ export default {
     const { apolloClient } = useGraphQL()
     const { loadUser } = useUser()
 
-    console.log('test')
-
     provide(DefaultApolloClient, apolloClient)
     if (user.value) loadUser()
 

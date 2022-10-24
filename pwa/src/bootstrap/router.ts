@@ -6,8 +6,10 @@ import {
   RouteRecordRaw,
 } from 'vue-router'
 import useAuthentication from '../composables/useAuthentication'
+import useUser from '../composables/useUser'
 
 const { user } = useAuthentication()
+const { loadUser, Role } = useUser()
 
 const routes: RouteRecordRaw[] = [
   {
@@ -51,6 +53,7 @@ const routes: RouteRecordRaw[] = [
 
       {
         path: 'account',
+        redirect: '/account/details',
         component: () => import('../screens/account/AccountHolder.vue'),
         children: [
           {
@@ -64,10 +67,12 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'admin/manage-pizzas',
             component: () => import('../screens/account/admin/ManagePizzas.vue'),
+            meta: { needsAdmin: true },
           },
           {
             path: 'admin/manage-toppings',
             component: () => import('../screens/account/admin/ManageToppings.vue'),
+            meta: { needsAdmin: true },
           },
         ],
         meta: {
@@ -117,9 +122,14 @@ const router: Router = createRouter({
   routes,
 })
 
-router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
   if (to.meta.needsAuthentication && !user.value) return '/auth/login'
   if (to.meta.cantAuthenticate && user.value) return '/'
+  if (to.meta.needsAdmin) {
+    // load db user for admin check
+    const user = await loadUser()
+    if (user.value?.role !== Role.ADMIN) return '/'
+  }
 })
 
 export default router

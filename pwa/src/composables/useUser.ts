@@ -1,6 +1,7 @@
 import { provideApolloClient, useQuery } from '@vue/apollo-composable'
-import { Ref, ref, watch } from 'vue'
+import { Ref, ref } from 'vue'
 import { GET_SELF_USER } from '../graphql/query.user'
+import { Role } from '../interfaces/user.interface'
 
 import User from '../interfaces/user.interface'
 import useAuthentication from './useAuthentication'
@@ -15,19 +16,25 @@ export default () => {
 
   const setCustomUser = (u: User) => (user.value = u)
 
-  const loadUser = () => {
-    const { onResult } = useQuery(GET_SELF_USER)
-    onResult((result) => {
-      const data = result.data.findUser
-      console.log('data', data)
-      console.log('firebaseUser', firebaseUser.value)
+  const loadUser = (): Promise<Ref<User | null>> => {
+    return new Promise((resolve, reject) => {
+      console.log('dddd')
 
-      setCustomUser({ ...data, ...firebaseUser.value }) // combine Firebase User with CustomUser
+      const { onResult } = useQuery(GET_SELF_USER)
+      onResult((result) => {
+        const data = result.data.self
+
+        setCustomUser({ ...data, ...firebaseUser.value }) // combine Firebase User with CustomUser
+        console.log('dsds')
+
+        resolve(user)
+      })
     })
   }
 
   return {
     user,
     loadUser,
+    Role,
   }
 }
