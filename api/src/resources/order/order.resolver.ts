@@ -1,4 +1,3 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { CreateOrderInput } from './dto/create-order.input'
 import { UpdateOrderInput } from './dto/update-order.input'
@@ -46,11 +45,15 @@ export class OrderResolver {
     return this.orderService.create(user.uid, createOrderInput)
   }
 
-  // TODO: Add a resolver to get all orders of a user
-
   @Query(() => Order, { name: 'order' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.orderService.findOne(id)
+  }
+
+  @UseGuards(FirebaseGuard)
+  @Query(() => [Order])
+  findOwnOrders(@CurrentUser() user: UserRecord) {
+    return this.orderService.findOrdersByUser(user.uid)
   }
 
   @Mutation(() => Order)
