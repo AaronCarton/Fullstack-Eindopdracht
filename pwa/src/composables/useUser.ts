@@ -24,8 +24,9 @@ export default () => {
   watch(result, ({ self }) => {
     console.log('watch result', self)
 
-    if (self) setUser({ ...self, ...firebaseUser })
-    console.log('user.value', user.value)
+    if (self) setUser({ ...self, ...firebaseUser.value })
+    console.log('db user', user.value)
+    console.log('firebase user', firebaseUser.value)
   })
 
   return {
