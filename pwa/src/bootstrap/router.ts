@@ -123,7 +123,8 @@ const router: Router = createRouter({
 })
 
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
-  if (to.meta.needsAuthentication && !user.value) return '/auth/login'
+  if (to.meta.needsAuthentication && !user.value)
+    return { path: '/auth/login', query: { redirect: to.fullPath } }
   if (to.meta.cantAuthenticate && user.value) return '/'
   if (to.meta.needsAdmin) {
     // load db user for admin check
