@@ -7,6 +7,8 @@ import { ToppingService } from './topping.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
 import { PizzaService } from '../pizza/pizza.service'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
+import { RolesGuard } from 'src/auth/guards/role.guard'
+import { Role } from '../user/entities/user.entity'
 
 @Resolver(() => Topping)
 export class ToppingResolver {
@@ -14,6 +16,8 @@ export class ToppingResolver {
     private readonly toppingService: ToppingService,
     private readonly pizzaService: PizzaService,
   ) {}
+
+  //////* USER ROUTES ///////
 
   @UseGuards(FirebaseGuard)
   @Mutation(() => Topping)
@@ -31,7 +35,9 @@ export class ToppingResolver {
     return this.toppingService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard)
+  //////* ADMIN ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
   @Mutation(() => Topping)
   async updateTopping(
     @Args('id', { type: () => String }) id: string,
@@ -41,7 +47,7 @@ export class ToppingResolver {
     return this.toppingService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard)
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
   @Mutation(() => ClientMessage)
   async removeTopping(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

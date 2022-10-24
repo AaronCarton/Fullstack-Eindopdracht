@@ -1,8 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable, mixin } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
+import { Role } from 'src/resources/user/entities/user.entity'
 import { UserService } from 'src/resources/user/user.service'
 
-export const RolesGuard = (roles: string[]) => {
+export const RolesGuard = (roles: Role[]) => {
   @Injectable()
   class RolesGuardMixin implements CanActivate {
     constructor(readonly usersService: UserService) {}

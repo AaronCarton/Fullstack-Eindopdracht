@@ -10,6 +10,8 @@ import { UserRecord } from 'firebase-admin/auth'
 import { UseGuards } from '@nestjs/common'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 import { Pizza } from '../pizza/entities/pizza.entity'
+import { RolesGuard } from 'src/auth/guards/role.guard'
+import { Role } from '../user/entities/user.entity'
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -17,6 +19,8 @@ export class OrderResolver {
     private readonly orderService: OrderService,
     private readonly pizzaService: PizzaService,
   ) {}
+
+  //////* FIELD RESOLVERS ///////
 
   @ResolveField()
   async total(@Parent() order: Order): Promise<number> {
@@ -36,6 +40,8 @@ export class OrderResolver {
     })
   }
 
+  //////* USER ROUTES ///////
+
   @UseGuards(FirebaseGuard)
   @Mutation(() => Order)
   createOrder(
@@ -45,17 +51,20 @@ export class OrderResolver {
     return this.orderService.create(user.uid, createOrderInput)
   }
 
-  @Query(() => Order, { name: 'order' })
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.orderService.findOne(id)
-  }
-
   @UseGuards(FirebaseGuard)
   @Query(() => [Order])
   findOwnOrders(@CurrentUser() user: UserRecord) {
     return this.orderService.findOrdersByUser(user.uid)
   }
 
+  @Query(() => Order, { name: 'order' })
+  findOne(@Args('id', { type: () => String }) id: string) {
+    return this.orderService.findOne(id)
+  }
+
+  //////* DELIVERER ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.DELIVERER]))
   @Mutation(() => Order)
   async updateOrder(
     @Args('id', { type: () => String }) id: string,
@@ -65,6 +74,9 @@ export class OrderResolver {
     return this.orderService.findOne(id)
   }
 
+  //////* ADMIN ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
   @Mutation(() => ClientMessage)
   removeOrder(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>
