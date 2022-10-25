@@ -23,8 +23,10 @@ export class UserResolver {
 
   @UseGuards(FirebaseGuard)
   @Query(() => User)
-  self(@CurrentUser() user: UserRecord) {
-    return this.userService.findByUid(user.uid)
+  async self(@CurrentUser() user: UserRecord) {
+    let u = await this.userService.findByUid(user.uid)
+    if (!u) u = await this.userService.create({ uid: user.uid })
+    return u
   }
 
   @UseGuards(FirebaseGuard)
