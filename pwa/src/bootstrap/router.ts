@@ -24,15 +24,24 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'order',
         component: () => import('../screens/order/index.vue'),
+        meta: {
+          needsAuthentication: true,
+        },
       },
 
       {
         path: 'leveren',
         component: () => import('../screens/overview/Leveren.vue'),
+        meta: {
+          needsAuthentication: true,
+        },
       },
       {
         path: 'afhalen',
         component: () => import('../screens/overview/Afhalen.vue'),
+        meta: {
+          needsAuthentication: true,
+        },
       },
 
       {

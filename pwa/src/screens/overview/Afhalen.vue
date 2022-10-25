@@ -1,13 +1,15 @@
 <template>
-  Afhalen - UID: {{ user?.uid || 'null' }} - City: {{ user?.city || 'null' }}
+  <div class="bg-black"></div>
+  <OverviewNav />
+
+  <h2 class="font-title">Afhalen</h2>
 </template>
 
-<script>
-import useUser from '../../composables/useUser'
+<script lang="ts">
+import OverviewNav from '../../components/generic/OverviewNav.vue'
 export default {
-  setup() {
-    const { user } = useUser()
-    return { user }
+  components: {
+    OverviewNav,
   },
 }
 </script>
