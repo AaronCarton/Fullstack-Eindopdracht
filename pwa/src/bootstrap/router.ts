@@ -132,8 +132,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
     return { path: '/auth/login', query: { redirect: to.fullPath } }
   if (to.meta.cantAuthenticate && user.value) return '/'
   if (to.meta.needsAdmin) {
-    // load db user for admin check
-    await loadUser()
+    loadUser() // load db user for admin check
     if (dbUser.value?.role !== Role.ADMIN) return to.fullPath
   }
 })
