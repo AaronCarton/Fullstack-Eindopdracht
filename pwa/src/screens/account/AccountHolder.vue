@@ -47,7 +47,7 @@ export default {
     const { user, Role } = useUser()
 
     return {
-      isAdmin: user.value?.role === Role.Admin,
+      isAdmin: user.value?.role === Role.ADMIN,
     }
   },
 }
