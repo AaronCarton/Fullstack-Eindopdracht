@@ -1,4 +1,4 @@
-import { provideApolloClient, useLazyQuery, useQuery } from '@vue/apollo-composable'
+import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { Ref, ref, watch } from 'vue'
 import { GET_SELF_USER } from '../graphql/query.user'
 import { Role } from '../interfaces/user.interface'
@@ -20,10 +20,10 @@ export default () => {
   const loadUser = () => {
     load(document.value)
   }
+  console.log('user', user.value)
 
   watch(result, ({ self }) => {
     if (self) setUser({ ...self, ...firebaseUser.value }) // merge firebase user with db user
-    console.log('user', user.value)
   })
 
   return {
