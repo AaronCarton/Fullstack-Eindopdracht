@@ -7,41 +7,40 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { ObjectId } from 'mongodb'
-import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
 
-export enum OrderStatus {
-  'pending' = 'pending',
-  'cooking' = 'cooking',
-  'delivering' = 'delivering',
-  'delivered' = 'delivered',
+export enum Role {
+  USER = 'USER',
+  DELIVERER = 'DELIVERER',
+  ADMIN = 'ADMIN',
 }
-registerEnumType(OrderStatus, { name: 'OrderStatus' })
+registerEnumType(Role, { name: 'Role' })
 
 @Entity()
 @ObjectType()
-export class Order {
-  @Field(() => ID, { description: 'MongoDB ObjectID' })
+export class User {
+  @Field(() => ID)
   @ObjectIdColumn()
   id: ObjectId
 
   @Field()
   @Column()
-  customerId: string
+  uid: string
 
-  @Field(() => [Pizza])
-  items: Pizza[]
-
+  @Field(() => Role, { defaultValue: Role.USER })
   @Column()
-  itemsIds: string[]
-
-  @Field(() => OrderStatus)
-  @Column()
-  status: OrderStatus
-
-  // TODO: add service fees price
+  role: Role
 
   @Field()
-  total: number
+  @Column()
+  street: string
+
+  @Field()
+  @Column()
+  houseNumber: string
+
+  @Field()
+  @Column()
+  city: string
 
   @Field({ nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })

@@ -1,10 +1,17 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { CreateOrderInput } from './dto/create-order.input'
 import { UpdateOrderInput } from './dto/update-order.input'
 import { PizzaService } from '../pizza/pizza.service'
 import { Order } from './entities/order.entity'
 import { OrderService } from './order.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { CurrentUser } from 'src/auth/decorators/user.decorator'
+import { UserRecord } from 'firebase-admin/auth'
+import { UseGuards } from '@nestjs/common'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
+import { Pizza } from '../pizza/entities/pizza.entity'
+import { RolesGuard } from 'src/auth/guards/role.guard'
+import { Role } from '../user/entities/user.entity'
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -13,14 +20,41 @@ export class OrderResolver {
     private readonly pizzaService: PizzaService,
   ) {}
 
-  @Mutation(() => Order)
-  createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
-    return this.orderService.create(createOrderInput)
+  //////* FIELD RESOLVERS ///////
+
+  @ResolveField()
+  async total(@Parent() order: Order): Promise<number> {
+    const items = await Promise.all(
+      order.itemsIds.map((itemId) => this.pizzaService.findOne(itemId)),
+    )
+    console.log(items)
+
+    return items.reduce((total, item) => total + item.basePrice, 0)
   }
 
-  @Query(() => [Order], { name: 'orders' })
-  findAll() {
-    return this.orderService.findAll()
+  @ResolveField()
+  items(@Parent() order: Order): Promise<Pizza>[] {
+    return order.itemsIds.map(async (itemId) => {
+      const item = await this.pizzaService.findOne(itemId)
+      return item
+    })
+  }
+
+  //////* USER ROUTES ///////
+
+  @UseGuards(FirebaseGuard)
+  @Mutation(() => Order)
+  createOrder(
+    @CurrentUser() user: UserRecord,
+    @Args('createOrderInput') createOrderInput: CreateOrderInput,
+  ) {
+    return this.orderService.create(user.uid, createOrderInput)
+  }
+
+  @UseGuards(FirebaseGuard)
+  @Query(() => [Order])
+  findOwnOrders(@CurrentUser() user: UserRecord) {
+    return this.orderService.findOrdersByUser(user.uid)
   }
 
   @Query(() => Order, { name: 'order' })
@@ -28,6 +62,9 @@ export class OrderResolver {
     return this.orderService.findOne(id)
   }
 
+  //////* DELIVERER ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.DELIVERER]))
   @Mutation(() => Order)
   async updateOrder(
     @Args('id', { type: () => String }) id: string,
@@ -37,20 +74,28 @@ export class OrderResolver {
     return this.orderService.findOne(id)
   }
 
-  @Mutation(() => ClientMessage)
-  async removeOrder(@Args('id', { type: () => String }) id: string) {
-    const deleted = await this.orderService.remove(id)
-    if (deleted.affected <= 1)
-      return {
-        type: MessageTypes.success,
-        message: 'Entity deleted',
-        statusCode: 200,
-      }
+  //////* ADMIN ROUTES ///////
 
-    return {
-      type: MessageTypes.error,
-      message: "Couldn't delete entity",
-      statusCode: 400,
-    }
+  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @Mutation(() => ClientMessage)
+  removeOrder(@Args('id', { type: () => String }) id: string) {
+    return new Promise((resolve) =>
+      this.orderService
+        .remove(id)
+        .then(() =>
+          resolve({
+            type: MessageTypes.success,
+            message: 'Order deleted successfully',
+            statusCode: 200,
+          }),
+        )
+        .catch(() =>
+          resolve({
+            type: MessageTypes.error,
+            message: 'Order could not be deleted',
+            statusCode: 500,
+          }),
+        ),
+    )
   }
 }

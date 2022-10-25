@@ -13,8 +13,8 @@ export class OrderService {
     private readonly orderRepo: Repository<Order>,
   ) {}
 
-  create(createOrderInput: CreateOrderInput) {
-    return this.orderRepo.save(createOrderInput)
+  create(uid: string, createOrderInput: CreateOrderInput) {
+    return this.orderRepo.save({ customerId: uid, ...createOrderInput })
   }
 
   findAll() {
@@ -23,6 +23,10 @@ export class OrderService {
 
   findOne(id: string) {
     return this.orderRepo.findOne(new ObjectId(id))
+  }
+
+  async findOrdersByUser(uid: string) {
+    return this.orderRepo.findBy({ customerId: uid })
   }
 
   async update(id: string, updateOrderInput: UpdateOrderInput) {

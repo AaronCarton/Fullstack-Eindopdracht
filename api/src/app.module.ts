@@ -4,9 +4,19 @@ import { ToppingModule } from './resources/topping/topping.module'
 import { PizzaModule } from './resources/pizza/pizza.module'
 import { OrderModule } from './resources/order/order.module'
 import { DatabaseSeedModule } from './seed/seed.module'
+import { UserModule } from './resources/user/user.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
-  imports: [BootstrapModule, ToppingModule, PizzaModule, OrderModule, DatabaseSeedModule],
+  imports: [
+    BootstrapModule,
+    ToppingModule,
+    PizzaModule,
+    OrderModule,
+    UserModule,
+    DatabaseSeedModule,
+    AuthModule,
+  ],
   controllers: [],
   providers: [],
 })
