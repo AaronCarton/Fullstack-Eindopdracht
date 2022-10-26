@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-4xl p-5">
-    <h2 class="text-xl font-bold">Account Info</h2>
+    <h2 class="text-xl font-medium">Account Info</h2>
     <div>
       <div class="my-6 flex flex-col space-y-6">
         <div class="grid gap-6 md:grid-cols-2">

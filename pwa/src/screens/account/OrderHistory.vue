@@ -1,9 +1,9 @@
 <template>
   <div class="w-3/4 p-5">
-    <h2 class="mb-4 text-xl font-bold">Order History</h2>
+    <h2 class="mb-4 text-xl font-medium">Order History</h2>
     <div>
       <table class="text-md w-full border-neutral-700 text-left text-neutral-800">
-        <thead class="text-sm uppercase text-neutral-600">
+        <thead class="text-sm font-medium uppercase text-neutral-600">
           <tr>
             <th scope="col" class="py-3 px-6">Order ID</th>
             <th scope="col" class="py-3 px-6">Items</th>
