@@ -59,7 +59,7 @@
               <p class="justify-self-end self-end text-xl">€16.99</p>
             </div>
             <div class="bg-neutral-200 w-full flex justify-between p-3 mt-110 mb-3 rounded-lg">
-            <p class="text-xl font-bold">Totale prijs</p>
+            <p class="text-xl font-bold">Total price</p>
               <p class="text-xl">€16.99</p>
           </div>
             <button class="  rounded-lg  px-6 py-2 font-bold w-full bg-red-700 text-neutral-50">

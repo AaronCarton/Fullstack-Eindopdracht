@@ -33,13 +33,13 @@
             to="/afhalen"
             class="ease-out transition-all font-extrabold duration-250 text-center border-2 rounded-2 w-[65%] text-2xl text-slate-50 border-slate-50 mx-8 py-2 px-2 hover:text-black hover:bg-slate-50"
           >
-            AFHALEN
+          TAKE AWAY
           </RouterLink>
           <!--Devider with text in the middle-->
           <div class="w-full px-50">
             <fieldset class="border-t-2 border-slate-200">
               <legend class="mx-auto px-4 text-slate-100 text-2xl font-bold italic">
-                OF
+                OR
               </legend>
             </fieldset>
           </div>
@@ -48,7 +48,7 @@
             to="/leveren"
             class="ease-out transition-all duration-250 text-center border-2 rounded-2 w-[65%] font-extrabold text-2xl text-slate-50 border-slate-50 mx-8 py-2 px-2 hover:text-black hover:bg-slate-50"
           >
-            LEVEREN
+            DELIVERY
           </RouterLink>
         </div>
       </div>

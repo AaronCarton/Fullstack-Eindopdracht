@@ -12,7 +12,7 @@
             </li>
             <li class="text-neutral-400">|</li>
             <li>
-                <button class="font-bold text-xl text-neutral-900 hover:text-neutral-600" @click="cat = 'Drank'">Drank</button>
+                <button class="font-bold text-xl text-neutral-900 hover:text-neutral-600" @click="cat = 'Drank'">Drinks</button>
             </li>
         </ul>
     </div>
