@@ -18,6 +18,9 @@ export default {
 
     provide(DefaultApolloClient, apolloClient)
     if (user.value) loadUser()
+    ;(async () => {
+      console.log(await user.value?.getIdToken())
+    })()
 
     return {}
   },

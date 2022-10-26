@@ -5,6 +5,7 @@ export default interface User extends FirebaseUser {
   city: string
   houseNumber: string
   role: Role
+  createdAt: string
 }
 
 export enum Role {
