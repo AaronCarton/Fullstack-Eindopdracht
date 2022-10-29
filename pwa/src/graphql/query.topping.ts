@@ -5,6 +5,9 @@ export const TOPPINGS = gql`
     toppings {
       id
       name
+      description
+      category
+      stock
       price
     }
   }

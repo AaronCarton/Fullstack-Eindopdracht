@@ -18,3 +18,21 @@ export const PIZZAS = gql`
     }
   }
 `
+
+export const PIZZA = gql`
+  query pizza($id: String!) {
+    pizza(id: $id) {
+      id
+      name
+      description
+      toppings {
+        id
+        name
+        description
+        category
+        stock
+        default
+      }
+    }
+  }
+`
