@@ -8,7 +8,7 @@ export default interface Pizza {
   size: 'small' | 'medium' | 'large'
   type: 'classic' | 'pan'
   cheesyCrust: boolean
-  toppings: Topping
+  toppings: Topping[]
 
   basePrice: number
   totalPrice: number
