@@ -70,7 +70,7 @@ export default {
     const { user, Role } = useUser()
 
     return {
-      isAdmin: true, //user.value?.role === Role.ADMIN,
+      isAdmin: user.value?.role === Role.ADMIN,
     }
   },
 }
