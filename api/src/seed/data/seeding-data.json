@@ -20,9 +20,57 @@
       "_id": "634984d3129c7754f8e3e4dc",
       "category": "Meat",
       "name": "Spicy meat",
-      "description": "Spicy meat for the spicy pizza",
+      "description": "Spicy meat for a spicy pizza",
       "price": 1.76,
       "stock": 12
+    },
+    {
+      "_id": "634984d9129c7754f8e3e4dd",
+      "category": "Vegetable",
+      "name": "Mushroom",
+      "description": "Plop won't be happy about this",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984e0129c7754f8e3e4de",
+      "category": "Vegetable",
+      "name": "Pinapple",
+      "description": "The sin of the pizza world",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984e6129c7754f8e3e4df",
+      "category": "Vegetable",
+      "name": "Onion",
+      "description": "The vegetable that makes you cry",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "6356b8395b2d452e28045fc9",
+      "category": "Meat",
+      "name": "Pepperoni",
+      "description": "Pepperoni for the meat pizza",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "6348309cdfe8e72a086b73bb",
+      "category": "Vegetable",
+      "name": "Paprika",
+      "description": "Green and red paprika",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634830a3dfe8e72a086b73bc",
+      "category": "Vegetable",
+      "name": "Olive",
+      "description": "Black olives",
+      "price": 1.23,
+      "stock": 23
     }
   ],
   "pizzas": [
@@ -32,6 +80,42 @@
       "description": "The classic pizza",
       "basePrice": 12.43,
       "toppingsIds": ["63409b2f2bf7174a20eb7a51", "634984c9129c7754f8e3e4db"]
+    },
+    {
+      "_id": "63409bc32bf7174a20eb7a53",
+      "name": "Pepperoni",
+      "description": "The meat pizza",
+      "basePrice": 13.43,
+      "toppingsIds": [
+        "63409b2f2bf7174a20eb7a51",
+        "634984c9129c7754f8e3e4db",
+        "6356b8395b2d452e28045fc9"
+      ]
+    },
+    {
+      "_id": "63409bc92bf7174a20eb7a54",
+      "name": "Hawaiian",
+      "description": "The pineapple pizza",
+      "basePrice": 13.43,
+      "toppingsIds": [
+        "63409b2f2bf7174a20eb7a51",
+        "634984c9129c7754f8e3e4db",
+        "634984e0129c7754f8e3e4de",
+        "634984d9129c7754f8e3e4dd"
+      ]
+    },
+    {
+      "_id": "63409bce2bf7174a20eb7a55",
+      "name": "Veggie",
+      "description": "The vegetarian pizza",
+      "basePrice": 13.43,
+      "toppingsIds": [
+        "63409b2f2bf7174a20eb7a51",
+        "634984c9129c7754f8e3e4db",
+        "634984d9129c7754f8e3e4dd",
+        "634984e0129c7754f8e3e4de",
+        "634984e6129c7754f8e3e4df"
+      ]
     }
   ],
   "orders": [
