@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: 'leveren',
+        path: 'deliver',
         component: () => import('../screens/overview/pages/Leveren.vue'),
         meta: {
           needsAuthentication: true,

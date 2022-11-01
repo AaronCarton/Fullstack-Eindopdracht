@@ -1,6 +1,10 @@
 <template>
-  <div class="text-neutral-100">
-    <div v-if="pizza">{{ pizza.name }}</div>
+  <div class="col-start-1 col-end-4 row-start-1 row-end-5 rounded-lg bg-white">
+    <div v-if="pizza" class="">
+      <div class="">
+        {{ pizza.name }}
+      </div>
+    </div>
     <div v-else>Not Found</div>
   </div>
 </template>

@@ -27,7 +27,7 @@
           <h2 class="font-title mb-24 text-center text-8xl text-white">Pizza Time</h2>
           <!--Button to afhalen page-->
           <RouterLink
-            to="/afhalen"
+            to="/takeaway"
             class="duration-250 rounded-2 mx-8 w-[65%] border-2 border-slate-50 py-2 px-2 text-center text-2xl font-extrabold text-slate-50 transition-all ease-out hover:bg-slate-50 hover:text-black"
           >
             TAKE AWAY
