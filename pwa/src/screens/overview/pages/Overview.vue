@@ -1,8 +1,15 @@
 <template>
   <OverviewNav class="col-start-1 col-end-4 row-start-1 row-end-1 flex items-center" />
   <div class="col-span-4 col-start-1 col-end-3 row-span-2 row-start-2 p-3 sm:col-span-3">
-    <div v-for="p of pizzas" :key="p.id" class="grid-rows-auto grid grid-cols-3">
-      <Card :pizza="p" />
+    <div class="grid grid-cols-3 gap-7">
+      <template v-if="pizzas">
+        <Card v-for="p of pizzas" :key="p.id" :pizza="p" />
+      </template>
+      <template v-else>
+        <div class="col-span-3">
+          <p class="text-center text-2xl font-semibold">Loading...</p>
+        </div>
+      </template>
     </div>
   </div>
 </template>
