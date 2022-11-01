@@ -1,6 +1,6 @@
 <template>
   <div class="row-span-5 row-start-auto rounded-lg bg-white">
-    <div class="h-52">
+    <div class="h-40">
       <img
         :src="`/pizzas/${pizza.name}.jpg`"
         :alt="`image of ${pizza.name} pizza`"
@@ -10,7 +10,7 @@
     <div class="flex flex-col p-3">
       <p class="mb-2 text-2xl font-semibold">{{ pizza.name }}</p>
 
-      <p class="mb-6 h-20 overflow-hidden font-semibold text-neutral-600">
+      <p class="mb-6 h-10 overflow-hidden text-sm font-semibold text-neutral-400">
         {{
           pizza.toppings
             .map((t) => t.name)
