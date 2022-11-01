@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="row-end-8 col-start-4 row-start-1 hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 sm:flex"
-  >
+  <div class="hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 sm:flex">
     <div class="">
       <h2 class="text-2xl font-semibold">Order</h2>
       <div class="flex w-full items-center justify-between p-4">
