@@ -15,9 +15,6 @@ export class CreatePizzaInput {
   @Field(() => PizzaSize)
   size: PizzaSize
 
-  @Field()
-  cheesyCrust: boolean
-
   @Field(() => [String])
   toppingsIds: string[]
 

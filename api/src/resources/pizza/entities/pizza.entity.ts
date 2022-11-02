@@ -1,17 +1,12 @@
 import { Topping } from 'src/resources/topping/entities/topping.entity'
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
 import { ObjectId } from 'mongodb'
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ObjectIdColumn,
-  UpdateDateColumn,
-} from 'typeorm'
+import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } from 'typeorm'
 
 export enum PizzaType {
   'classic' = 'classic',
   'pan' = 'pan',
+  'cheesyCrust' = 'cheesyCrust',
 }
 export enum PizzaSize {
   'small' = 'small',
@@ -43,10 +38,6 @@ export class Pizza {
   @Field(() => PizzaSize, { nullable: true })
   @Column()
   size: PizzaSize
-
-  @Field({ nullable: true })
-  @Column()
-  cheesyCrust: boolean
 
   @Field(() => [Topping])
   toppings: Topping[]

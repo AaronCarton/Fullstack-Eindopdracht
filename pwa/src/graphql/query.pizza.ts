@@ -7,7 +7,6 @@ export const PIZZAS = gql`
       name
       description
       type
-      cheesyCrust
       toppings {
         id
         name
