@@ -18,13 +18,18 @@
             <!-- TODO: add edit and delete button -->
             <!-- <div>Edit | Delete</div> -->
           </div>
-          <p class="whitespace-nowrap align-middle text-sm font-medium text-neutral-400">
+          <p
+            v-if="item.toppings.filter((t) => t.default === false).length > 0"
+            class="align-middle text-sm font-medium text-neutral-400"
+          >
             <span class="align-baseline text-xl leading-none text-green-500">+</span>
             {{
-              item.toppings
-                .filter((t) => t.default === false)
-                .map((t) => t.name)
-                .toString()
+              // filter out the base topping, map the names, and count the duplicates
+              countDuplicates(item.toppings.filter((t) => t.default === false).map((t) => t.name))
+                // map  [ [ "Olive", 3 ], [ "Spicy meat", 2 ], [ "Mushroom", 1 ] ]
+                // to "3x Olive, 2x Spicy meat, Mushroom"
+                .map((t) => (t[1] > 1 ? `${t[1]}x ${t[0]}` : t[0]))
+                .join(', ')
             }}
           </p>
         </div>
@@ -45,12 +50,13 @@
 
 <script lang="ts">
 import useCart from '../../composables/useCart'
+import { countDuplicates } from '../../bootstrap/utils'
 
 export default {
   setup() {
     const { cart } = useCart()
 
-    return { cart }
+    return { cart, countDuplicates }
   },
 }
 </script>

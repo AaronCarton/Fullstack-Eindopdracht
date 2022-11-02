@@ -1,6 +1,6 @@
 <template>
   <div class="col-span-3 grid grid-cols-5 rounded-lg bg-neutral-100">
-    <template v-if="pizza && OrderItemID">
+    <template v-if="pizza && orderItem">
       <div class="relative col-span-2">
         <div class="absolute flex w-full rounded-tl-lg bg-neutral-50 bg-opacity-[85%] p-2">
           <Back class="absolute cursor-pointer" @click="$router.go(-1)" />
@@ -16,11 +16,21 @@
         <div class="flex flex-col">
           <div class="my-3">
             <h3 class="mb-1.5 font-medium">Size</h3>
-            <ButtonGroup :onClick="handleSize" :group="'size'" :names="Object.values(PizzaSize)" />
+            <ButtonGroup
+              :onClick="handleSize"
+              :group="'size'"
+              :names="Object.values(PizzaSize)"
+              :value="orderItem.item.size"
+            />
           </div>
           <div class="my-3">
             <h3 class="mb-1.5 font-medium">Type</h3>
-            <ButtonGroup :onClick="handleType" :group="'type'" :names="Object.values(PizzaType)" />
+            <ButtonGroup
+              :onClick="handleType"
+              :group="'type'"
+              :names="Object.values(PizzaType)"
+              :value="orderItem.item.type"
+            />
           </div>
         </div>
         <div class="">
@@ -32,7 +42,7 @@
                 v-for="topping in pizza.toppings"
                 :key="topping.id"
                 :topping="topping"
-                :onClick="handleTopping"
+                :onClick="handleToppingRemove"
               />
             </div>
           </div>
@@ -43,7 +53,7 @@
                 v-for="topping in allToppings"
                 :key="topping.id"
                 :topping="topping"
-                :onClick="handleTopping"
+                :onClick="handleToppingAdd"
               />
             </div>
           </div>
@@ -110,7 +120,7 @@ export default {
       }))
     }
 
-    const handleTopping = (t: Topping) => {
+    const handleToppingAdd = (t: Topping) => {
       const topping = { ...t, default: false }
       updateCartItem(`${query.item}`, (cartItem) => ({
         ...cartItem,
@@ -128,16 +138,36 @@ export default {
       }
     }
 
+    const handleToppingRemove = (t: Topping) => {
+      console.log(t)
+
+      if (t.default) return
+      updateCartItem(`${query.item}`, (cartItem) => ({
+        ...cartItem,
+        item: {
+          ...cartItem.item,
+          toppings: cartItem.item.toppings.filter((topping) => topping.id !== t.id),
+        },
+      }))
+      if (pizza.value) {
+        pizza.value = {
+          ...pizza.value,
+          toppings: pizza.value.toppings.filter((topping) => topping.id !== t.id),
+        }
+      }
+    }
+
     return {
       pizza,
-      OrderItemID: findItem(`${query.item}`),
+      orderItem: findItem(`${query.item}`),
       allToppings,
       PizzaSize,
       PizzaType,
 
       handleSize,
       handleType,
-      handleTopping,
+      handleToppingAdd,
+      handleToppingRemove,
     }
   },
 }

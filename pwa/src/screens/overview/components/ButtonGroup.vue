@@ -8,6 +8,7 @@
         :name="group"
         :id="name"
         :value="name"
+        :checked="value === name"
       />
       <label
         :for="name"
@@ -32,6 +33,11 @@ export default {
       type: Array as () => string[],
       required: true,
     },
+    // the current value
+    value: {
+      type: String,
+      required: true,
+    },
     // button click handler
     onClick: {
       type: Function,
@@ -39,7 +45,9 @@ export default {
     },
   },
   setup(props) {
-    const { onClick } = props
+    const { onClick, value } = props
+
+    console.log('value', value)
 
     const handleClick = (e: Event) => {
       const target = e.target as HTMLInputElement
