@@ -11,7 +11,7 @@
       />
       <label
         :for="name"
-        class="bg-red-700 px-2.5 py-1 font-medium text-neutral-50 hover:bg-red-800 group-first:rounded-l-2xl group-last:last:rounded-r-2xl peer-checked:bg-red-600"
+        class="bg-red-700 px-2.5 py-1 font-medium capitalize text-neutral-50 hover:bg-red-800 group-first:rounded-l-2xl group-last:last:rounded-r-2xl peer-checked:bg-red-600"
       >
         {{ name }}
       </label>
