@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a @click="onClick(topping)">{{ topping.name }}</a>
+    <a class="cursor-pointer py-2" @click="onClick(topping)">{{ topping.name }}</a>
   </div>
 </template>
 
