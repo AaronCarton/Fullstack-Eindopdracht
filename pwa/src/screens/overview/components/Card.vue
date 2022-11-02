@@ -22,7 +22,7 @@
       <div class="flex items-center justify-between">
         <p class="text-xl font-semibold">€{{ pizza.totalPrice }}</p>
         <button
-          @click="addToCart(pizza)"
+          @click="addItem(pizza)"
           class="self-center rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50"
         >
           Add
@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { useRouter } from 'vue-router'
+import useCart from '../../../composables/useCart'
 import Pizza from '../../../interfaces/pizza.interface'
 
 export default {
@@ -45,14 +46,14 @@ export default {
   },
   setup() {
     const { push } = useRouter()
+    const { addToCart } = useCart()
 
-    const addToCart = (pizza: Pizza) => {
-      // TODO: code to add pizza to cart
-
-      push(`customize/${pizza.id}`)
+    const addItem = (pizza: Pizza) => {
+      const item = addToCart(pizza)
+      push(`customize/${pizza.id}?item=${item.id}`)
     }
 
-    return { addToCart }
+    return { addItem }
   },
 }
 </script>

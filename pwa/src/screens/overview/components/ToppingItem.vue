@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a href="">{{ topping.name }}</a>
+    <a @click="onClick(topping)">{{ topping.name }}</a>
   </div>
 </template>
 
