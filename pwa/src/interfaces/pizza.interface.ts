@@ -5,8 +5,8 @@ export default interface Pizza {
   name: string
   description: string
 
-  size: 'small' | 'medium' | 'large'
-  type: 'classic' | 'pan'
+  size: PizzaSize
+  type: PizzaType
   cheesyCrust: boolean
   toppings: Topping[]
 
@@ -15,4 +15,16 @@ export default interface Pizza {
 
   createdAt: string
   updatedAt: string
+}
+
+export enum PizzaSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+}
+
+export enum PizzaType {
+  Classic = 'classic',
+  Pan = 'pan',
+  CheesyCrust = 'cheesyCrust',
 }
