@@ -28,11 +28,12 @@ export default () => {
     }
   }
 
-  const removeFromCart = (pizza: Pizza) =>
-    cart.value?.splice(
-      cart.value.findIndex((item) => item.item.id === pizza.id),
-      1,
-    )
+  const removeFromCart = (itemId: string) => {
+    const index = cart.value?.findIndex((item) => item.id === itemId)
+    if (index !== -1) {
+      cart.value.splice(index, 1)
+    }
+  }
   const clearCart = () => (cart.value = [])
 
   watch(cart, (newCart) => {

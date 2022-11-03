@@ -3,7 +3,7 @@
     <template v-if="pizza && orderItem">
       <div class="relative col-span-2">
         <div class="absolute flex w-full rounded-tl-lg bg-neutral-50 bg-opacity-[85%] p-2">
-          <Back class="absolute cursor-pointer" @click="$router.go(-1)" />
+          <Back class="absolute cursor-pointer" @click="goBack()" />
           <a class="mx-auto font-medium">{{ pizza.name }}</a>
         </div>
         <img
@@ -12,7 +12,7 @@
           class="h-full w-full rounded-l-lg object-cover"
         />
       </div>
-      <div class="col-span-3 m-3 overflow-auto">
+      <div class="col-span-3 m-3 flex flex-col overflow-auto">
         <div class="flex flex-col">
           <div class="my-3">
             <h3 class="mb-1.5 font-medium">Size</h3>
@@ -58,6 +58,12 @@
             </div>
           </div>
         </div>
+        <button
+          @click="goBack()"
+          class="mx-auto mt-auto mb-2 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+        >
+          Add to Cart
+        </button>
       </div>
     </template>
     <template v-else>Not Found</template>
@@ -66,7 +72,7 @@
 
 <script lang="ts">
 import { computed, ref, Ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
 import { ArrowLeft as Back } from 'lucide-vue-next'
 
@@ -88,6 +94,7 @@ export default {
   setup() {
     const pizza: Ref<Pizza | undefined> = ref()
     const { findItem, updateCartItem } = useCart()
+    const { push } = useRouter()
     const { params, query } = useRoute()
     const { result: tRes } = useQuery(TOPPINGS)
     const { result: pRes } = useQuery(PIZZA, {
@@ -99,6 +106,10 @@ export default {
     watch(pRes, (res) => {
       pizza.value = res.pizza as Pizza
     })
+
+    const goBack = () => {
+      push({ path: '/overview', query: { type: query.type } })
+    }
 
     const handleSize = (size: PizzaSize) => {
       updateCartItem(`${query.item}`, (cartItem) => ({
@@ -164,6 +175,7 @@ export default {
       PizzaSize,
       PizzaType,
 
+      goBack,
       handleSize,
       handleType,
       handleToppingAdd,
