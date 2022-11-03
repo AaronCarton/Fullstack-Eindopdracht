@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import useCart from '../../../composables/useCart'
 import Pizza from '../../../interfaces/pizza.interface'
 
@@ -50,7 +50,7 @@ export default {
 
     const addItem = (pizza: Pizza) => {
       const item = addToCart(pizza)
-      push(`customize/${pizza.id}?item=${item.id}`)
+      push({ name: 'customize', params: { id: pizza.id }, query: { item: item.id } })
     }
 
     return { addItem }
