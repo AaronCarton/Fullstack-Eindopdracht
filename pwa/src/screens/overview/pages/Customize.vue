@@ -38,8 +38,9 @@
           <div class="my-3">
             <h3 class="mb-1.5 font-medium">Toppings</h3>
             <div class="flex flex-col">
+              <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
-                v-for="topping in pizza.toppings"
+                v-for="topping in orderItem.item.toppings"
                 :key="topping.id"
                 :topping="topping"
                 :onClick="handleToppingRemove"
@@ -49,6 +50,7 @@
           <div class="my-3">
             <h3 class="mb-1.5 font-medium">Extra Toppings</h3>
             <div class="flex flex-col">
+              <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in allToppings"
                 :key="topping.id"
@@ -102,6 +104,7 @@ export default {
     })
 
     const allToppings = computed(() => (tRes.value?.toppings as Topping[]) ?? [])
+    const orderItem = computed(() => findItem(`${query.item}`))
 
     watch(pRes, (res) => {
       pizza.value = res.pizza as Pizza
@@ -150,27 +153,31 @@ export default {
     }
 
     const handleToppingRemove = (t: Topping) => {
-      console.log(t)
-
       if (t.default) return
-      updateCartItem(`${query.item}`, (cartItem) => ({
-        ...cartItem,
-        item: {
-          ...cartItem.item,
-          toppings: cartItem.item.toppings.filter((topping) => topping.id !== t.id),
-        },
-      }))
-      if (pizza.value) {
-        pizza.value = {
-          ...pizza.value,
-          toppings: pizza.value.toppings.filter((topping) => topping.id !== t.id),
+      updateCartItem(`${query.item}`, (cartItem) => {
+        // filter out topping (once)
+        const index = cartItem.item.toppings.findIndex((topping) => topping.id === t.id)
+        const toppings = [...cartItem.item.toppings]
+        toppings.splice(index, 1)
+        return {
+          ...cartItem,
+          item: {
+            ...cartItem.item,
+            toppings,
+          },
         }
-      }
+      })
+      // if (pizza.value) {
+      //   pizza.value = {
+      //     ...pizza.value,
+      //     toppings: pizza.value.toppings.filter((topping) => topping.id !== t.id),
+      //   }
+      // }
     }
 
     return {
       pizza,
-      orderItem: findItem(`${query.item}`),
+      orderItem,
       allToppings,
       PizzaSize,
       PizzaType,

@@ -74,6 +74,7 @@ export default {
     const { push } = useRouter()
     const route = useRoute()
 
+    // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
 
     const editItem = (id: string, item: any) => {
@@ -87,6 +88,7 @@ export default {
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
       removeFromCart(id)
+      // TODO: remove from localstorage
 
       if (isCurrentItem) {
         push({
