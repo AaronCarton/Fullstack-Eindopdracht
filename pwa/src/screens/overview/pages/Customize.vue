@@ -1,10 +1,11 @@
 <template>
-  <div class="col-span-3 grid grid-cols-5 rounded-lg bg-neutral-100">
+  <div class="col-span-4 grid grid-cols-5 rounded-lg bg-neutral-100">
     <template v-if="pizza && orderItem">
       <div class="relative col-span-2">
-        <div class="absolute flex w-full rounded-tl-lg bg-neutral-50 bg-opacity-[85%] p-2">
-          <Back class="absolute cursor-pointer" @click="goBack()" />
-          <a class="mx-auto font-medium">{{ pizza.name }}</a>
+        <div
+          class="absolute flex h-10 w-10 items-center rounded-tl-lg rounded-br-lg bg-neutral-100 p-2"
+        >
+          <Back class="stroke-2.5 absolute h-7 w-7 cursor-pointer" @click="goBack()" />
         </div>
         <img
           :src="`/pizzas/${pizza.name}.jpg`"
@@ -12,10 +13,12 @@
           class="h-full w-full rounded-l-lg object-cover"
         />
       </div>
-      <div class="col-span-3 m-3 flex flex-col overflow-auto">
+      <div class="col-span-3 m-3 flex flex-col overflow-auto px-4 py-3">
         <div class="flex flex-col">
-          <div class="my-3">
-            <h3 class="mb-1.5 font-medium">Size</h3>
+          <div>
+            <a class="mb-5 text-3xl font-bold">{{ pizza.name }}</a>
+            <h3 class="mb-6 mt-4 text-2xl font-semibold">Size</h3>
+
             <ButtonGroup
               :onClick="handleSize"
               :group="'size'"
@@ -24,7 +27,7 @@
             />
           </div>
           <div class="my-3">
-            <h3 class="mb-1.5 font-medium">Type</h3>
+            <h3 class="mb-6 text-2xl font-semibold">Type</h3>
             <ButtonGroup
               :onClick="handleType"
               :group="'type'"
@@ -36,26 +39,28 @@
         <div class="">
           <!-- TODO add overflow to this nested div instead of full parent div -->
           <div class="my-3">
-            <h3 class="mb-1.5 font-medium">Toppings</h3>
-            <div class="flex flex-col">
+            <h3 class="mb-6 text-2xl font-semibold">Toppings</h3>
+            <div class="h-30 flex flex-col overflow-y-scroll scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in orderItem.item.toppings"
                 :key="topping.id"
                 :topping="topping"
                 :onClick="handleToppingRemove"
+                :type="'remove'"
               />
             </div>
           </div>
           <div class="my-3">
-            <h3 class="mb-1.5 font-medium">Extra Toppings</h3>
-            <div class="flex flex-col">
+            <h3 class="mb-6 text-2xl font-semibold">Extra Toppings</h3>
+            <div class="h-30 flex flex-col overflow-y-scroll scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in allToppings"
                 :key="topping.id"
                 :topping="topping"
                 :onClick="handleToppingAdd"
+                :type="'add'"
               />
             </div>
           </div>
@@ -76,7 +81,7 @@
 import { computed, ref, Ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
-import { ArrowLeft as Back } from 'lucide-vue-next'
+import { ArrowLeft as Back, X as Remove } from 'lucide-vue-next'
 
 import useCart from '../../../composables/useCart'
 import ButtonGroup from '../components/ButtonGroup.vue'
@@ -89,6 +94,7 @@ import Topping from '../../../interfaces/topping.interface'
 
 export default {
   components: {
+    Remove,
     Back,
     ButtonGroup,
     ToppingItem,

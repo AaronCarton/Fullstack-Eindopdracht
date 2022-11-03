@@ -1,6 +1,6 @@
 <template>
-  <div class="inline-flex justify-items-center rounded-2xl text-center">
-    <span v-for="name in names" :key="name" class="group">
+  <div class="flex gap-4 text-center">
+    <span v-for="name in names" :key="name">
       <input
         class="peer hidden"
         @click="handleClick"
@@ -12,7 +12,7 @@
       />
       <label
         :for="name"
-        class="bg-red-700 px-2.5 py-1 font-medium capitalize text-neutral-50 hover:bg-red-800 group-first:rounded-l-2xl group-last:last:rounded-r-2xl peer-checked:bg-red-600"
+        class="rounded-lg border-2 border-neutral-500 py-1 px-4 text-lg font-semibold capitalize text-neutral-500 hover:border-neutral-900 hover:text-neutral-900 peer-checked:border-red-700 peer-checked:bg-red-700 peer-checked:text-neutral-50 peer-checked:hover:border-red-600 peer-checked:hover:bg-red-600"
       >
         {{ name }}
       </label>

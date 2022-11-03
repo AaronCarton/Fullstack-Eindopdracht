@@ -1,5 +1,5 @@
 <template>
-  <div class="row-span-5 row-start-auto rounded-lg bg-white">
+  <div class="col-span-1 row-span-5 row-start-auto rounded-lg bg-white">
     <div class="h-40">
       <img
         :src="`/pizzas/${pizza.name}.jpg`"
