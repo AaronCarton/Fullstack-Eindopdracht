@@ -1,11 +1,13 @@
 <template>
-  <div class="h-full overflow-y-hidden bg-[url(/HomeBG.jpg)] sm:bg-auto">
-    <div class="bg-opacity-65 min-h-screen bg-black py-6 sm:px-48 md:px-60">
-      <div class="grid-rows-10 grid h-screen grid-cols-4 gap-6">
+  <div class="h-screen w-screen overflow-y-hidden bg-[url(/HomeBG.jpg)] sm:bg-auto">
+    <div
+      class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
+    >
+      <div class="grid-rows-10 grid h-[90vh] w-full grid-cols-3 gap-8 lg:grid-cols-5">
         <!-- ? :key="$route.fullPath" forces rerender, even when only the param of a path changes -->
         <!-- ? like switching between cart items -->
         <router-view class="h-[90vh]" :key="$route.fullPath" />
-        <Cart class="row-end-8 col-start-4 row-start-1" />
+        <Cart class="row-end-8 col-start-5 row-start-1" />
       </div>
     </div>
   </div>
