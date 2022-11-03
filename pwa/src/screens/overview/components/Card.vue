@@ -46,11 +46,16 @@ export default {
   },
   setup() {
     const { push } = useRouter()
+    const { query } = useRoute()
     const { addToCart } = useCart()
 
     const addItem = (pizza: Pizza) => {
       const item = addToCart(pizza)
-      push({ name: 'customize', params: { id: pizza.id }, query: { item: item.id } })
+      push({
+        name: 'customize',
+        params: { id: pizza.id },
+        query: { item: item.id, ...query },
+      })
     }
 
     return { addItem }

@@ -32,12 +32,12 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'delivery',
         path: 'delivery',
-        redirect: 'overview',
+        redirect: { path: 'overview', query: { type: 'delivery' } },
       },
       {
         name: 'takeaway',
         path: 'takeaway',
-        redirect: 'overview',
+        redirect: { path: 'overview', query: { type: 'takeaway' } },
       },
       {
         path: '/overview',

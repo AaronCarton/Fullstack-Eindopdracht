@@ -1,22 +1,28 @@
 <template>
   <div class="hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 sm:flex">
     <div class="">
-      <h2 class="text-2xl font-semibold">Order</h2>
-      <div v-for="{ item } in cart" class="w-full py-4 px-2">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-semibold">Order</h2>
+        <a class="font-medium capitalize">{{ deliveryType }}</a>
+      </div>
+      <div v-for="{ id, item } in cart" class="w-full py-4 px-2">
         <div class="flex items-center justify-between">
           <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
           <!-- TODO calculate price -->
           <p class="self-end justify-self-end text-xl">€168.99</p>
         </div>
         <div>
-          <div class="flex">
+          <div class="flex justify-between">
             <p
               class="whitespace-nowrap align-middle text-sm font-medium capitalize text-neutral-400"
             >
               {{ item.size }} {{ item.type }}
             </p>
             <!-- TODO: add edit and delete button -->
-            <!-- <div>Edit | Delete</div> -->
+            <div class="flex gap-3">
+              <Edit class="h-4 w-4 cursor-pointer" @click="editItem(id, item)" />
+              <Delete class="h-4 w-4 cursor-pointer text-red-700" @click="deleteItem(id, item)" />
+            </div>
           </div>
           <p
             v-if="item.toppings.filter((t) => t.default === false).length > 0"
@@ -41,7 +47,9 @@
         <!-- TODO calculate price -->
         <p class="text-xl">€168.99</p>
       </div>
-      <button class="w-full rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">
+      <button
+        class="w-full rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+      >
         Checkout
       </button>
     </div>
@@ -50,18 +58,50 @@
 
 <script lang="ts">
 import useCart from '../../composables/useCart'
+import { Trash as Delete, Pencil as Edit } from 'lucide-vue-next'
 import { countDuplicates } from '../../bootstrap/utils'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { computed } from '@vue/reactivity'
+import { search } from 'superagent'
 
 export default {
+  components: {
+    Delete,
+    Edit,
+  },
   setup() {
-    const { cart } = useCart()
-    const { redirectedFrom } = useRoute()
+    const { cart, removeFromCart } = useCart()
+    const { push } = useRouter()
+    const route = useRoute()
+
+    const searchQuery = computed(() => route.query)
+
+    const editItem = (id: string, item: any) => {
+      push({
+        name: 'customize',
+        params: { id: item.id },
+        query: { item: id, type: searchQuery.value.type },
+      })
+    }
+
+    const deleteItem = (id: string, item: any) => {
+      const isCurrentItem = searchQuery.value.item == id
+      removeFromCart(id)
+
+      if (isCurrentItem) {
+        push({
+          path: '/overview',
+          query: { ...searchQuery.value, item: undefined },
+        })
+      }
+    }
 
     return {
       cart,
-      deliveryType: redirectedFrom?.name,
+      deliveryType: searchQuery.value.type,
 
+      editItem,
+      deleteItem,
       countDuplicates,
     }
   },
