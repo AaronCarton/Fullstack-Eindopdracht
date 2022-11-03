@@ -153,20 +153,22 @@ export default {
     }
 
     const handleToppingRemove = (t: Topping) => {
-      if (t.default) return
-      updateCartItem(`${query.item}`, (cartItem) => {
-        // filter out topping (once)
-        const index = cartItem.item.toppings.findIndex((topping) => topping.id === t.id)
-        const toppings = [...cartItem.item.toppings]
-        toppings.splice(index, 1)
-        return {
-          ...cartItem,
-          item: {
-            ...cartItem.item,
-            toppings,
-          },
-        }
-      })
+      console.log(t.default)
+
+      if (t.default === false)
+        updateCartItem(`${query.item}`, (cartItem) => {
+          // filter out topping (once)
+          const index = cartItem.item.toppings.findIndex((topping) => topping.id === t.id)
+          const toppings = [...cartItem.item.toppings]
+          toppings.splice(index, 1)
+          return {
+            ...cartItem,
+            item: {
+              ...cartItem.item,
+              toppings,
+            },
+          }
+        })
       // if (pizza.value) {
       //   pizza.value = {
       //     ...pizza.value,
