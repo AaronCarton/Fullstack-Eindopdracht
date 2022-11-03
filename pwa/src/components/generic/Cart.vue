@@ -51,12 +51,19 @@
 <script lang="ts">
 import useCart from '../../composables/useCart'
 import { countDuplicates } from '../../bootstrap/utils'
+import { useRoute } from 'vue-router'
 
 export default {
   setup() {
     const { cart } = useCart()
+    const { redirectedFrom } = useRoute()
 
-    return { cart, countDuplicates }
+    return {
+      cart,
+      deliveryType: redirectedFrom?.name,
+
+      countDuplicates,
+    }
   },
 }
 </script>
