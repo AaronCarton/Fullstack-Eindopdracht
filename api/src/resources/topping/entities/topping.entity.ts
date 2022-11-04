@@ -1,12 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql'
 import { ObjectId } from 'mongodb'
-import {
-  ObjectIdColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Entity,
-} from 'typeorm'
+import { ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, Entity } from 'typeorm'
 
 @Entity()
 @ObjectType()

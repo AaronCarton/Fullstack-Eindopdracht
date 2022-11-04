@@ -1,11 +1,5 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ObjectIdColumn,
-  UpdateDateColumn,
-} from 'typeorm'
+import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } from 'typeorm'
 import { ObjectId } from 'mongodb'
 
 export enum Role {
