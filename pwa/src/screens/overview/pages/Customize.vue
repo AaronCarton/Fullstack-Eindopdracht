@@ -14,10 +14,10 @@
         />
       </div>
       <div class="col-span-3 m-3 flex flex-col overflow-auto px-4 py-3">
-        <div class="flex flex-col">
+        <a class="mb-3 text-3xl font-bold">{{ pizza.name }}</a>
+        <div class="mt-3 mb-6 flex gap-14">
           <div>
-            <a class="mb-5 text-3xl font-bold">{{ pizza.name }}</a>
-            <h3 class="mb-6 mt-4 text-2xl font-semibold">Size</h3>
+            <h3 class="mb-6 text-2xl font-semibold">Size</h3>
 
             <ButtonGroup
               :onClick="handleSize"
@@ -26,7 +26,7 @@
               :value="orderItem.item.size"
             />
           </div>
-          <div class="my-3">
+          <div class="">
             <h3 class="mb-6 text-2xl font-semibold">Type</h3>
             <ButtonGroup
               :onClick="handleType"
@@ -40,7 +40,7 @@
           <!-- TODO add overflow to this nested div instead of full parent div -->
           <div class="my-3">
             <h3 class="mb-6 text-2xl font-semibold">Toppings</h3>
-            <div class="h-30 flex flex-col overflow-y-scroll scroll-smooth">
+            <div class="flex h-48 flex-col overflow-y-scroll scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in orderItem.item.toppings"
@@ -53,7 +53,7 @@
           </div>
           <div class="my-3">
             <h3 class="mb-6 text-2xl font-semibold">Extra Toppings</h3>
-            <div class="h-30 flex flex-col overflow-y-scroll scroll-smooth">
+            <div class="flex h-64 flex-col overflow-y-scroll scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in allToppings"
@@ -164,7 +164,7 @@ export default {
       if (t.default === false)
         updateCartItem(`${query.item}`, (cartItem) => {
           // filter out topping (once)
-          const index = cartItem.item.toppings.findIndex((topping) => topping.id === t.id)
+          const index = cartItem.item.toppings.lastIndexOf(t)
           const toppings = [...cartItem.item.toppings]
           toppings.splice(index, 1)
           return {
