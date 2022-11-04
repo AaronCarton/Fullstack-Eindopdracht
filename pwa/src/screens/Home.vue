@@ -1,6 +1,6 @@
 <template>
   <!--Background image + overlay-->
-  <div class="bg-[url(../HomeBG.jpg)] sm:bg-cover">
+  <div class="bg-[url(/HomeBG.jpg)] sm:bg-cover">
     <div class="bg-opacity-65 min-h-screen bg-black">
       <!--Link to account page-->
       <RouterLink class="group absolute right-1 m-2 flex items-center gap-4" to="/account">
@@ -61,11 +61,6 @@ export default {
   },
   setup() {
     const { user } = useAuthentication()
-    const getToken = async () => {
-      console.log(await user.value?.getIdToken())
-    }
-
-    getToken()
     return {
       user,
     }

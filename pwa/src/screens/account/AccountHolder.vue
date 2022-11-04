@@ -1,10 +1,8 @@
 <template>
-  <div class="flex min-h-screen place-items-center bg-[url(../HomeBG.jpg)]">
+  <div class="flex min-h-screen place-items-center bg-[url(/HomeBG.jpg)]">
     <div class="bg-opacity-65 absolute z-0 min-h-screen w-full bg-black" />
     <div class="container z-10 mx-auto w-full">
-      <div
-        class="divide-x-3 flex h-[30rem] divide-neutral-300 rounded-xl bg-neutral-200 shadow-md"
-      >
+      <div class="divide-x-3 flex h-[30rem] divide-neutral-300 rounded-xl bg-neutral-200 shadow-md">
         <div class="flex w-80 flex-col">
           <router-link
             to="/account/details"
@@ -70,7 +68,7 @@ export default {
     const { user, Role } = useUser()
 
     return {
-      isAdmin: true, //user.value?.role === Role.ADMIN,
+      isAdmin: user.value?.role === Role.ADMIN,
     }
   },
 }

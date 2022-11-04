@@ -77,14 +77,14 @@ export default () => {
     })
   }
 
-  const restoreUser = (): Promise<void> => {
+  const restoreUser = (): Promise<Ref<User | null> | null> => {
     return new Promise((resolve, reject) => {
       auth.onAuthStateChanged((u: User | null) => {
         if (u) {
           setUser(u)
-          resolve()
+          resolve(user)
         } else {
-          resolve()
+          resolve(null)
         }
       })
     })
