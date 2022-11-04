@@ -1,32 +1,200 @@
 <template>
-  <div class="text-neutral-100">
-    <div v-if="pizza">{{ pizza.name }}</div>
-    <div v-else>Not Found</div>
+  <div class="col-span-4 grid grid-cols-5 rounded-lg bg-neutral-100">
+    <template v-if="pizza && orderItem">
+      <div class="relative col-span-2">
+        <div
+          class="absolute flex h-10 w-10 items-center rounded-tl-lg rounded-br-lg bg-neutral-100 p-2"
+        >
+          <Back class="stroke-2.5 absolute h-7 w-7 cursor-pointer" @click="goBack()" />
+        </div>
+        <img
+          :src="`/pizzas/${pizza.name}.jpg`"
+          :alt="`image of ${pizza.name} pizza`"
+          class="h-full w-full rounded-l-lg object-cover"
+        />
+      </div>
+      <div class="col-span-3 m-3 flex flex-col overflow-auto px-4 py-3">
+        <a class="mb-3 text-3xl font-bold">{{ pizza.name }}</a>
+        <div class="mt-3 mb-6 flex gap-14">
+          <div>
+            <h3 class="mb-6 text-2xl font-semibold">Size</h3>
+
+            <ButtonGroup
+              :onClick="handleSize"
+              :group="'size'"
+              :names="Object.values(PizzaSize)"
+              :value="orderItem.item.size"
+            />
+          </div>
+          <div class="">
+            <h3 class="mb-6 text-2xl font-semibold">Type</h3>
+            <ButtonGroup
+              :onClick="handleType"
+              :group="'type'"
+              :names="Object.values(PizzaType)"
+              :value="orderItem.item.type"
+            />
+          </div>
+        </div>
+        <div class="">
+          <!-- TODO add overflow to this nested div instead of full parent div -->
+          <div class="my-3">
+            <h3 class="mb-6 text-2xl font-semibold">Toppings</h3>
+            <div class="flex h-48 flex-col overflow-y-scroll scroll-smooth">
+              <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
+              <ToppingItem
+                v-for="topping in orderItem.item.toppings"
+                :key="topping.id"
+                :topping="topping"
+                :onClick="handleToppingRemove"
+                :type="'remove'"
+              />
+            </div>
+          </div>
+          <div class="my-3">
+            <h3 class="mb-6 text-2xl font-semibold">Extra Toppings</h3>
+            <div class="flex h-64 flex-col overflow-y-scroll scroll-smooth">
+              <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
+              <ToppingItem
+                v-for="topping in allToppings"
+                :key="topping.id"
+                :topping="topping"
+                :onClick="handleToppingAdd"
+                :type="'add'"
+              />
+            </div>
+          </div>
+        </div>
+        <button
+          @click="goBack()"
+          class="mx-auto mt-auto mb-2 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </template>
+    <template v-else>Not Found</template>
   </div>
 </template>
 
 <script lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, Ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
+import { ArrowLeft as Back, X as Remove } from 'lucide-vue-next'
+
+import useCart from '../../../composables/useCart'
+import ButtonGroup from '../components/ButtonGroup.vue'
+import ToppingItem from '../components/ToppingItem.vue'
 
 import { PIZZA } from '../../../graphql/query.pizza'
-import Pizza from '../../../interfaces/pizza.interface'
+import Pizza, { PizzaSize, PizzaType } from '../../../interfaces/pizza.interface'
+import { TOPPINGS } from '../../../graphql/query.topping'
+import Topping from '../../../interfaces/topping.interface'
 
 export default {
+  components: {
+    Remove,
+    Back,
+    ButtonGroup,
+    ToppingItem,
+  },
   setup() {
-    const { params } = useRoute()
-    const { result, loading, error } = useQuery(PIZZA, {
+    const pizza: Ref<Pizza | undefined> = ref()
+    const { findItem, updateCartItem } = useCart()
+    const { push } = useRouter()
+    const { params, query } = useRoute()
+    const { result: tRes } = useQuery(TOPPINGS)
+    const { result: pRes } = useQuery(PIZZA, {
       id: params.id,
     })
-    const pizza = computed(() => (result.value?.pizza as Pizza) ?? undefined)
+
+    const allToppings = computed(() => (tRes.value?.toppings as Topping[]) ?? [])
+    const orderItem = computed(() => findItem(`${query.item}`))
+
+    watch(pRes, (res) => {
+      pizza.value = res.pizza as Pizza
+    })
+
+    const goBack = () => {
+      push({ path: '/overview', query: { type: query.type } })
+    }
+
+    const handleSize = (size: PizzaSize) => {
+      updateCartItem(`${query.item}`, (cartItem) => ({
+        ...cartItem,
+        item: {
+          ...cartItem.item,
+          size,
+        },
+      }))
+    }
+
+    const handleType = (type: PizzaType) => {
+      updateCartItem(`${query.item}`, (cartItem) => ({
+        ...cartItem,
+        item: {
+          ...cartItem.item,
+          type,
+        },
+      }))
+    }
+
+    const handleToppingAdd = (t: Topping) => {
+      const topping = { ...t, default: false }
+      updateCartItem(`${query.item}`, (cartItem) => ({
+        ...cartItem,
+        item: {
+          ...cartItem.item,
+          toppings: [...cartItem.item.toppings, topping],
+        },
+      }))
+      if (pizza.value) {
+        pizza.value = {
+          ...pizza.value,
+          toppings: [...pizza.value.toppings, topping],
+        }
+        console.log(pizza.value)
+      }
+    }
+
+    const handleToppingRemove = (t: Topping) => {
+      console.log(t.default)
+
+      if (t.default === false)
+        updateCartItem(`${query.item}`, (cartItem) => {
+          // filter out topping (once)
+          const index = cartItem.item.toppings.lastIndexOf(t)
+          const toppings = [...cartItem.item.toppings]
+          toppings.splice(index, 1)
+          return {
+            ...cartItem,
+            item: {
+              ...cartItem.item,
+              toppings,
+            },
+          }
+        })
+      // if (pizza.value) {
+      //   pizza.value = {
+      //     ...pizza.value,
+      //     toppings: pizza.value.toppings.filter((topping) => topping.id !== t.id),
+      //   }
+      // }
+    }
 
     return {
       pizza,
+      orderItem,
+      allToppings,
+      PizzaSize,
+      PizzaType,
 
-      result,
-      loading,
-      error,
+      goBack,
+      handleSize,
+      handleType,
+      handleToppingAdd,
+      handleToppingRemove,
     }
   },
 }

@@ -30,22 +30,25 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: 'leveren',
-        component: () => import('../screens/overview/pages/Leveren.vue'),
-        meta: {
-          needsAuthentication: true,
-        },
+        name: 'delivery',
+        path: 'delivery',
+        redirect: { path: 'overview', query: { type: 'delivery' } },
       },
       {
+        name: 'takeaway',
         path: 'takeaway',
-        redirect: '/takeaway/overview',
+        redirect: { path: 'overview', query: { type: 'takeaway' } },
+      },
+      {
+        path: '/overview',
         component: () => import('../screens/overview/OverviewHolder.vue'),
         children: [
           {
-            path: 'overview',
+            path: '',
             component: () => import('../screens/overview/pages/Overview.vue'),
           },
           {
+            name: 'customize',
             path: 'customize/:id',
             component: () => import('../screens/overview/pages/Customize.vue'),
           },
