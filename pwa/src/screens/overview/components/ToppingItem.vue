@@ -5,7 +5,8 @@
   >
     <div class="flex items-center gap-3">
       <img :src="`/toppings/${topping.name}.png`" alt="" class="h-6 w-6" />
-      <a class="font-semibold">{{ topping.name }}</a>
+      <a class="text-md font-semibold">{{ topping.name }}</a>
+      <p class="text-sm font-semibold text-neutral-400">€{{ topping.price }}</p>
     </div>
     <div v-if="type === 'add'">
       <add class="h-6 w-6 fill-neutral-900" />

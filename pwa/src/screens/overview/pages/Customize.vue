@@ -1,9 +1,9 @@
 <template>
-  <div class="col-span-4 grid grid-cols-5 rounded-lg bg-neutral-100">
+  <div class="col-span-4 grid grid-cols-5 rounded-lg bg-neutral-50">
     <template v-if="pizza && orderItem">
       <div class="relative col-span-2">
         <div
-          class="absolute flex h-10 w-10 items-center rounded-tl-lg rounded-br-lg bg-neutral-100 p-2"
+          class="absolute flex h-10 w-10 items-center rounded-tl-lg rounded-br-lg bg-neutral-50 p-2"
         >
           <Back class="stroke-2.5 absolute h-7 w-7 cursor-pointer" @click="goBack()" />
         </div>
@@ -40,7 +40,7 @@
           <!-- TODO add overflow to this nested div instead of full parent div -->
           <div class="my-3">
             <h3 class="mb-6 text-2xl font-semibold">Toppings</h3>
-            <div class="flex h-48 flex-col overflow-y-scroll scroll-smooth">
+            <div class="flex h-48 flex-col overflow-y-auto scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in orderItem.item.toppings"
@@ -53,7 +53,7 @@
           </div>
           <div class="my-3">
             <h3 class="mb-6 text-2xl font-semibold">Extra Toppings</h3>
-            <div class="flex h-64 flex-col overflow-y-scroll scroll-smooth">
+            <div class="flex h-48 flex-col overflow-y-auto scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in allToppings"
@@ -67,7 +67,7 @@
         </div>
         <button
           @click="goBack()"
-          class="mx-auto mt-auto mb-2 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+          class="mx-auto mt-auto mb-2 w-3/5 rounded-lg bg-red-700 px-6 py-2 text-lg font-bold text-neutral-50 active:bg-red-800"
         >
           Add to Cart
         </button>

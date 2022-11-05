@@ -1,51 +1,60 @@
 <template>
-  <div class="hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 lg:flex">
+  <div class="hidden flex-col justify-between rounded-lg bg-neutral-50 lg:flex">
     <div class="">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between rounded-t-lg bg-neutral-200 p-3">
         <h2 class="text-2xl font-semibold">Order</h2>
         <a class="font-medium capitalize">{{ deliveryType }}</a>
       </div>
-      <div v-for="{ id, item } in cart" class="w-full py-4 px-2">
-        <div class="flex items-center justify-between">
-          <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
-          <!-- TODO calculate price -->
-          <p class="self-end justify-self-end text-xl">€168.99</p>
-        </div>
-        <div>
-          <div class="flex justify-between">
-            <p
-              class="whitespace-nowrap align-middle text-sm font-medium capitalize text-neutral-400"
-            >
-              {{ item.size }} {{ item.type }}
-            </p>
-            <!-- TODO: add edit and delete button -->
-            <div class="flex gap-3">
-              <Edit class="h-4 w-4 cursor-pointer" @click="editItem(id, item)" />
-              <Delete class="h-4 w-4 cursor-pointer text-red-700" @click="deleteItem(id, item)" />
-            </div>
+      <div v-if="!cartEmpty" class="p-3">
+        <div
+          v-for="{ id, item } in cart"
+          class="w-full overflow-y-auto rounded-lg bg-neutral-100 py-4 px-3 shadow-md"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
+            <!-- TODO calculate price -->
+            <p class="self-end justify-self-end text-xl">€{{ priceItem(item) }}</p>
           </div>
-          <p
-            v-if="item.toppings.filter((t) => t.default === false).length > 0"
-            class="align-middle text-sm font-medium text-neutral-400"
-          >
-            <span class="align-baseline text-xl leading-none text-green-500">+</span>
-            {{
-              // filter out the base topping, map the names, and count the duplicates
-              countDuplicates(item.toppings.filter((t) => t.default === false).map((t) => t.name))
-                // map  [ [ "Olive", 3 ], [ "Spicy meat", 2 ], [ "Mushroom", 1 ] ]
-                // to "3x Olive, 2x Spicy meat, Mushroom"
-                .map((t) => (t[1] > 1 ? `${t[1]}x ${t[0]}` : t[0]))
-                .join(', ')
-            }}
-          </p>
+          <div>
+            <div class="flex justify-between">
+              <p
+                class="whitespace-nowrap align-middle text-sm font-medium capitalize text-neutral-400"
+              >
+                {{ item.size }} {{ item.type }}
+              </p>
+              <!-- TODO: add edit and delete button -->
+              <div class="flex gap-3">
+                <Edit class="h-4 w-4 cursor-pointer" @click="editItem(id, item)" />
+                <Delete class="h-4 w-4 cursor-pointer text-red-700" @click="deleteItem(id, item)" />
+              </div>
+            </div>
+            <p
+              v-if="item.toppings.filter((t) => t.default === false).length > 0"
+              class="align-middle text-sm font-medium text-neutral-400"
+            >
+              <span class="align-baseline text-xl leading-none text-green-500">+</span>
+              {{
+                // filter out the base topping, map the names, and count the duplicates
+                countDuplicates(item.toppings.filter((t) => t.default === false).map((t) => t.name))
+                  // map  [ [ "Olive", 3 ], [ "Spicy meat", 2 ], [ "Mushroom", 1 ] ]
+                  // to "3x Olive, 2x Spicy meat, Mushroom"
+                  .map((t) => (t[1] > 1 ? `${t[1]}x ${t[0]}` : t[0]))
+                  .join(', ')
+              }}
+            </p>
+          </div>
         </div>
       </div>
+      <div v-else class="flex h-40 flex-col items-center justify-center">
+        <p class="text-xl font-semibold">Your cart is empty</p>
+        <p class="text-sm font-medium text-neutral-400">Add some items to your cart</p>
+      </div>
     </div>
-    <div class="flex flex-col justify-end">
+    <div class="flex flex-col justify-end p-3">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
-        <p class="text-xl">€168.99</p>
+        <p class="text-xl">€{{ totalPrice() }}</p>
       </div>
       <button
         class="w-full rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
@@ -73,6 +82,7 @@ export default {
     const { cart, removeFromCart } = useCart()
     const { push } = useRouter()
     const route = useRoute()
+    const cartEmpty = computed(() => Object.keys(cart.value).length === 0)
 
     // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
@@ -83,6 +93,15 @@ export default {
         params: { id: item.id },
         query: { item: id, type: searchQuery.value.type },
       })
+    }
+
+    const priceItem = (item: any) => {
+      //@ts-ignore
+      return (item.basePrice + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
+    }
+
+    const totalPrice = () => {
+      return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
     }
 
     const deleteItem = (id: string, item: any) => {
@@ -101,10 +120,13 @@ export default {
     return {
       cart,
       deliveryType: searchQuery.value.type,
+      cartEmpty,
 
       editItem,
       deleteItem,
       countDuplicates,
+      priceItem,
+      totalPrice,
     }
   },
 }
