@@ -64,7 +64,7 @@ export class OrderResolver {
 
   //////* DELIVERER ROUTES ///////
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.DELIVERER]))
+  @UseGuards(FirebaseGuard, RolesGuard([Role.DRIVER]))
   @Mutation(() => Order)
   async updateOrder(
     @Args('id', { type: () => String }) id: string,

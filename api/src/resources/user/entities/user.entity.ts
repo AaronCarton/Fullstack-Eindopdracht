@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb'
 
 export enum Role {
   USER = 'USER',
-  DELIVERER = 'DELIVERER',
+  DRIVER = 'DRIVER',
   ADMIN = 'ADMIN',
 }
 registerEnumType(Role, { name: 'Role' })
