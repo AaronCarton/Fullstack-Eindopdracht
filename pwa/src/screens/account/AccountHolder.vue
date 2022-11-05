@@ -20,6 +20,16 @@
             <History class="mr-2 h-6 w-6" />
             <p class="align-middle">Previous Orders</p>
           </router-link>
+          <template v-if="isDriver || isAdmin">
+            <router-link
+              to="/account/driver/deliver-order"
+              class="flex content-center items-center rounded-tl-xl border-b-2 border-neutral-300 py-4 px-10 align-middle font-medium hover:bg-neutral-300"
+              active-class="bg-neutral-300"
+            >
+              <Bike class="mr-2 h-6 w-6" />
+              <p class="align-middle">Deliver Order</p>
+            </router-link>
+          </template>
           <template v-if="isAdmin">
             <router-link
               to="/account/admin/manage-users"
@@ -57,9 +67,10 @@
 
 <script lang="ts">
 import useUser from '../../composables/useUser'
-import { User, History, Settings } from 'lucide-vue-next'
+import { User, History, Settings, Bike } from 'lucide-vue-next'
 export default {
   components: {
+    Bike,
     User,
     History,
     Settings,
@@ -69,6 +80,7 @@ export default {
 
     return {
       isAdmin: user.value?.role === Role.ADMIN,
+      isDriver: user.value?.role === Role.DRIVER,
     }
   },
 }
