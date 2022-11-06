@@ -60,7 +60,7 @@ export default () => {
       return
     }
 
-    socketServer.value = io('ws://[::1]:3003', {
+    socketServer.value = io('ws://[::1]:3006', {
       transports: ['websocket'], // polling is default, can give cors errors
     })
 

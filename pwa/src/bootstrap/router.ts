@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: 'order',
+        path: 'order/:id',
         component: () => import('../screens/order/index.vue'),
         meta: {
           needsAuthentication: true,
