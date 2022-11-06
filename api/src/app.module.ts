@@ -6,6 +6,7 @@ import { OrderModule } from './resources/order/order.module'
 import { DatabaseSeedModule } from './seed/seed.module'
 import { UserModule } from './resources/user/user.module'
 import { AuthModule } from './auth/auth.module'
+import { NotificationsModule } from './notifications/notifications.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from './auth/auth.module'
     PizzaModule,
     OrderModule,
     UserModule,
+    NotificationsModule,
     DatabaseSeedModule,
     AuthModule,
   ],
