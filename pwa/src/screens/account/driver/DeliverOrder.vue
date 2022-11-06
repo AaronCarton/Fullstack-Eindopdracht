@@ -26,6 +26,10 @@
         </select>
       </div>
     </div>
+    <MapView
+      class="h-72 w-full rounded-md"
+      :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
+    />
   </div>
 </template>
 
@@ -33,8 +37,12 @@
 import { useQuery } from '@vue/apollo-composable'
 import { ref } from 'vue'
 import useTracking from '../../../composables/useTracking'
+import MapView from '../../../components/generic/MapView.vue'
 
 export default {
+  components: {
+    MapView,
+  },
   setup() {
     const { connectToServer, connected, trackOrder } = useTracking()
     const tracking = ref(false)
