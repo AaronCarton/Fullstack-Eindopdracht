@@ -8,7 +8,7 @@
       <div v-if="!cartEmpty" class="p-3">
         <div
           v-for="{ id, item } in cart"
-          class="w-full overflow-y-auto rounded-lg bg-neutral-100 py-4 px-3 shadow-md"
+          class="w-full overflow-y-auto rounded-lg bg-neutral-200 py-4 px-3"
         >
           <div class="flex items-center justify-between">
             <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
@@ -96,8 +96,12 @@ export default {
     }
 
     const priceItem = (item: any) => {
+      let price = item.basePrice
+
+      if (item.size === 'small') price -= 3
+      else if (item.size === 'large') price += 3
       //@ts-ignore
-      return (item.basePrice + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
+      return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
     }
 
     const totalPrice = () => {
