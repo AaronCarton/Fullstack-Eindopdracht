@@ -57,9 +57,12 @@ export class OrderResolver {
     return this.orderService.findOrdersByUser(user.uid)
   }
 
+  @UseGuards(FirebaseGuard)
   @Query(() => Order, { name: 'order' })
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.orderService.findOne(id)
+  async findOne(@CurrentUser() user: UserRecord, @Args('id', { type: () => String }) id: string) {
+    const order = await this.orderService.findOne(id)
+    if (order.customerId === user.uid) return order
+    else throw new Error('UNAUTHORIZED_ACCESS')
   }
 
   //////* DELIVERER ROUTES ///////
@@ -72,6 +75,12 @@ export class OrderResolver {
   ) {
     await this.orderService.update(id, updateOrderInput)
     return this.orderService.findOne(id)
+  }
+
+  @UseGuards(FirebaseGuard, RolesGuard([Role.DRIVER]))
+  @Query(() => [Order])
+  findActiveOrders() {
+    return this.orderService.findActiveOrders()
   }
 
   //////* ADMIN ROUTES ///////

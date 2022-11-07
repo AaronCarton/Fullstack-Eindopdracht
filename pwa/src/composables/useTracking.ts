@@ -11,17 +11,15 @@ export default () => {
   const { startTracking } = useGeolocation()
   const { user } = useUser()
 
-  const trackOrder = (orderId: string) => {
-    if (!connected) connectToServer()
-
-    socketServer.value?.on(`order:track/${orderId}`, (location: LiveLocation) => {
-      console.log('location', location)
-    })
+  const trackOrder = (orderId: string, cb: (location: any) => void) => {
+    if (!socketServer.value) connectToServer()
+    socketServer.value!.on(`order:track`, cb)
   }
 
   const trackDriver = (orderId: string) => {
     startTracking((p: GeolocationPosition) => {
       const payload: LiveLocation = {
+        orderId,
         driverId: user.value!.uid,
         driverName: user.value!.displayName || 'The Driver',
         geolocation: {
@@ -29,8 +27,9 @@ export default () => {
           coordinates: [p.coords.longitude, p.coords.latitude],
         },
       }
-
-      socketServer.value!.emit(`order:track/${orderId}`, payload)
+      console.log('Sending location', payload)
+      // TODO: find way to put ID in name
+      socketServer.value!.emit(`order:track`, payload)
     })
   }
 
@@ -71,6 +70,7 @@ export default () => {
 
   return {
     connected,
+    socketServer,
 
     trackOrder,
     trackDriver,

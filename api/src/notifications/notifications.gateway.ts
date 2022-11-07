@@ -21,6 +21,11 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     return 'Hello world!'
   }
 
+  @SubscribeMessage('order:track')
+  handleOrderTracking(client: any, payload: any) {
+    this.server.emit('order:track', payload)
+  }
+
   handleDisconnect(client: any) {
     //throw new Error('Method not implemented.')
     this.numberOfClients--
