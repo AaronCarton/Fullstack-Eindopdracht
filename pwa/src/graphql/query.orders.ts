@@ -21,3 +21,39 @@ export const GET_OWN_ORDERS = gql`
     }
   }
 `
+export const GET_ACTIVE_ORDERS = gql`
+  query {
+    findActiveOrders {
+      id
+      status
+      createdAt
+      items {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const GET_ORDER = gql`
+  query order($id: String!) {
+    order(id: $id) {
+      id
+      status
+      items {
+        id
+        name
+        size
+        type
+        basePrice
+        toppings {
+          id
+          name
+          default
+          price
+        }
+      }
+      createdAt
+    }
+  }
+`

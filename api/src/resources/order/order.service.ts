@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 import { ObjectId } from 'mongodb'
 import { CreateOrderInput } from './dto/create-order.input'
 import { UpdateOrderInput } from './dto/update-order.input'
-import { Order } from './entities/order.entity'
+import { Order, OrderStatus } from './entities/order.entity'
 
 @Injectable()
 export class OrderService {
@@ -27,6 +27,10 @@ export class OrderService {
 
   async findOrdersByUser(uid: string) {
     return this.orderRepo.findBy({ customerId: uid })
+  }
+
+  async findActiveOrders() {
+    return this.orderRepo.find({ where: { status: OrderStatus.cooking } })
   }
 
   async update(id: string, updateOrderInput: UpdateOrderInput) {
