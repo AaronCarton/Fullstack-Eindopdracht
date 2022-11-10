@@ -16,10 +16,11 @@ const { loadUser } = useUser()
 
 ;(async function () {
   await restoreUser().then(async (fUser) => {
-    await loadUser().then(async (user) => {
-      console.log('Firebase token', await fUser?.value?.getIdToken())
-      console.log('User', user.value)
-    })
+    if (fUser)
+      await loadUser().then(async (user) => {
+        console.log('Firebase token', await fUser?.value?.getIdToken())
+        console.log('User', user.value)
+      })
   })
 
   app.use(router)
