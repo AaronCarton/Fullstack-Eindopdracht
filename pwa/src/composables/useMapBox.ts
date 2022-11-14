@@ -40,15 +40,14 @@ export default (props: MapProps) => {
   }
 
   const createMap = (htmlRef: HTMLElement): Map => {
-    console.log('dsdsdsd')
     console.log(props.mapCoordinates)
 
     map.value = new Map({
       container: htmlRef,
       style: style.value,
       center: props.mapCoordinates,
-      zoom: defaultZoom.value,
-      projection: { name: 'globe' },
+      zoom: 13,
+      projection: { name: 'mercator' },
     })
 
     _setupDefaultSettings()
