@@ -45,6 +45,7 @@
     <MapView
       class="h-80 w-full rounded-md"
       :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
+      :markers="[driverPos]"
     />
   </div>
 </template>
@@ -58,6 +59,7 @@ import { computed } from '@vue/reactivity'
 import { GET_ACTIVE_ORDERS } from '../../../graphql/query.orders'
 import Order from '../../../interfaces/order.interface'
 import { useToast } from 'vue-toastification'
+import { LngLatLike } from 'mapbox-gl'
 
 export default {
   components: {
@@ -66,9 +68,10 @@ export default {
   setup() {
     const tracking = ref(false)
     const toast = useToast()
+    const driverPos = ref<LngLatLike>([3.3232699, 50.8425729])
     const selectedOrder = ref<String | null>(null)
     const { result, loading, error } = useQuery(GET_ACTIVE_ORDERS)
-    const { connectToServer, disconnectFromServer, connected, trackDriver } = useTracking()
+    const { connectToServer, disconnectFromServer, trackOrder, trackDriver } = useTracking()
 
     const orders = computed(() => (result.value?.findActiveOrders as Order[]) ?? [])
     watch(orders, (val) => console.log(val))
@@ -78,6 +81,9 @@ export default {
         if (selectedOrder.value) {
           connectToServer()
           trackDriver(selectedOrder.value.toString())
+          trackOrder(selectedOrder.value.toString(), (location) => {
+            driverPos.value = location.geolocation.coordinates as LngLatLike
+          })
         } else {
           tracking.value = false
           toast.error('Select an order first!', {
@@ -100,6 +106,7 @@ export default {
       orders,
       tracking,
       selectedOrder,
+      driverPos,
     }
   },
 }
