@@ -11,7 +11,7 @@ export default () => {
   const { startTracking } = useGeolocation()
   const { user } = useUser()
 
-  const trackOrder = (orderId: string, cb: (location: any) => void) => {
+  const trackOrder = (orderId: string, cb: (location: LiveLocation) => void) => {
     if (!socketServer.value) connectToServer()
     socketServer.value!.on(`order:track`, cb)
   }

@@ -6,7 +6,7 @@ export default (props: MapProps) => {
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
   const map: Ref<Map> = ref({} as Map)
-  const selectedMarker: Ref<Marker | undefined> = ref()
+  const markers: Ref<Marker[]> = ref([])
 
   const style: Ref<string> = ref('mapbox://styles/mapbox/streets-v11')
   const defaultZoom: Ref<number> = ref(1)
@@ -21,6 +21,8 @@ export default (props: MapProps) => {
 
   const removeMapData = () => {
     return new Promise<void>((resolve) => {
+      markers.value.forEach((marker) => marker.remove())
+      markers.value = []
       addedSources.value.map((source) => {
         if (map.value.getLayer(source)) map.value.removeLayer(source)
         if (map.value.getSource(source)) map.value.removeSource(source)
@@ -35,7 +37,8 @@ export default (props: MapProps) => {
     if (props.markers && props.markers.length < 1) return
 
     for (const marker of props.markers!) {
-      new mapboxgl.Marker().setLngLat(marker).addTo(map.value)
+      const m = new mapboxgl.Marker().setLngLat(marker).addTo(map.value)
+      markers.value.push(m)
     }
   }
 

@@ -36,14 +36,16 @@ export default {
 
       // This can help.
       map.on('load', () => {
-        // renderMarkerIfAny()
+        renderMarkerIfAny()
       })
 
       // When props change, update the map data each time
-      // watch(props, async () => {
-      //   await removeMapData()
-      //   renderMarkerIfAny()
-      // })
+      watch(props, async () => {
+        console.log('Map props changed')
+
+        await removeMapData()
+        renderMarkerIfAny()
+      })
     })
 
     return {
