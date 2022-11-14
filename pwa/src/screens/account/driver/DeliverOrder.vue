@@ -1,24 +1,7 @@
 <template>
+  <Toast message="Select an order first" type="error" />
   <div class="p-5">
     <div class="flex gap-10">
-      <div>
-        <p class="mb-5 text-xl font-medium">Start tracking</p>
-        <div class="relative">
-          <input
-            type="checkbox"
-            id="tracking"
-            class="peer hidden"
-            v-model="tracking"
-            :disabled="selectedOrder === null"
-          />
-          <label
-            for="tracking"
-            class="z-20 block cursor-pointer select-none rounded-lg bg-red-600 py-1 px-3 font-semibold text-neutral-50 peer-checked:bg-green-600 peer-disabled:cursor-not-allowed peer-disabled:bg-gray-400"
-          >
-            <span> Tracking {{ tracking ? 'enabled' : 'disabled' }} </span>
-          </label>
-        </div>
-      </div>
       <div>
         <p class="mb-5 text-xl font-medium">Select Order</p>
         <select
@@ -33,9 +16,34 @@
           </option>
         </select>
       </div>
+      <div>
+        <div class="group flex gap-5">
+          <div>
+            <input
+              type="checkbox"
+              id="tracking"
+              class="peer hidden"
+              v-model="tracking"
+              :disabled="selectedOrder === null"
+            />
+            <label
+              for="tracking"
+              class="block cursor-pointer select-none rounded-lg bg-green-600 py-1 px-3 font-semibold text-neutral-50 peer-checked:bg-red-700 peer-disabled:cursor-not-allowed peer-disabled:bg-gray-400 peer-disabled:text-gray-300"
+            >
+              <span> {{ tracking ? 'Stop delivery' : 'Start delivery' }} </span>
+            </label>
+          </div>
+          <button
+            :disabled="!tracking"
+            class="block cursor-pointer select-none rounded-lg bg-green-600 py-1 px-3 font-semibold text-neutral-50 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-300"
+          >
+            Complete delivery
+          </button>
+        </div>
+      </div>
     </div>
     <MapView
-      class="h-72 w-full rounded-md"
+      class="h-80 w-full rounded-md"
       :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
     />
   </div>
@@ -49,9 +57,11 @@ import MapView from '../../../components/generic/MapView.vue'
 import { computed } from '@vue/reactivity'
 import { GET_ACTIVE_ORDERS } from '../../../graphql/query.orders'
 import Order from '../../../interfaces/order.interface'
+import Toast from '../../../components/generic/Toast.vue'
 
 export default {
   components: {
+    Toast,
     MapView,
   },
   setup() {
