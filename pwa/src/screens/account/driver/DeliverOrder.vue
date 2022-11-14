@@ -1,5 +1,4 @@
 <template>
-  <Toast message="Select an order first" type="error" />
   <div class="p-5">
     <div class="flex gap-10">
       <div>
@@ -28,6 +27,7 @@
             />
             <label
               for="tracking"
+              @click="selectedOrder === null ? toast.error('Select an order first!') : null"
               class="block cursor-pointer select-none rounded-lg bg-green-600 py-1 px-3 font-semibold text-neutral-50 peer-checked:bg-red-700 peer-disabled:cursor-not-allowed peer-disabled:bg-gray-400 peer-disabled:text-gray-300"
             >
               <span> {{ tracking ? 'Stop delivery' : 'Start delivery' }} </span>
@@ -57,15 +57,15 @@ import MapView from '../../../components/generic/MapView.vue'
 import { computed } from '@vue/reactivity'
 import { GET_ACTIVE_ORDERS } from '../../../graphql/query.orders'
 import Order from '../../../interfaces/order.interface'
-import Toast from '../../../components/generic/Toast.vue'
+import { useToast } from 'vue-toastification'
 
 export default {
   components: {
-    Toast,
     MapView,
   },
   setup() {
     const tracking = ref(false)
+    const toast = useToast()
     const selectedOrder = ref<String | null>(null)
     const { result, loading, error } = useQuery(GET_ACTIVE_ORDERS)
     const { connectToServer, disconnectFromServer, connected, trackDriver } = useTracking()
@@ -80,7 +80,9 @@ export default {
           trackDriver(selectedOrder.value.toString())
         } else {
           tracking.value = false
-          alert('Please select an order')
+          toast.error('Select an order first!', {
+            timeout: 5000,
+          })
         }
       } else {
         disconnectFromServer()
@@ -94,6 +96,7 @@ export default {
     })
 
     return {
+      toast,
       orders,
       tracking,
       selectedOrder,
