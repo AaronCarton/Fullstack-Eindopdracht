@@ -7,7 +7,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 import { LngLatLike } from 'mapbox-gl'
 import { onMounted, Ref, ref, watch } from 'vue'
-import { Polygon } from 'geojson'
 
 import useMapbox from '../../composables/useMapbox'
 
@@ -41,10 +40,10 @@ export default {
       })
 
       // When props change, update the map data each time
-      watch(props, async () => {
-        await removeMapData()
-        renderMarkerIfAny()
-      })
+      // watch(props, async () => {
+      //   await removeMapData()
+      //   renderMarkerIfAny()
+      // })
     })
 
     return {

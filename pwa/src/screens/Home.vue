@@ -3,7 +3,7 @@
   <div class="bg-[url(/HomeBG.jpg)] sm:bg-cover">
     <div class="bg-opacity-65 min-h-screen bg-black">
       <!--Link to account page-->
-      <RouterLink class="group absolute right-1 m-2 flex items-center gap-4" to="/account">
+      <RouterLink class="group absolute right-1 m-5 flex items-center gap-4" to="/account">
         <p
           v-if="user"
           class="duration-250 font-semibold text-neutral-50 opacity-80 transition-all ease-out group-hover:opacity-100"
