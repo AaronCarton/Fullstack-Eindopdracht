@@ -10,6 +10,8 @@ import App from './App.vue'
 import router from './bootstrap/router'
 import useAuthentication from './composables/useAuthentication'
 import useUser from './composables/useUser'
+import Toast, { PluginOptions } from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 
 import Toast, { PluginOptions } from 'vue-toastification'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
