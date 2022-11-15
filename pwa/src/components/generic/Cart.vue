@@ -41,17 +41,18 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-end">
+    <div class="flex flex-col justify-end" v-show="$route.name !== 'overview/payment'">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
         <p class="text-xl">€{{ totalPrice() }}</p>
       </div>
-      <button
-        class="w-full rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+      <RouterLink
+        class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+        to="overview/payment"
       >
         Checkout
-      </button>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -74,8 +75,12 @@ export default {
     const { push } = useRouter()
     const route = useRoute()
 
+    console.log(route)
+
     // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
+
+    const isNotPayment = computed(() => route.name != 'overview/payment')
 
     const editItem = (id: string, item: any) => {
       push({
@@ -114,6 +119,7 @@ export default {
     return {
       cart,
       deliveryType: searchQuery.value.type,
+      isNotPayment,
 
       editItem,
       deleteItem,
