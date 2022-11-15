@@ -52,6 +52,10 @@ const routes: RouteRecordRaw[] = [
             path: 'customize/:id',
             component: () => import('../screens/overview/pages/Customize.vue'),
           },
+          {
+            path: 'payment',
+            component: () => import('../screens/payment/index.vue'),
+          },
         ],
         meta: {
           needsAuthentication: true,
@@ -61,14 +65,6 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'owner',
         component: () => import('../screens/owner/index.vue'),
-        meta: {
-          needsAuthentication: true,
-        },
-      },
-
-      {
-        path: 'payment',
-        component: () => import('../screens/payment/index.vue'),
         meta: {
           needsAuthentication: true,
         },
