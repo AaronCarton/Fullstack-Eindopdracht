@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between">
           <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
           <!-- TODO calculate price -->
-          <p class="self-end justify-self-end text-xl">€168.99</p>
+          <p class="self-end justify-self-end text-xl">{{ item.basePrice }}</p>
         </div>
         <div>
           <div class="flex justify-between">
@@ -45,7 +45,7 @@
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
-        <p class="text-xl">€168.99</p>
+        <p class="text-xl">€{{ totalPrice() }}</p>
       </div>
       <button
         class="w-full rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
@@ -85,6 +85,19 @@ export default {
       })
     }
 
+    const priceItem = (item: any) => {
+      let price = item.basePrice
+
+      if (item.size === 'small') price -= 3
+      else if (item.size === 'large') price += 3
+      //@ts-ignore
+      return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
+    }
+
+    const totalPrice = () => {
+      return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
+    }
+
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
       removeFromCart(id)
@@ -105,6 +118,8 @@ export default {
       editItem,
       deleteItem,
       countDuplicates,
+      totalPrice,
+      priceItem,
     }
   },
 }
