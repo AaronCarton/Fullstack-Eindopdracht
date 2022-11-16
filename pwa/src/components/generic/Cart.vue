@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between">
           <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
           <!-- TODO calculate price -->
-          <p class="self-end justify-self-end text-xl">{{ item.basePrice }}</p>
+          <p class="self-end justify-self-end text-xl">€{{ priceItem(item) }}</p>
         </div>
         <div>
           <div class="flex justify-between">
@@ -45,7 +45,7 @@
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
-        <p class="text-xl">€{{ totalPrice() }}</p>
+        <p class="text-xl">€{{ getCartTotal() }}</p>
       </div>
       <RouterLink
         class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
@@ -71,7 +71,7 @@ export default {
     Edit,
   },
   setup() {
-    const { cart, removeFromCart } = useCart()
+    const { cart, removeFromCart, getCartTotal, getCartItemPrice } = useCart()
     const { push } = useRouter()
     const route = useRoute()
 
@@ -99,9 +99,9 @@ export default {
       return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
     }
 
-    const totalPrice = () => {
-      return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
-    }
+    // const totalPrice = () => {
+    //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
+    // }
 
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
@@ -124,7 +124,8 @@ export default {
       editItem,
       deleteItem,
       countDuplicates,
-      totalPrice,
+      getCartTotal,
+      getCartItemPrice,
       priceItem,
     }
   },
