@@ -1,4 +1,4 @@
-import { Ref, ref, watch } from 'vue'
+import { computed, Ref, ref, watch } from 'vue'
 import CartItem from '../interfaces/cartItem.interface'
 import Pizza, { PizzaSize, PizzaType } from '../interfaces/pizza.interface'
 
@@ -41,6 +41,20 @@ export default () => {
   })
   console.log(cart.value)
 
+  // return price of pizza plus toppings
+  const getCartItemPrice = (cartItem: CartItem) => {
+    const { item } = cartItem
+    const { basePrice, toppings } = item
+    const toppingsPrice = toppings.reduce((acc, topping) => acc + topping.price, 0)
+    return basePrice + toppingsPrice
+  }
+
+  // return total price of all items in cart
+
+  const getCartTotal = () => {
+    return cart.value.reduce((acc, item) => acc + getCartItemPrice(item), 0).toFixed(2)
+  }
+
   return {
     cart,
 
@@ -49,5 +63,7 @@ export default () => {
     updateCartItem,
     removeFromCart,
     clearCart,
+    getCartItemPrice,
+    getCartTotal,
   }
 }
