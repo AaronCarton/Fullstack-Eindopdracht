@@ -144,6 +144,10 @@
     <div class="bottom-0 col-span-1 flex items-end justify-center">
       <button class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">Pay</button>
     </div>
+    <!--Payment button-->
+    <div class="bottom-0 col-span-1 flex items-end justify-center">
+      <button class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">Pay</button>
+    </div>
   </div>
 </template>
 <script lang="ts">
