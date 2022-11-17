@@ -64,7 +64,7 @@ export class OrderResolver {
 
   //////* DELIVERER ROUTES ///////
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.DELIVERER]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.DRIVER))
   @Mutation(() => Order)
   async updateOrder(
     @Args('id', { type: () => String }) id: string,
@@ -76,7 +76,7 @@ export class OrderResolver {
 
   //////* ADMIN ROUTES ///////
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => ClientMessage)
   removeOrder(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>
