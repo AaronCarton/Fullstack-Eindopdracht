@@ -4,10 +4,10 @@ import { ObjectId } from 'mongodb'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
 
 export enum OrderStatus {
-  'pending' = 'pending',
-  'cooking' = 'cooking',
-  'delivering' = 'delivering',
-  'delivered' = 'delivered',
+  'PENDING' = 'PENDING',
+  'COOKING' = 'COOKING',
+  'DELIVERING' = 'DELIVERING',
+  'DELIVERED' = 'delivered',
 }
 registerEnumType(OrderStatus, { name: 'OrderStatus' })
 
