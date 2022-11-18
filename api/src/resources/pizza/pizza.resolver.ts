@@ -61,6 +61,17 @@ export class PizzaResolver {
   @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => Pizza)
   createPizza(@Args('createPizzaInput') createPizzaInput: CreatePizzaInput) {
+    // check if toppings are valid
+    for (const toppingId of createPizzaInput.toppingsIds) {
+      try {
+        if (!this.toppingService.findOne(toppingId)) {
+          throw Error(`Topping with id ${toppingId} does not exist`)
+        }
+      } catch (error) {
+        throw Error(`Topping with id '${toppingId}' does not exist`)
+      }
+    }
+
     return this.pizzaService.create(createPizzaInput)
   }
 

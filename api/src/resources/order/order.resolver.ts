@@ -61,7 +61,7 @@ export class OrderResolver {
     return this.orderService.findOne(id)
   }
 
-  //////* DELIVERER ROUTES ///////
+  //////* DRIVER ROUTES ///////
 
   @UseGuards(FirebaseGuard, RolesGuard(Role.DRIVER))
   @Mutation(() => Order)
