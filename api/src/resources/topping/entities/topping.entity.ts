@@ -1,9 +1,19 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql'
+import { ObjectType, Field, ID, registerEnumType, InputType } from '@nestjs/graphql'
 import { ObjectId } from 'mongodb'
 import { ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, Entity } from 'typeorm'
 
+export enum ToppingCategory {
+  'meat' = 'meat',
+  'vegetable' = 'vegetable',
+  'cheese' = 'cheese',
+  'sauce' = 'sauce',
+  'other' = 'other',
+}
+registerEnumType(ToppingCategory, { name: 'ToppingCategory' })
+
 @Entity()
 @ObjectType()
+@InputType('ToppingInput')
 export class Topping {
   @Field(() => ID, { description: 'MongoDB ObjectID' })
   @ObjectIdColumn()
@@ -17,9 +27,9 @@ export class Topping {
   @Column()
   description: string
 
-  @Field()
+  @Field(() => ToppingCategory)
   @Column()
-  category: string
+  category: ToppingCategory
 
   @Field({ nullable: true })
   default: boolean // will be filled in by PizzaService's topping resolver

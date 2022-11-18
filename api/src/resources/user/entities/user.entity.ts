@@ -3,9 +3,9 @@ import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } fr
 import { ObjectId } from 'mongodb'
 
 export enum Role {
-  USER = 'USER',
-  DELIVERER = 'DELIVERER',
-  ADMIN = 'ADMIN',
+  USER = 0,
+  DRIVER = 1,
+  ADMIN = 2,
 }
 registerEnumType(Role, { name: 'Role' })
 
@@ -21,7 +21,7 @@ export class User {
   uid: string
 
   @Field(() => Role, { defaultValue: Role.USER })
-  @Column()
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role
 
   @Field({ nullable: true })

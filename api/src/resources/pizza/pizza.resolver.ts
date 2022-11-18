@@ -58,13 +58,24 @@ export class PizzaResolver {
 
   //////* ADMIN ROUTES ///////
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => Pizza)
   createPizza(@Args('createPizzaInput') createPizzaInput: CreatePizzaInput) {
+    // check if toppings are valid
+    for (const toppingId of createPizzaInput.toppingsIds) {
+      try {
+        if (!this.toppingService.findOne(toppingId)) {
+          throw Error(`Topping with id ${toppingId} does not exist`)
+        }
+      } catch (error) {
+        throw Error(`Topping with id '${toppingId}' does not exist`)
+      }
+    }
+
     return this.pizzaService.create(createPizzaInput)
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => Pizza)
   async updatePizza(
     @Args('id', { type: () => String }) id: string,
@@ -74,7 +85,7 @@ export class PizzaResolver {
     return this.pizzaService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => ClientMessage)
   removePizza(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

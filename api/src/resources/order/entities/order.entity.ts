@@ -4,10 +4,10 @@ import { ObjectId } from 'mongodb'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
 
 export enum OrderStatus {
-  'pending' = 'pending',
-  'cooking' = 'cooking',
-  'delivering' = 'delivering',
-  'delivered' = 'delivered',
+  'PENDING' = 'PENDING',
+  'COOKING' = 'COOKING',
+  'DELIVERING' = 'DELIVERING',
+  'DELIVERED' = 'DELIVERED',
 }
 registerEnumType(OrderStatus, { name: 'OrderStatus' })
 
@@ -23,13 +23,11 @@ export class Order {
   customerId: string
 
   @Field(() => [Pizza])
+  @Column()
   items: Pizza[]
 
-  @Column()
-  itemsIds: string[]
-
-  @Field(() => OrderStatus)
-  @Column()
+  @Field(() => OrderStatus, { defaultValue: OrderStatus.COOKING })
+  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.COOKING })
   status: OrderStatus
 
   // TODO: add service fees price
