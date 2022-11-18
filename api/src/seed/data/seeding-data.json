@@ -2,7 +2,7 @@
   "toppings": [
     {
       "_id": "63409b2f2bf7174a20eb7a51",
-      "category": "Sauce",
+      "category": "sauce",
       "name": "Tomato Sauce",
       "description": "The classic sauce for pizza",
       "price": 2.13,
@@ -10,7 +10,7 @@
     },
     {
       "_id": "634984c9129c7754f8e3e4db",
-      "category": "Cheese",
+      "category": "cheese",
       "name": "Mozzarella",
       "description": "The cheesiest of cheeses",
       "price": 2.43,
@@ -18,7 +18,7 @@
     },
     {
       "_id": "634984d3129c7754f8e3e4dc",
-      "category": "Meat",
+      "category": "meat",
       "name": "Spicy meat",
       "description": "Spicy meat for a spicy pizza",
       "price": 1.76,
@@ -26,7 +26,7 @@
     },
     {
       "_id": "634984d9129c7754f8e3e4dd",
-      "category": "Vegetable",
+      "category": "vegetable",
       "name": "Mushroom",
       "description": "Plop won't be happy about this",
       "price": 1.23,
@@ -34,7 +34,7 @@
     },
     {
       "_id": "634984e0129c7754f8e3e4de",
-      "category": "Vegetable",
+      "category": "vegetable",
       "name": "Pineapple",
       "description": "The sin of the pizza world",
       "price": 1.23,
@@ -42,7 +42,7 @@
     },
     {
       "_id": "634984e6129c7754f8e3e4df",
-      "category": "Vegetable",
+      "category": "vegetable",
       "name": "Onion",
       "description": "The vegetable that makes you cry",
       "price": 1.23,
@@ -50,7 +50,7 @@
     },
     {
       "_id": "6356b8395b2d452e28045fc9",
-      "category": "Meat",
+      "category": "meat",
       "name": "Pepperoni",
       "description": "Pepperoni for the meat pizza",
       "price": 1.23,
@@ -58,7 +58,7 @@
     },
     {
       "_id": "6348309cdfe8e72a086b73bb",
-      "category": "Vegetable",
+      "category": "vegetable",
       "name": "Paprika",
       "description": "Green and red paprika",
       "price": 1.23,
@@ -66,7 +66,7 @@
     },
     {
       "_id": "634830a3dfe8e72a086b73bc",
-      "category": "Vegetable",
+      "category": "vegetable",
       "name": "Olive",
       "description": "Black olives",
       "price": 1.23,
