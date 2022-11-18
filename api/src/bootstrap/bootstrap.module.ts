@@ -10,6 +10,15 @@ import { DataSource } from 'typeorm'
       driver: ApolloDriver,
       sortSchema: true,
       autoSchemaFile: true,
+      formatError: (error) => {
+        const graphQLFormattedError = {
+          name: error.name,
+          message: error.message,
+          code: error.extensions?.code || 'SERVER_ERROR',
+          stacktrace: error.extensions?.exception?.stacktrace || [],
+        }
+        return graphQLFormattedError
+      },
     }),
 
     TypeOrmModule.forRootAsync({

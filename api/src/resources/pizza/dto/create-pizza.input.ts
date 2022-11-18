@@ -1,6 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql'
 import { ArrayMaxSize, ArrayMinSize, IsNotEmpty, IsNumber, Min } from 'class-validator'
-import { PizzaSize, PizzaType } from '../entities/pizza.entity'
 
 @InputType()
 export class CreatePizzaInput {
@@ -11,12 +10,6 @@ export class CreatePizzaInput {
   @Field()
   @IsNotEmpty()
   description: string
-
-  @Field(() => PizzaType)
-  type: PizzaType
-
-  @Field(() => PizzaSize)
-  size: PizzaSize
 
   @Field(() => [String])
   @ArrayMinSize(2)

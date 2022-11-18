@@ -1,18 +1,19 @@
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
+import { ObjectType, Field, ID, registerEnumType, InputType } from '@nestjs/graphql'
 import { ObjectId } from 'mongodb'
 import { ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, Entity } from 'typeorm'
 
 export enum ToppingCategory {
-  'MEAT' = 'MEAT',
-  'VEGETABLE' = 'VEGETABLE',
-  'CHEESE' = 'CHEESE',
-  'SAUCE' = 'SAUCE',
-  'OTHER' = 'OTHER',
+  'meat' = 'meat',
+  'vegetable' = 'vegetable',
+  'cheese' = 'cheese',
+  'sauce' = 'sauce',
+  'other' = 'other',
 }
 registerEnumType(ToppingCategory, { name: 'ToppingCategory' })
 
 @Entity()
 @ObjectType()
+@InputType('ToppingInput')
 export class Topping {
   @Field(() => ID, { description: 'MongoDB ObjectID' })
   @ObjectIdColumn()
