@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between">
           <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
           <!-- TODO calculate price -->
-          <p class="self-end justify-self-end text-xl">€168.99</p>
+          <p class="self-end justify-self-end text-xl">€{{ priceItem(item) }}</p>
         </div>
         <div>
           <div class="flex justify-between">
@@ -41,17 +41,18 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-end">
+    <div class="flex flex-col justify-end" v-show="$route.name !== 'overview/payment'">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
-        <p class="text-xl">€168.99</p>
+        <p class="text-xl">€{{ getCartTotal() }}</p>
       </div>
-      <button
-        class="w-full rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+      <RouterLink
+        class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+        to="overview/payment"
       >
         Checkout
-      </button>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -70,12 +71,16 @@ export default {
     Edit,
   },
   setup() {
-    const { cart, removeFromCart } = useCart()
+    const { cart, removeFromCart, getCartTotal, getCartItemPrice } = useCart()
     const { push } = useRouter()
     const route = useRoute()
 
+    console.log(route)
+
     // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
+
+    const isNotPayment = computed(() => route.name != 'overview/payment')
 
     const editItem = (id: string, item: any) => {
       push({
@@ -84,6 +89,19 @@ export default {
         query: { item: id, type: searchQuery.value.type },
       })
     }
+
+    const priceItem = (item: any) => {
+      let price = item.basePrice
+
+      if (item.size === 'small') price -= 3
+      else if (item.size === 'large') price += 3
+      //@ts-ignore
+      return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
+    }
+
+    // const totalPrice = () => {
+    //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
+    // }
 
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
@@ -101,10 +119,14 @@ export default {
     return {
       cart,
       deliveryType: searchQuery.value.type,
+      isNotPayment,
 
       editItem,
       deleteItem,
       countDuplicates,
+      getCartTotal,
+      getCartItemPrice,
+      priceItem,
     }
   },
 }
