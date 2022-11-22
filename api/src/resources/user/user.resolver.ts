@@ -16,9 +16,10 @@ export class UserResolver {
 
   //////* USER ROUTES ///////
 
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput) // TODO: catch err for duplicate uid
+  @UseGuards(FirebaseGuard)
+  @Query(() => User, { name: 'createSelf' })
+  createSelf(@CurrentUser() user: UserRecord) {
+    return this.userService.create({ uid: user.uid })
   }
 
   @UseGuards(FirebaseGuard)
@@ -58,19 +59,25 @@ export class UserResolver {
 
   //////* ADMIN ROUTES ///////
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
+  @Mutation(() => User)
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return this.userService.create(createUserInput)
+  }
+
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Query(() => [User], { name: 'users' })
   findAll() {
     return this.userService.findAll()
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Query(() => User, { name: 'user' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.userService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => User)
   updateUser(
     @Args('id', { type: () => String }) id: string,
@@ -79,7 +86,7 @@ export class UserResolver {
     return this.userService.update(id, updateUserInput)
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => ClientMessage)
   removeUser(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

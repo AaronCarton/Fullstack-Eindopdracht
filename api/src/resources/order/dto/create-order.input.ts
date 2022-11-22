@@ -1,11 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql'
-import { OrderStatus } from '../entities/order.entity'
+import { ArrayMinSize } from 'class-validator'
+import { CreatePizzaOrderInput } from 'src/resources/pizza/dto/create-pizzaOrder.input'
+import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
 
 @InputType()
 export class CreateOrderInput {
-  @Field(() => [String])
-  itemsIds: string[]
-
-  @Field(() => OrderStatus, { defaultValue: OrderStatus.pending })
-  status: OrderStatus
+  @Field(() => [CreatePizzaOrderInput])
+  @ArrayMinSize(1)
+  items: Pizza[]
 }

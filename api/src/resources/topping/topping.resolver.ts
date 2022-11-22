@@ -37,7 +37,7 @@ export class ToppingResolver {
 
   //////* ADMIN ROUTES ///////
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => Topping)
   async updateTopping(
     @Args('id', { type: () => String }) id: string,
@@ -47,7 +47,7 @@ export class ToppingResolver {
     return this.toppingService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.ADMIN]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => ClientMessage)
   async removeTopping(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>
