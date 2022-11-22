@@ -41,6 +41,9 @@ export default () => {
   })
   console.log(cart.value)
 
+  //return total of items in cart
+  const totalItems = computed(() => cart.value?.length)
+
   // return price of pizza plus toppings
   const getCartItemPrice = (cartItem: CartItem) => {
     const { item } = cartItem
@@ -65,5 +68,6 @@ export default () => {
     clearCart,
     getCartItemPrice,
     getCartTotal,
+    totalItems,
   }
 }

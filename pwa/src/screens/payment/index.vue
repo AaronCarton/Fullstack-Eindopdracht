@@ -147,6 +147,7 @@
   </div>
 </template>
 <script lang="ts">
+import emailjs from 'emailjs-com'
 import { empty } from '@apollo/client/core'
 import { computed } from '@vue/reactivity'
 import { Ref, ref, watch } from 'vue'

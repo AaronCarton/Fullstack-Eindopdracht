@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 lg:flex">
+  <div class="hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 xl:flex">
     <div class="">
       <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold">Order</h2>
@@ -63,7 +63,6 @@ import { Trash as Delete, Pencil as Edit } from 'lucide-vue-next'
 import { countDuplicates } from '../../bootstrap/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
-import { search } from 'superagent'
 
 export default {
   components: {
@@ -82,14 +81,6 @@ export default {
 
     const isNotPayment = computed(() => route.name != 'overview/payment')
 
-    const editItem = (id: string, item: any) => {
-      push({
-        name: 'customize',
-        params: { id: item.id },
-        query: { item: id, type: searchQuery.value.type },
-      })
-    }
-
     const priceItem = (item: any) => {
       let price = item.basePrice
 
@@ -103,6 +94,13 @@ export default {
     //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
     // }
 
+    const editItem = (id: string, item: any) => {
+      push({
+        name: 'customize',
+        params: { id: item.id },
+        query: { item: id, type: searchQuery.value.type },
+      })
+    }
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
       removeFromCart(id)
