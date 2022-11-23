@@ -2,9 +2,20 @@ import { computed, Ref, ref, watch } from 'vue'
 import CartItem from '../interfaces/cartItem.interface'
 import Pizza, { PizzaSize, PizzaType } from '../interfaces/pizza.interface'
 
-const cart: Ref<CartItem[]> = ref([])
+const cart: Ref<CartItem[]> = ref(
+  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart') as string) : [],
+)
 
 export default () => {
+  const updateCart = (updateCallback: (cart: CartItem[]) => any) => {
+    // get new cart from callback
+    const newCart = updateCallback(cart.value)
+    // update cart
+    cart.value = newCart
+    // save cart to local storage
+    localStorage.setItem('cart', JSON.stringify(newCart))
+  }
+
   const findItem = (id: string) => {
     return cart.value.find((item) => item.id === id)
   }
@@ -14,7 +25,7 @@ export default () => {
       id: Date.now().toString(),
       item: { ...pizza, type: PizzaType.Classic, size: PizzaSize.Medium },
     }
-    cart.value?.push(item)
+    updateCart((cart) => [...cart, item])
     return item
   }
   const updateCartItem = (id: string, callback: (cartItem: CartItem) => CartItem) => {
@@ -24,17 +35,23 @@ export default () => {
       // get item from callback
       item = callback(item)
       // update cart
-      cart.value[index] = item
+      updateCart((cart) => {
+        cart[index] = item
+        return cart
+      })
     }
   }
 
   const removeFromCart = (itemId: string) => {
     const index = cart.value?.findIndex((item) => item.id === itemId)
     if (index !== -1) {
-      cart.value.splice(index, 1)
+      updateCart((cart) => {
+        cart.splice(index, 1)
+        return cart
+      })
     }
   }
-  const clearCart = () => (cart.value = [])
+  const clearCart = () => updateCart(() => [])
 
   watch(cart, (newCart) => {
     console.log('Cart changed', newCart)
