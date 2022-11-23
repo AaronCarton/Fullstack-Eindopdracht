@@ -44,12 +44,7 @@ export class UserResolver {
     // check if user matches JWT user
     if (u.id.toString() !== id) {
       console.log('User does not match JWT user')
-
-      return {
-        type: MessageTypes.error,
-        message: 'You are not authorized to update this user',
-        statusCode: 401,
-      }
+      throw Error('You are not authorized to update this user')
     }
     // update user
     return this.userService.update(id, updateUserInput)
@@ -75,6 +70,17 @@ export class UserResolver {
   @Query(() => User, { name: 'user' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.userService.findOne(id)
+  }
+
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
+  @Mutation(() => User)
+  async updateUserRole(
+    @Args('uid', { type: () => String }) uid: string,
+    @Args('role', { type: () => Role }) role: Role,
+  ) {
+    const user = await this.userService.findByUid(uid)
+    await this.userService.updateRole(user.id, role)
+    return this.userService.findByUid(uid)
   }
 
   @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))

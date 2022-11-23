@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Injectable } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { ObjectId } from 'mongodb'
-import { User } from './entities/user.entity'
+import { Role, User } from './entities/user.entity'
 import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
 
@@ -27,6 +27,12 @@ export class UserService {
 
   findByUid(uid: string) {
     return this.userRepo.findOneBy({ uid: uid })
+  }
+
+  async updateRole(id: string, role: Role) {
+    await this.userRepo.update(id, {
+      role: role,
+    })
   }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
