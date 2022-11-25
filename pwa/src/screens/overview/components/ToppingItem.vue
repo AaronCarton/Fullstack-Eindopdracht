@@ -1,11 +1,18 @@
 <template>
   <div
     @click="onClick(topping)"
-    class="mb-1 flex cursor-pointer items-center justify-between rounded-lg bg-neutral-200 px-4 py-4"
+    :class="`mb-1 flex ${
+      topping.stock <= 0 && type === 'add' ? 'cursor-not-allowed' : 'cursor-pointer'
+    } items-center justify-between rounded-lg bg-neutral-200 px-4 py-4`"
   >
-    <div class="flex items-center gap-3">
+    <div class="flex content-center items-center gap-3">
       <img :src="`/toppings/${topping.name}.png`" alt="" class="h-6 w-6" />
       <a class="font-semibold">{{ topping.name }}</a>
+      <template v-if="type === 'add' && topping.stock <= 5">
+        <a class="mt-0.5 text-sm font-bold text-red-600">{{
+          topping.stock <= 0 ? 'Out of stock' : `only ${topping.stock} left`
+        }}</a>
+      </template>
     </div>
     <div v-if="type === 'add'">
       <add class="h-6 w-6 fill-neutral-900" />
@@ -35,7 +42,7 @@ export default {
       required: true,
     },
     type: {
-      type: String,
+      type: String as () => 'add' | 'remove',
       required: true,
     },
   },

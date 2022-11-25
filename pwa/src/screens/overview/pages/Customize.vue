@@ -101,6 +101,7 @@ export default {
   },
   setup() {
     const pizza: Ref<Pizza | undefined> = ref()
+    const allToppings: Ref<Topping[]> = ref([])
     const { findItem, updateCartItem } = useCart()
     const { push } = useRouter()
     const { params, query } = useRoute()
@@ -109,11 +110,22 @@ export default {
       id: params.id,
     })
 
-    const allToppings = computed(() => (tRes.value?.toppings as Topping[]) ?? [])
     const orderItem = computed(() => findItem(`${query.item}`))
 
     watch(pRes, (res) => {
       pizza.value = res.pizza as Pizza
+    })
+    watch(tRes, (res) => {
+      // lower stock of each topping if it's being used by an item in cart (localStorage)
+      allToppings.value = res.toppings.map((t: Topping) => {
+        const item = findItem(`${query.item}`)
+        if (item) {
+          const tCount = item?.item.toppings.filter((i) => i.id === t.id).length || 0
+          return { ...t, stock: t.stock - tCount }
+        }
+        return t
+      })
+      // allToppings.value = res.toppings
     })
 
     const goBack = () => {
@@ -141,7 +153,13 @@ export default {
     }
 
     const handleToppingAdd = (t: Topping) => {
+      if (t.stock <= 0) return
       const topping = { ...t, default: false }
+      // decrease topping count
+      allToppings.value = allToppings.value.map((topping) =>
+        topping.id === t.id ? { ...topping, stock: topping.stock - 1 } : topping,
+      )
+      // add topping to cart item
       updateCartItem(`${query.item}`, (cartItem) => ({
         ...cartItem,
         item: {
@@ -154,14 +172,16 @@ export default {
           ...pizza.value,
           toppings: [...pizza.value.toppings, topping],
         }
-        console.log(pizza.value)
       }
     }
 
     const handleToppingRemove = (t: Topping) => {
-      console.log(t.default)
-
-      if (t.default === false)
+      if (t.default === false) {
+        // decrease topping count
+        allToppings.value = allToppings.value.map((topping) =>
+          topping.id === t.id ? { ...topping, stock: topping.stock + 1 } : topping,
+        )
+        // remove topping from cart item
         updateCartItem(`${query.item}`, (cartItem) => {
           // filter out topping (once)
           const index = cartItem.item.toppings.lastIndexOf(t)
@@ -175,6 +195,7 @@ export default {
             },
           }
         })
+      }
       // if (pizza.value) {
       //   pizza.value = {
       //     ...pizza.value,
