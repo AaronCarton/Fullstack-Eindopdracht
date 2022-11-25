@@ -9,6 +9,9 @@ import router from './bootstrap/router'
 import useAuthentication from './composables/useAuthentication'
 import useUser from './composables/useUser'
 
+import Toast, { PluginOptions } from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+
 const app: VueApp = createApp(App)
 
 const { restoreUser } = useAuthentication()
@@ -24,5 +27,6 @@ const { loadUser } = useUser()
   })
 
   app.use(router)
+  app.use(Toast, { hideProgressBar: true, timeout: 3500 } as PluginOptions)
   app.mount('#app')
 })()

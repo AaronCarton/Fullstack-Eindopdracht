@@ -91,6 +91,7 @@ import { PIZZA } from '../../../graphql/query.pizza'
 import Pizza, { PizzaSize, PizzaType } from '../../../interfaces/pizza.interface'
 import { TOPPINGS } from '../../../graphql/query.topping'
 import Topping from '../../../interfaces/topping.interface'
+import { useToast } from 'vue-toastification'
 
 export default {
   components: {
@@ -103,6 +104,7 @@ export default {
     const pizza: Ref<Pizza | undefined> = ref()
     const allToppings: Ref<Topping[]> = ref([])
     const { findItem, updateCartItem } = useCart()
+    const toast = useToast()
     const { push } = useRouter()
     const { params, query } = useRoute()
     const { result: tRes } = useQuery(TOPPINGS)
@@ -112,10 +114,10 @@ export default {
 
     const orderItem = computed(() => findItem(`${query.item}`))
 
-    watch(pRes, (res) => {
+    watch(pRes, (res: any) => {
       pizza.value = res.pizza as Pizza
     })
-    watch(tRes, (res) => {
+    watch(tRes, (res: any) => {
       // lower stock of each topping if it's being used by an item in cart (localStorage)
       allToppings.value = res.toppings.map((t: Topping) => {
         const item = findItem(`${query.item}`)
@@ -154,6 +156,9 @@ export default {
 
     const handleToppingAdd = (t: Topping) => {
       if (t.stock <= 0) return
+      // max 7 toppings
+      if (orderItem.value!.item.toppings.length >= 5)
+        return toast.warning('Only a maximum of 5 toppings are allowed')
       const topping = { ...t, default: false }
       // decrease topping count
       allToppings.value = allToppings.value.map((topping) =>
