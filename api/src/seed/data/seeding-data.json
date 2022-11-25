@@ -38,13 +38,29 @@
       "name": "Pineapple",
       "description": "The sin of the pizza world",
       "price": 1.23,
-      "stock": 23
+      "stock": 3
     },
     {
       "_id": "634984e6129c7754f8e3e4df",
       "category": "vegetable",
       "name": "Onion",
       "description": "The vegetable that makes you cry",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984ec129c7754f8e3e4e0",
+      "category": "vegetable",
+      "name": "Peppers",
+      "description": "Spicy peppers for a spicy pizza",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984f2129c7754f8e3e4e1",
+      "category": "meat",
+      "name": "Smoked bacon",
+      "description": "The best meat for a pizza",
       "price": 1.23,
       "stock": 23
     },
