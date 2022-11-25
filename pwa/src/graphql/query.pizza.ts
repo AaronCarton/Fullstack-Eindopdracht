@@ -11,6 +11,7 @@ export const PIZZAS = gql`
         id
         name
         price
+        stock
       }
       basePrice
       totalPrice

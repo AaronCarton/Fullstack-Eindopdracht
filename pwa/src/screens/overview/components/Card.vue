@@ -1,6 +1,13 @@
 <template>
   <div class="col-span-1 row-span-5 row-start-auto rounded-lg bg-white">
-    <div class="h-40">
+    <div class="relative h-40">
+      <template v-if="outOfStock">
+        <div
+          class="absolute flex h-full w-full items-center justify-center rounded-t-lg bg-gray-800 bg-opacity-80"
+        >
+          <p class="text-2xl font-medium text-neutral-100">Out of Stock</p>
+        </div>
+      </template>
       <img
         :src="`/pizzas/${pizza.name}.jpg`"
         :alt="`image of ${pizza.name} pizza`"
@@ -22,8 +29,9 @@
       <div class="flex items-center justify-between">
         <p class="text-xl font-semibold">€{{ pizza.totalPrice }}</p>
         <button
+          :disabled="outOfStock"
           @click="addItem(pizza)"
-          class="self-center rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50"
+          class="self-center rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 disabled:opacity-50"
         >
           Add
         </button>
@@ -44,7 +52,7 @@ export default {
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const { push } = useRouter()
     const { query } = useRoute()
     const { cart, addToCart } = useCart()
@@ -59,7 +67,12 @@ export default {
       })
     }
 
-    return { addItem }
+    const outOfStock = props.pizza.toppings.some((t) => t.stock === 0)
+
+    return {
+      addItem,
+      outOfStock,
+    }
   },
 }
 </script>
