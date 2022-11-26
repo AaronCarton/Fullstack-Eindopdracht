@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^1.0.0-beta.5",
     "@unocss/reset": "^0.45.26",
     "@vue/apollo-composable": "^4.0.0-beta.1",
+    "animate.css": "^4.1.1",
     "firebase": "^9.12.1",
     "lucide-vue-next": "^0.91.0",
     "vite-plugin-fonts": "^0.6.0",

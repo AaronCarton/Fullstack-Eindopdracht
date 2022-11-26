@@ -81,7 +81,7 @@
 import { computed, ref, Ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
-import { ArrowLeft as Back, X as Remove } from 'lucide-vue-next'
+import { ArrowUp as Back, X as Remove } from 'lucide-vue-next'
 
 import useCart from '../../../composables/useCart'
 import ButtonGroup from '../components/ButtonGroup.vue'

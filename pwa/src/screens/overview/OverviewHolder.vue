@@ -6,7 +6,16 @@
       <div class="grid-rows-10 grid h-[90vh] w-full grid-cols-3 gap-8 lg:grid-cols-5">
         <!-- ? :key="$route.fullPath" forces rerender, even when only the param of a path changes -->
         <!-- ? like switching between cart items -->
-        <router-view class="col-span-2 h-[90vh] lg:col-span-4" :key="$route.fullPath" />
+        <router-view v-slot="{ Component, route }" class="col-span-2 h-[90vh] lg:col-span-4">
+          <transition
+            name="slide-right"
+            mode="out-in"
+            :enter-active-class="route.meta.enterClass"
+            :leave-active-class="route.meta.leaveClass"
+          >
+            <component :is="Component" />
+          </transition>
+        </router-view>
         <Cart class="row-end-8 col-start-5 row-start-1" />
       </div>
     </div>

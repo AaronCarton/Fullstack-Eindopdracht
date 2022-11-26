@@ -1,7 +1,9 @@
 import { App as VueApp, createApp } from 'vue'
 
+import 'vue-toastification/dist/index.css'
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
+import 'animate.css'
 
 import App from './App.vue'
 
@@ -10,7 +12,7 @@ import useAuthentication from './composables/useAuthentication'
 import useUser from './composables/useUser'
 
 import Toast, { PluginOptions } from 'vue-toastification'
-import 'vue-toastification/dist/index.css'
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 
 const app: VueApp = createApp(App)
 
@@ -27,6 +29,7 @@ const { loadUser } = useUser()
   })
 
   app.use(router)
+  app.use(autoAnimatePlugin)
   app.use(Toast, { hideProgressBar: true, timeout: 3500 } as PluginOptions)
   app.mount('#app')
 })()
