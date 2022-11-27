@@ -14,7 +14,6 @@ export const PIZZAS = gql`
         stock
       }
       basePrice
-      totalPrice
     }
   }
 `
