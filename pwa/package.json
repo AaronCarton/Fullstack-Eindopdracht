@@ -12,6 +12,7 @@
     "@headlessui/vue": "^1.7.4",
     "@unocss/reset": "^0.45.26",
     "@vue/apollo-composable": "^4.0.0-beta.1",
+    "class-validator": "^0.13.2",
     "emailjs-com": "^3.2.0",
     "firebase": "^9.12.1",
     "lucide-vue-next": "^0.91.0",
