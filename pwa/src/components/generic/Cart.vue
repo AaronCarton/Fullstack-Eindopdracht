@@ -91,13 +91,15 @@ export default {
       })
     }
 
+    //Calculate price of cart item based on size , type and toppings
     const priceItem = (item: any) => {
       let price = item.basePrice
+      if (item.type === 'cheesyCrust') price += 5
 
       if (item.size === 'small') price -= 3
       else if (item.size === 'large') price += 3
       //@ts-ignore
-      return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
+      return item.toppings.reduce((total, t) => total + t.price, price).toFixed(2)
     }
 
     // const totalPrice = () => {
@@ -132,7 +134,6 @@ export default {
       deleteItem,
       countDuplicates,
       getCartTotal,
-      getCartItemPrice,
       priceItem,
       checkout,
     }
