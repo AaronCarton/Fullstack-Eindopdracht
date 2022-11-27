@@ -64,6 +64,10 @@ const routes: RouteRecordRaw[] = [
             path: 'payment',
             component: () => import('../screens/payment/index.vue'),
           },
+          {
+            path: 'payment',
+            component: () => import('../screens/payment/index.vue'),
+          },
         ],
         meta: {
           needsAuthentication: true,

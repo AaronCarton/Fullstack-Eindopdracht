@@ -140,6 +140,7 @@
         </div>
       </div>
     </form>
+
     <!--Payment button-->
     <div class="bottom-0 col-span-1 flex items-end justify-center">
       <button class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">Pay</button>
@@ -147,6 +148,7 @@
   </div>
 </template>
 <script lang="ts">
+import emailjs from 'emailjs-com'
 import { empty } from '@apollo/client/core'
 import { computed } from '@vue/reactivity'
 import { Ref, ref, watch } from 'vue'

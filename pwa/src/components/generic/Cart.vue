@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-end" v-show="$route.name !== 'overview/payment'">
+    <div class="flex flex-col justify-end">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
@@ -51,7 +51,7 @@
       </div>
       <RouterLink
         class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
-        to="overview/payment"
+        to="/overview/payment"
       >
         Checkout
       </RouterLink>
@@ -66,7 +66,6 @@ import { Trash as Delete, Pencil as Edit } from 'lucide-vue-next'
 import { countDuplicates } from '../../bootstrap/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
-import { search } from 'superagent'
 
 export default {
   components: {
@@ -85,14 +84,6 @@ export default {
 
     const isNotPayment = computed(() => route.name != 'overview/payment')
 
-    const editItem = (id: string, item: any) => {
-      push({
-        name: 'customize',
-        params: { id: item.id },
-        query: { item: id, type: searchQuery.value.type },
-      })
-    }
-
     const priceItem = (item: any) => {
       let price = item.basePrice
 
@@ -106,6 +97,13 @@ export default {
     //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
     // }
 
+    const editItem = (id: string, item: any) => {
+      push({
+        name: 'customize',
+        params: { id: item.id },
+        query: { item: id, type: searchQuery.value.type },
+      })
+    }
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
       removeFromCart(id)
