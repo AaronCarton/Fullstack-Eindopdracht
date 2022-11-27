@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-end" v-show="$route.name !== 'overview/payment'">
+    <div class="flex flex-col justify-end">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
