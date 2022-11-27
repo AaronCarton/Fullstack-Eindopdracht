@@ -13,9 +13,6 @@ import useUser from './composables/useUser'
 import Toast, { PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
-import Toast, { PluginOptions } from 'vue-toastification'
-import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
-
 const app: VueApp = createApp(App)
 
 const { restoreUser } = useAuthentication()
