@@ -10,6 +10,6 @@ export default interface User extends FirebaseUser {
 
 export enum Role {
   USER = 'USER',
-  DELIVERER = 'DELIVERER',
+  DRIVER = 'DRIVER',
   ADMIN = 'ADMIN',
 }

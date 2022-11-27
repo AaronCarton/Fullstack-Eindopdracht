@@ -137,7 +137,7 @@
   "orders": [
     {
       "_id": "6348309cdfe8e72a086b73bb",
-      "status": "cooking",
+      "status": "COOKING",
       "itemsIds": ["63409bbd2bf7174a20eb7a52"],
       "customerId": "etm6sBX9dPO1fOZQWQP8gXgg1Jk1"
     }

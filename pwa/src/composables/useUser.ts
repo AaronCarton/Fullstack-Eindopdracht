@@ -6,7 +6,6 @@ import { Role } from '../interfaces/user.interface'
 import User from '../interfaces/user.interface'
 import useAuthentication from './useAuthentication'
 import useGraphQL from './useGraphQL'
-import { validateArgCount } from '@firebase/util'
 
 const user: Ref<User | null> = ref(null)
 

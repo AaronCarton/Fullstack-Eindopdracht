@@ -27,7 +27,9 @@
         }}
       </p>
       <div class="flex items-center justify-between">
-        <p class="text-xl font-semibold">€{{ pizza.totalPrice }}</p>
+        <p class="text-xl font-semibold">
+          €{{ pizza.toppings.reduce((total, t) => total + t.price, pizza.basePrice) }}
+        </p>
         <button
           :disabled="outOfStock"
           @click="addItem(pizza)"
