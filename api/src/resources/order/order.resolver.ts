@@ -76,7 +76,7 @@ export class OrderResolver {
     return this.orderService.findOne(id)
   }
 
-  @UseGuards(FirebaseGuard, RolesGuard([Role.DRIVER]))
+  @UseGuards(FirebaseGuard, RolesGuard(Role.DRIVER))
   @Query(() => [Order])
   findActiveOrders() {
     return this.orderService.findActiveOrders()

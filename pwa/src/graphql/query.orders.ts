@@ -28,7 +28,6 @@ export const GET_ACTIVE_ORDERS = gql`
       status
       createdAt
       items {
-        id
         name
       }
     }
@@ -41,16 +40,14 @@ export const GET_ORDER = gql`
       id
       status
       items {
-        id
         name
         size
         type
-        basePrice
+        price
         toppings {
-          id
           name
           default
-          price
+          category
         }
       }
       createdAt

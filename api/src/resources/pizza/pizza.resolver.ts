@@ -21,17 +21,11 @@ export class PizzaResolver {
   //////* FIELD RESOLVERS ///////
 
   @ResolveField()
-  async totalPrice(@Parent() pizza: Pizza): Promise<number> {
-    let price = pizza.basePrice
-    for (const toppingId of pizza.toppingsIds) {
-      const topping = await this.toppingService.findOne(toppingId)
-      price += topping.price
-    }
-    return price
-  }
+  toppings(@Parent() pizza: Pizza): Promise<Topping>[] | Topping[] {
+    // checks if the toppings are already resolved, if so, return them
+    // this is mainly used when finding orders, since those toppings are embedded in the order, thus already resolved
+    if (pizza.toppings) return pizza.toppings
 
-  @ResolveField()
-  toppings(@Parent() pizza: Pizza): Promise<Topping>[] {
     return pizza.toppingsIds.map(async (toppingId) => {
       const topping = await this.toppingService.findOne(toppingId)
       topping.default = true

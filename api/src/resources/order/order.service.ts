@@ -14,7 +14,11 @@ export class OrderService {
   ) {}
 
   create(uid: string, createOrderInput: CreateOrderInput) {
-    return this.orderRepo.save({ customerId: uid, ...createOrderInput })
+    return this.orderRepo.save({
+      customerId: uid,
+      status: OrderStatus.COOKING,
+      ...createOrderInput,
+    })
   }
 
   findAll() {
@@ -30,7 +34,7 @@ export class OrderService {
   }
 
   async findActiveOrders() {
-    return this.orderRepo.find({ where: { status: OrderStatus.cooking } })
+    return this.orderRepo.find({ where: { status: OrderStatus.COOKING } })
   }
 
   async update(id: string, updateOrderInput: UpdateOrderInput) {
