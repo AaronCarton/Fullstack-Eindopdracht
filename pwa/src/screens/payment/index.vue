@@ -78,7 +78,7 @@
       </div>
     </div>
     <!--information for delivery-->
-    <form class="row-span-3 p-6">
+    <form class="row-span-3 p-6" @submit.prevent="submitOrder">
       <h2 class="mb-3 text-2xl font-bold">Delivery information</h2>
       <div class="grid grid-cols-2 gap-4">
         <div class="col-span-1 grid rounded-lg p-6">
@@ -139,19 +139,26 @@
           </div>
         </div>
       </div>
+      <div class="bottom-0 col-span-1 flex items-end justify-center">
+        <RouterLink
+          class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50"
+          to="/order/6348309cdfe8e72a086b73bb"
+        >
+          Pay
+        </RouterLink>
+      </div>
     </form>
     <!--Payment button-->
-    <div class="bottom-0 col-span-1 flex items-end justify-center">
-      <button class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">Pay</button>
-    </div>
   </div>
 </template>
 <script lang="ts">
-import { empty } from '@apollo/client/core'
-import { computed } from '@vue/reactivity'
+import { useMutation } from '@vue/apollo-composable'
+import { computed, reactive } from '@vue/reactivity'
 import { Ref, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import useCart from '../../composables/useCart'
+import useUser from '../../composables/useUser'
+import { CREATE_ORDER } from '../../graphql/mutation.order'
 import PaymentForm from './components/PaymentForm.vue'
 export default {
   components: {
@@ -160,11 +167,26 @@ export default {
 
   setup() {
     const route = useRoute()
+    const user = useUser()
 
     let times: string[] = []
     const { cart, getCartTotal } = useCart()
     let m: Ref<string> = ref('')
     const searchQuery = computed(() => route.query)
+
+    const orderInput = reactive({
+      items: cart.value,
+    })
+    const { mutate: addOrder } = useMutation(CREATE_ORDER, () => ({
+      variables: {
+        items: cart.value.map((ci) => ci.item),
+      },
+    }))
+
+    const submitOrder = async () => {
+      await addOrder()
+      console.log('order added')
+    }
 
     watch(m, () => {
       const newMethode = m
@@ -196,7 +218,11 @@ export default {
       }
       times = timeList
     }
-    console.log(searchQuery.value.type)
+
+    //create an order using cart items and delivery information
+    const createOrder = () => {
+      console.log('order created')
+    }
 
     return {
       cart,
@@ -206,6 +232,8 @@ export default {
       makeTimes,
       times,
       deliveryType: searchQuery.value.type,
+      orderInput,
+      submitOrder,
     }
   },
 }

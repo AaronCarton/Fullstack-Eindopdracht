@@ -58,14 +58,15 @@ export default () => {
   })
   console.log(cart.value)
 
-  // return price of pizza plus toppings
+  // return price of pizza plus toppings and type
   const getCartItemPrice = (cartItem: CartItem) => {
-    const { item } = cartItem
-    const { basePrice, toppings } = item
-    const toppingsPrice = toppings.reduce((acc, topping) => acc + topping.price, 0)
-    return basePrice + toppingsPrice
+    let pizzaPrice = cartItem.item.basePrice
+    let toppingsPrice = cartItem.item.toppings.reduce((acc, topping) => acc + topping.price, 0)
+    let typePrice = cartItem.item.type === PizzaType.CheesyCrust ? 5 : 0
+    if (cartItem.item.size === 'small') pizzaPrice -= 3
+    else if (cartItem.item.size === 'large') pizzaPrice += 3
+    return pizzaPrice + toppingsPrice + typePrice
   }
-
   // return total price of all items in cart
 
   const getCartTotal = () => {

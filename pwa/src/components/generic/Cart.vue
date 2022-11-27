@@ -67,6 +67,9 @@ import { countDuplicates } from '../../bootstrap/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
 import { search } from 'superagent'
+import { log } from 'console'
+import { useMutation, useQuery } from '@vue/apollo-composable'
+import { CREATE_ORDER } from '../../graphql/mutation.order'
 
 export default {
   components: {
@@ -79,6 +82,7 @@ export default {
     const route = useRoute()
 
     console.log(route)
+
 
     // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
@@ -93,18 +97,16 @@ export default {
       })
     }
 
+    //Calculate price of cart item based on size , type and toppings
     const priceItem = (item: any) => {
       let price = item.basePrice
+      if (item.type === 'cheesyCrust') price += 5
 
       if (item.size === 'small') price -= 3
       else if (item.size === 'large') price += 3
       //@ts-ignore
-      return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
+      return item.toppings.reduce((total, t) => total + t.price, price).toFixed(2)
     }
-
-    // const totalPrice = () => {
-    //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
-    // }
 
     const deleteItem = (id: string, item: any) => {
       const isCurrentItem = searchQuery.value.item == id
@@ -119,6 +121,9 @@ export default {
       }
     }
 
+
+
+
     return {
       cart,
       deliveryType: searchQuery.value.type,
@@ -128,7 +133,6 @@ export default {
       deleteItem,
       countDuplicates,
       getCartTotal,
-      getCartItemPrice,
       priceItem,
     }
   },
