@@ -13,7 +13,7 @@
           class="h-full w-full rounded-l-lg object-cover"
         />
       </div>
-      <div class="col-span-3 m-3 flex flex-col overflow-auto px-4 py-3">
+      <div class="col-span-3 m-3 flex flex-col overflow-hidden px-4 py-3">
         <a class="mb-3 text-3xl font-bold">{{ pizza.name }}</a>
         <div class="mt-3 mb-6 flex gap-14">
           <div>
@@ -38,9 +38,9 @@
         </div>
         <div class="">
           <!-- TODO add overflow to this nested div instead of full parent div -->
-          <div class="my-3">
+          <div class="mb-3">
             <h3 class="mb-6 text-2xl font-semibold">Toppings</h3>
-            <div class="flex h-48 flex-col overflow-y-scroll scroll-smooth">
+            <div class="scrollbar flex h-48 flex-col overflow-y-scroll scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in orderItem.item.toppings"
@@ -53,7 +53,7 @@
           </div>
           <div class="my-3">
             <h3 class="mb-6 text-2xl font-semibold">Extra Toppings</h3>
-            <div class="flex h-64 flex-col overflow-y-scroll scroll-smooth">
+            <div class="scrollbar flex h-64 flex-col overflow-y-scroll scroll-smooth">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in allToppings"
@@ -81,7 +81,7 @@
 import { computed, ref, Ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@vue/apollo-composable'
-import { ArrowUp as Back, X as Remove } from 'lucide-vue-next'
+import { ArrowLeft as Back, X as Remove } from 'lucide-vue-next'
 
 import useCart from '../../../composables/useCart'
 import ButtonGroup from '../components/ButtonGroup.vue'
@@ -103,7 +103,7 @@ export default {
   setup() {
     const pizza: Ref<Pizza | undefined> = ref()
     const allToppings: Ref<Topping[]> = ref([])
-    const { findItem, updateCartItem } = useCart()
+    const { findItem, updateCartItem, addToCart } = useCart()
     const toast = useToast()
     const { push } = useRouter()
     const { params, query } = useRoute()

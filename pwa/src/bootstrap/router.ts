@@ -47,8 +47,8 @@ const routes: RouteRecordRaw[] = [
             path: '',
             component: () => import('../screens/overview/pages/Overview.vue'),
             meta: {
-              enterClass: 'animate__animated animate__fadeInDown animate__fast',
-              leaveClass: 'animate__animated animate__fadeOutDown animate__fast',
+              enterClass: 'animate__animated animate__fadeInLeft animate__fast',
+              leaveClass: 'animate__animated animate__fadeOutRight animate__fast',
             },
           },
           {
@@ -56,15 +56,12 @@ const routes: RouteRecordRaw[] = [
             path: 'customize/:id',
             component: () => import('../screens/overview/pages/Customize.vue'),
             meta: {
-              enterClass: 'animate__animated animate__fadeInUp animate__fast',
-              leaveClass: 'animate__animated animate__fadeOutUp animate__fast',
+              enterClass: 'animate__animated animate__fadeInRight animate__fast',
+              leaveClass: 'animate__animated animate__fadeOutLeft animate__fast',
             },
           },
           {
-            path: 'payment',
-            component: () => import('../screens/payment/index.vue'),
-          },
-          {
+            name: 'payment',
             path: 'payment',
             component: () => import('../screens/payment/index.vue'),
           },

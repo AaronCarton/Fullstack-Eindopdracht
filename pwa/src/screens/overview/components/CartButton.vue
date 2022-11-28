@@ -128,7 +128,7 @@
               <div class="mt-4 flex flex-col space-y-2">
                 <RouterLink
                   class="rounded-lg bg-red-700 p-3 text-center font-bold text-white hover:bg-red-800 focus:ring-2 focus:ring-red-400"
-                  to="overview/payment"
+                  to="/overview/payment"
                   @click="setIsOpen(false)"
                 >
                   Checkout

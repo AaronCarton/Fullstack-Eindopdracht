@@ -4,6 +4,7 @@ import 'vue-toastification/dist/index.css'
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
 import 'animate.css'
+import './main.css'
 
 import App from './App.vue'
 

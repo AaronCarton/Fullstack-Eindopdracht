@@ -1,11 +1,11 @@
 <template>
   <div class="z-50 hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 lg:flex">
-    <div class="">
+    <div class="overflow-hidden">
       <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold">Order</h2>
         <a class="font-medium capitalize">{{ deliveryType }}</a>
       </div>
-      <div v-auto-animate>
+      <div v-auto-animate class="scrollbar_cart h-[90%] overflow-y-auto overflow-x-hidden">
         <div v-for="{ id, item } in cart" class="w-full py-4 px-2">
           <div class="flex items-center justify-between">
             <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
@@ -49,12 +49,11 @@
         <!-- TODO calculate price -->
         <p class="text-xl">€{{ getCartTotal() }}</p>
       </div>
-      <RouterLink
+      <button
         class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
-        to="/overview/payment"
       >
         Checkout
-      </RouterLink>
+      </button>
     </div>
   </div>
 </template>
@@ -66,6 +65,7 @@ import { Trash as Delete, Pencil as Edit } from 'lucide-vue-next'
 import { countDuplicates } from '../../bootstrap/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
+import { query } from 'express'
 
 export default {
   components: {
@@ -77,12 +77,21 @@ export default {
     const { push } = useRouter()
     const route = useRoute()
 
-    console.log(route)
+    console.log(route.name)
 
     // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
 
     const isNotPayment = computed(() => route.name != 'overview/payment')
+
+    // const checkout = () => {
+    //   push({
+    //     name: 'payment',
+    //     query: {
+    //       ...query,
+    //     },
+    //   })
+    // }
 
     const priceItem = (item: any) => {
       let price = item.basePrice
@@ -121,7 +130,6 @@ export default {
       cart,
       deliveryType: searchQuery.value.type,
       isNotPayment,
-
       editItem,
       deleteItem,
       countDuplicates,
