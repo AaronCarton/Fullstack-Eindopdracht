@@ -140,52 +140,66 @@
         </div>
       </div>
       <div class="bottom-0 col-span-1 flex items-end justify-center">
-        <RouterLink
-          class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50"
-          to="/order/6348309cdfe8e72a086b73bb"
-        >
+        <button class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">
           Pay
-        </RouterLink>
+        </button>
       </div>
     </form>
     <!--Payment button-->
   </div>
 </template>
 <script lang="ts">
+import { filter } from 'graphql-anywhere'
 import { useMutation } from '@vue/apollo-composable'
 import { computed, reactive } from '@vue/reactivity'
 import { Ref, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import { useRoute, useRouter } from 'vue-router'
+
 import useCart from '../../composables/useCart'
 import useUser from '../../composables/useUser'
-import { CREATE_ORDER } from '../../graphql/mutation.order'
 import PaymentForm from './components/PaymentForm.vue'
+import { CREATE_ORDER, ORDER_INPUT_FRAGMENT } from '../../graphql/mutation.order'
+
 export default {
   components: {
     PaymentForm,
   },
 
   setup() {
-    const route = useRoute()
     const user = useUser()
+    const toast = useToast()
+    const route = useRoute()
+    const { push } = useRouter()
 
     let times: string[] = []
     const { cart, getCartTotal } = useCart()
     let m: Ref<string> = ref('')
     const searchQuery = computed(() => route.query)
 
-    const orderInput = reactive({
-      items: cart.value,
-    })
-    const { mutate: addOrder } = useMutation(CREATE_ORDER, () => ({
-      variables: {
-        items: cart.value.map((ci) => ci.item),
-      },
-    }))
-
     const submitOrder = async () => {
-      await addOrder()
-      console.log('order added')
+      console.log('submitting order', cart.value)
+
+      // filter cart items to match the correct OrderInput
+      let orderItems = filter(
+        ORDER_INPUT_FRAGMENT,
+        cart.value.map((ci) => ci.item),
+      )
+      // create order mutation
+      const { mutate: addOrder } = useMutation(CREATE_ORDER, () => ({
+        variables: {
+          items: orderItems,
+          time: Date.now(),
+          address: 'test',
+        },
+      }))
+
+      let res = await addOrder()
+
+      if (res?.data.createOrder.id) {
+        console.log('order created', res.data.createOrder.id)
+        push({ name: 'order', params: { id: res.data.createOrder.id } })
+      } else toast.error('Something went wrong')
     }
 
     watch(m, () => {
@@ -219,11 +233,6 @@ export default {
       times = timeList
     }
 
-    //create an order using cart items and delivery information
-    const createOrder = () => {
-      console.log('order created')
-    }
-
     return {
       cart,
       PaymentForm,
@@ -232,7 +241,6 @@ export default {
       makeTimes,
       times,
       deliveryType: searchQuery.value.type,
-      orderInput,
       submitOrder,
     }
   },

@@ -51,7 +51,7 @@
       </div>
       <RouterLink
         class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
-        to="overview/payment"
+        to="/overview/payment"
       >
         Checkout
       </RouterLink>
@@ -82,7 +82,6 @@ export default {
     const route = useRoute()
 
     console.log(route)
-
 
     // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
@@ -120,9 +119,6 @@ export default {
         })
       }
     }
-
-
-
 
     return {
       cart,

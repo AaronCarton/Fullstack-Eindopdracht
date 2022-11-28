@@ -43,7 +43,7 @@ export const GET_ORDER = gql`
         name
         size
         type
-        price
+        basePrice
         toppings {
           name
           default
