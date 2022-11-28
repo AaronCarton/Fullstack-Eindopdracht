@@ -22,6 +22,7 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
+        name: 'order',
         path: 'order/:id',
         component: () => import('../screens/order/index.vue'),
         meta: {
