@@ -96,7 +96,7 @@ export default {
     let time = new Date()
     const { cart, getCartTotal } = useCart()
     let m: Ref<string> = ref('')
-    const searchQuery = computed(() => route.query)
+    const deliveryType = computed(() => route.query.type)
     console.log(new Date().getHours())
 
     watch(m, () => {
@@ -144,7 +144,7 @@ export default {
       m,
       makeTimes,
       times,
-      deliveryType: searchQuery.value.type,
+      deliveryType,
     }
   },
 }

@@ -51,6 +51,7 @@
       </div>
       <button
         class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+        @click="checkout"
       >
         Checkout
       </button>
@@ -77,21 +78,18 @@ export default {
     const { push } = useRouter()
     const route = useRoute()
 
-    console.log(route.name)
-
-    // TODO: get cart from localstorage
     const searchQuery = computed(() => route.query)
 
     const isNotPayment = computed(() => route.name != 'overview/payment')
 
-    // const checkout = () => {
-    //   push({
-    //     name: 'payment',
-    //     query: {
-    //       ...query,
-    //     },
-    //   })
-    // }
+    const checkout = () => {
+      push({
+        name: 'payment',
+        query: {
+          ...searchQuery.value,
+        },
+      })
+    }
 
     const priceItem = (item: any) => {
       let price = item.basePrice
@@ -136,6 +134,7 @@ export default {
       getCartTotal,
       getCartItemPrice,
       priceItem,
+      checkout,
     }
   },
 }
