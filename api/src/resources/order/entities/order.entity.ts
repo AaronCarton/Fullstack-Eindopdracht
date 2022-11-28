@@ -30,6 +30,14 @@ export class Order {
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.COOKING })
   status: OrderStatus
 
+  @Field()
+  @Column()
+  address: string
+
+  @Field()
+  @Column({ type: 'timestamp' })
+  deliveryTime: Date
+
   // TODO: add service fees price
 
   @Field()
