@@ -102,12 +102,10 @@ export default {
   },
   setup() {
     const pizza: Ref<Pizza | undefined> = ref()
-    const allToppings: Ref<Topping[]> = ref([])
-    const { findItem, updateCartItem, addToCart } = useCart()
+    const { allToppings, findItem, updateCartItem } = useCart()
     const toast = useToast()
     const { push } = useRouter()
     const { params, query } = useRoute()
-    const { result: tRes } = useQuery(TOPPINGS)
     const { result: pRes } = useQuery(PIZZA, {
       id: params.id,
     })
@@ -116,18 +114,6 @@ export default {
 
     watch(pRes, (res: any) => {
       pizza.value = res.pizza as Pizza
-    })
-    watch(tRes, (res: any) => {
-      // lower stock of each topping if it's being used by an item in cart (localStorage)
-      allToppings.value = res.toppings.map((t: Topping) => {
-        const item = findItem(`${query.item}`)
-        if (item) {
-          const tCount = item?.item.toppings.filter((i) => i.id === t.id).length || 0
-          return { ...t, stock: t.stock - tCount }
-        }
-        return t
-      })
-      // allToppings.value = res.toppings
     })
 
     const goBack = () => {
@@ -160,10 +146,6 @@ export default {
       if (orderItem.value!.item.toppings.length >= 5)
         return toast.warning('Only a maximum of 5 toppings are allowed')
       const topping = { ...t, default: false }
-      // decrease topping count
-      allToppings.value = allToppings.value.map((topping) =>
-        topping.id === t.id ? { ...topping, stock: topping.stock - 1 } : topping,
-      )
       // add topping to cart item
       updateCartItem(`${query.item}`, (cartItem) => ({
         ...cartItem,
@@ -182,10 +164,6 @@ export default {
 
     const handleToppingRemove = (t: Topping) => {
       if (t.default === false) {
-        // decrease topping count
-        allToppings.value = allToppings.value.map((topping) =>
-          topping.id === t.id ? { ...topping, stock: topping.stock + 1 } : topping,
-        )
         // remove topping from cart item
         updateCartItem(`${query.item}`, (cartItem) => {
           // filter out topping (once)

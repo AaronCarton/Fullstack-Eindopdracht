@@ -1,17 +1,66 @@
+import { useQuery } from '@vue/apollo-composable'
 import { computed, Ref, ref, watch } from 'vue'
+import { TOPPINGS } from '../graphql/query.topping'
 import CartItem from '../interfaces/cartItem.interface'
 import Pizza, { PizzaSize, PizzaType } from '../interfaces/pizza.interface'
+import Topping from '../interfaces/topping.interface'
 
 const cart: Ref<CartItem[]> = ref(
   localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart') as string) : [],
 )
 
+const databaseToppings: Ref<Topping[]> = ref([])
+const allToppings: Ref<Topping[]> = ref([])
+
 export default () => {
+  const loadToppings = async () => {
+    console.log('Loading toppings')
+
+    const { onResult } = useQuery(TOPPINGS)
+    onResult((res) => {
+      console.log('Toppings res', res.data.toppings)
+      // some hack to make all nested fields writeable
+      databaseToppings.value = JSON.parse(JSON.stringify(res.data.toppings))
+      calculateToppingStock()
+    })
+  }
+
+  const calculateToppingStock = () => {
+    console.log('Calculating topping stock')
+    // copy database toppings to all toppings
+    let fullToppings: Topping[] = JSON.parse(JSON.stringify(databaseToppings.value))
+    // take note of toppings that are being used by items in the cart
+    // iterate through each cart item's toppings and lower the topping stock by 1
+    allToppings.value = fullToppings.map((topping) => {
+      cart.value.forEach(({ item }) => {
+        item.toppings.forEach((t) => {
+          if (t.id === topping.id) {
+            console.log(
+              topping.name,
+              'used by',
+              item.name,
+              '| stock',
+              topping.stock,
+              '->',
+              topping.stock - 1,
+            )
+            topping.stock--
+          }
+        })
+      })
+      return topping
+    })
+  }
+
   const updateCart = (updateCallback: (cart: CartItem[]) => any) => {
     // get new cart from callback
     const newCart = updateCallback(cart.value)
     // update cart
     cart.value = newCart
+    // calculate new topping stock
+    console.log('Updating cart')
+
+    calculateToppingStock()
     // save cart to local storage
     localStorage.setItem('cart', JSON.stringify(newCart))
   }
@@ -53,15 +102,7 @@ export default () => {
   }
   const clearCart = () => updateCart(() => [])
 
-  watch(cart, (newCart) => {
-    console.log('Cart changed', newCart)
-  })
-  console.log(cart.value)
-
-  //return total of items in cart
-  const totalItems = computed(() => cart.value?.length)
-
-  // return price of pizza plus toppings
+  // return price of pizza plus toppings and type
   const getCartItemPrice = (cartItem: CartItem) => {
     let pizzaPrice = cartItem.item.basePrice
     let toppingsPrice = cartItem.item.toppings.reduce((acc, topping) => acc + topping.price, 0)
@@ -78,6 +119,7 @@ export default () => {
 
   return {
     cart,
+    allToppings,
 
     findItem,
     addToCart,
@@ -86,6 +128,6 @@ export default () => {
     clearCart,
     getCartItemPrice,
     getCartTotal,
-    totalItems,
+    loadToppings,
   }
 }

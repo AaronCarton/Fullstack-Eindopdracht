@@ -60,7 +60,6 @@ export default {
     const { cart, addToCart } = useCart()
 
     const addItem = (pizza: Pizza) => {
-      // TODO: update cart to localstorage
       const item = addToCart(pizza)
       push({
         name: 'customize',
