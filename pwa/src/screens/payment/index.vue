@@ -309,6 +309,7 @@
     <!--Payment button-->
     <div class="mt-auto flex justify-center px-6 pb-3">
       <button
+        @click="submitOrder"
         class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 hover:bg-red-800"
       >
         Pay
@@ -470,15 +471,17 @@ export default {
     return {
       cart,
       user,
-      getCartTotal,
-      makeTimes,
       times,
       postalCodes,
       deliveryType,
       selectedTime,
       city,
-      emptyInput,
       selectedMethode,
+
+      getCartTotal,
+      submitOrder,
+      emptyInput,
+      makeTimes,
     }
   },
 }
