@@ -1,4 +1,11 @@
 {
+  "users": [
+    {
+      "_id": "9372acafb55506be4070f4dc",
+      "uid": "EmesbcKXgrrIOHYoWOWfL32",
+      "role": 1
+    }
+  ],
   "toppings": [
     {
       "_id": "63409b2f2bf7174a20eb7a51",
@@ -136,10 +143,97 @@
   ],
   "orders": [
     {
-      "_id": "6348309cdfe8e72a086b73bb",
+      "_id": "638792b859c05dacbcb4dbbd",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "status": "DELIVERED",
+      "address": "Vogellaan 1, 1234 AB, Amsterdam",
+      "deliveryTime": "1669829304451",
+      "reviewId": "63879df46ceca7c179a0e6e6",
+      "items": [
+        {
+          "basePrice": 13.43,
+          "name": "Pepperoni",
+          "size": "medium",
+          "toppings": [
+            {
+              "category": "sauce",
+              "default": false,
+              "name": "Tomato Sauce",
+              "price": 2.13
+            },
+            {
+              "category": "cheese",
+              "default": false,
+              "name": "Mozzarella",
+              "price": 2.43
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Pepperoni",
+              "price": 1.23
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Spicy meat",
+              "price": 1.76
+            }
+          ],
+          "type": "classic"
+        }
+      ]
+    },
+    {
+      "_id": "6384080c92ca44563689e56d",
+      "customerId": "6tGR0EesbcKXgrrIOHYoWOWfL32",
       "status": "COOKING",
-      "itemsIds": ["63409bbd2bf7174a20eb7a52"],
-      "customerId": "etm6sBX9dPO1fOZQWQP8gXgg1Jk1"
+      "address": "Vogellaan 1, 1234 AB, Amsterdam",
+      "deliveryTime": "1669597195925",
+
+      "items": [
+        {
+          "basePrice": 12.43,
+          "name": "Margherita",
+          "size": "medium",
+          "toppings": [
+            {
+              "category": "sauce",
+              "default": false,
+              "name": "Tomato Sauce",
+              "price": 2.13
+            },
+            {
+              "category": "cheese",
+              "default": false,
+              "name": "Mozzarella",
+              "price": 2.43
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Spicy meat",
+              "price": 1.76
+            },
+            {
+              "category": "vegetable",
+              "default": false,
+              "name": "Peppers",
+              "price": 1.23
+            }
+          ],
+          "type": "classic"
+        }
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "_id": "63879df46ceca7c179a0e6e6",
+      "orderId": "638792b859c05dacbcb4dbbd",
+      "customerId": "EmesbcKXgrrIOHYoWOWfL32",
+      "rating": 5,
+      "comment": "The pizza was delicious"
     }
   ]
 }

@@ -12,12 +12,16 @@ export class DatabaseSeedCommand {
   })
   async seed() {
     console.log('🌱 Start seeding')
+    await this.seedService.addUsers()
+    console.log('🌱 Users added')
     const t = await this.seedService.addToppings()
     console.log('adding toppings', t)
     const p = await this.seedService.addPizzas()
     console.log('adding pizzas', p)
     const o = await this.seedService.addOrders()
     console.log('adding orders', o)
+    const r = await this.seedService.addReviews()
+    console.log('adding reviews', r)
     console.log('🌱 Seeding done 🏁')
   }
 
