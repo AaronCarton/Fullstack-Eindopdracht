@@ -7,7 +7,10 @@
   >
     <div class="flex content-center items-center gap-3">
       <img :src="`/toppings/${topping.name}.png`" alt="" class="h-6 w-6" />
-      <a class="select-none font-semibold">{{ topping.name }}</a>
+      <a class="font-semibold">{{ topping.name }}</a>
+      <template v-if="type === 'remove' && topping.default === false">
+        <a class="opacity-50">+{{ topping.price }}</a>
+      </template>
       <template v-if="type === 'add' && topping.stock <= 5">
         <a class="mt-0.5 text-sm font-bold text-red-600">{{
           topping.stock <= 0 ? 'Out of stock' : `only ${topping.stock} left`

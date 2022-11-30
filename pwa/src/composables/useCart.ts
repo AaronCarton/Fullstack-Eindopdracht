@@ -18,7 +18,7 @@ export default () => {
 
     const { onResult } = useQuery(TOPPINGS)
     onResult((res) => {
-      console.log('Toppings res', res.data.toppings)
+      console.log('Toppings loaded', res.data.toppings)
       // some hack to make all nested fields writeable
       databaseToppings.value = JSON.parse(JSON.stringify(res.data.toppings))
       calculateToppingStock()
