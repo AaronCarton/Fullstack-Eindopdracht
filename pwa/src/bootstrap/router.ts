@@ -64,6 +64,10 @@ const routes: RouteRecordRaw[] = [
             name: 'payment',
             path: 'payment',
             component: () => import('../screens/payment/index.vue'),
+            meta: {
+              enterClass: 'animate__animated animate__fadeInRight animate__fast',
+              leaveClass: 'animate__animated animate__fadeOutLeft animate__fast',
+            },
           },
         ],
         meta: {
