@@ -309,6 +309,7 @@
     <!--Payment button-->
     <div class="mt-auto flex justify-center px-6 pb-3">
       <button
+        @click="submitOrder"
         class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 hover:bg-red-800"
       >
         Pay
@@ -317,11 +318,6 @@
   </div>
 </template>
 <script lang="ts">
-import { computed } from '@vue/reactivity'
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import useCart from '../../composables/useCart'
-import useUser from '../../composables/useUser'
 import {
   X as Clear,
   ChevronDown as Chevron,
@@ -341,6 +337,17 @@ import {
 } from '@headlessui/vue'
 import { vAutoAnimate } from '@formkit/auto-animate'
 import QrcodeVue from 'qrcode.vue'
+import { filter } from 'graphql-anywhere'
+import { useMutation } from '@vue/apollo-composable'
+import { computed, reactive } from '@vue/reactivity'
+import { Ref, ref, watch } from 'vue'
+import { useToast } from 'vue-toastification'
+import { useRoute, useRouter } from 'vue-router'
+
+import useCart from '../../composables/useCart'
+import useUser from '../../composables/useUser'
+import PaymentForm from './components/PaymentForm.vue'
+import { CREATE_ORDER, ORDER_INPUT_FRAGMENT } from '../../graphql/mutation.order'
 
 export default {
   components: {
@@ -362,7 +369,9 @@ export default {
 
   setup() {
     const route = useRoute()
+    const toast = useToast()
     const { user } = useUser()
+    const { push } = useRouter()
     const deliveryType = computed(() => route.query.type)
     const { cart, getCartTotal } = useCart()
 
@@ -381,6 +390,30 @@ export default {
       Kooigem = 8510,
       Rollegem = 8510,
       Aalbeke = 8511,
+    }
+    const submitOrder = async () => {
+      console.log('submitting order', cart.value)
+
+      // filter cart items to match the correct OrderInput
+      let orderItems = filter(
+        ORDER_INPUT_FRAGMENT,
+        cart.value.map((ci) => ci.item),
+      )
+      // create order mutation
+      const { mutate: addOrder } = useMutation(CREATE_ORDER, () => ({
+        variables: {
+          items: orderItems,
+          time: Date.now(),
+          address: 'test',
+        },
+      }))
+
+      let res = await addOrder()
+
+      if (res?.data.createOrder.id) {
+        console.log('order created', res.data.createOrder.id)
+        push({ name: 'order', params: { id: res.data.createOrder.id } })
+      } else toast.error('Something went wrong')
     }
 
     watch(time, () => {
@@ -438,15 +471,17 @@ export default {
     return {
       cart,
       user,
-      getCartTotal,
-      makeTimes,
       times,
       postalCodes,
       deliveryType,
       selectedTime,
       city,
-      emptyInput,
       selectedMethode,
+
+      getCartTotal,
+      submitOrder,
+      emptyInput,
+      makeTimes,
     }
   },
 }

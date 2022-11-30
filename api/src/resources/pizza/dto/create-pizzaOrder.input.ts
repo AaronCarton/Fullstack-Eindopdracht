@@ -13,7 +13,7 @@ export class CreatePizzaOrderInput {
   @Field()
   @IsNumber()
   @Min(0)
-  price: number
+  basePrice: number
 
   @Field(() => PizzaType)
   type: PizzaType

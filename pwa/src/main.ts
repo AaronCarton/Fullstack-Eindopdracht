@@ -14,11 +14,13 @@ import useUser from './composables/useUser'
 
 import Toast, { PluginOptions } from 'vue-toastification'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
+import useCart from './composables/useCart'
 
 const app: VueApp = createApp(App)
 
 const { restoreUser } = useAuthentication()
 const { loadUser } = useUser()
+const { loadToppings } = useCart()
 
 ;(async function () {
   await restoreUser().then(async (fUser) => {
@@ -28,6 +30,7 @@ const { loadUser } = useUser()
         console.log('User', user.value)
       })
   })
+  await loadToppings()
 
   app.use(router)
   app.use(autoAnimatePlugin)
