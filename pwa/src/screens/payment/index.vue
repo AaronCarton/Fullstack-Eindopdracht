@@ -1,10 +1,10 @@
 <template>
-  <div class="flex w-full flex-col justify-between gap-1 overflow-auto rounded-lg bg-white">
+  <div class="flex w-full flex-col gap-1 overflow-auto rounded-lg bg-white">
     <h1 class="mb-6 w-full bg-red-700 p-4 text-center text-4xl font-bold text-neutral-50 shadow-md">
       Checkout
     </h1>
 
-    <div class="p-6">
+    <div class="justify-self-start px-6 py-0">
       <!--Payment methodes-->
 
       <div class="mx-auto my-0 grid grid-cols-2 gap-5">
@@ -132,11 +132,46 @@
           </div>
         </div>
         <div>
-          <h2 class="mb-3 text-lg font-semibold capitalize lg:text-2xl">Payment Methodes</h2>
+          <h2 class="mb-3 text-lg font-semibold capitalize lg:text-2xl">Payment Methods</h2>
           <RadioGroup v-model="selectedMethode">
+            <RadioGroupOption value="bancontact" class="focus:outline-none" v-slot="{ checked }">
+              <li
+                class="ne mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600 focus:outline-none"
+                :class="{
+                  ' border-neutral-400 bg-neutral-100 text-neutral-900 ': checked,
+                  ' bg-none  hover:border-neutral-500': !checked,
+                }"
+              >
+                <div v-auto-animate>
+                  <div class="flex cursor-pointer justify-between">
+                    <div class="flex gap-2">
+                      <img
+                        class="h-6 w-auto rounded"
+                        src="../../../public/paymentMethodes/Bancontact.png"
+                        alt=""
+                        srcset=""
+                      />
+                      <span>Payconiq</span>
+                    </div>
+                    <Check v-show="checked" class="fill-green-600 stroke-green-50" />
+                  </div>
+                  <div
+                    v-if="checked"
+                    class="mt-3 flex items-center justify-center border-t-2 border-neutral-400 bg-neutral-100 py-3"
+                  >
+                    <QrcodeVue
+                      value="https://www.youtube.com/watch?v=lpvT-Fciu-4"
+                      :size="150"
+                      level="H"
+                      class="border-4 border-neutral-50"
+                    ></QrcodeVue>
+                  </div>
+                </div>
+              </li>
+            </RadioGroupOption>
             <RadioGroupOption
               class="hover:border-neutral-500 focus:outline-none"
-              value="Online"
+              value="visa"
               v-slot="{ checked }"
             >
               <li
@@ -147,15 +182,20 @@
                 }"
               >
                 <div v-auto-animate>
-                  <div class="flex justify-between">
+                  <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
-                      <Card />
-                      <span>Online Payment</span>
+                      <img
+                        class="h-6 w-auto rounded"
+                        src="../../../public/paymentMethodes/Visa.png"
+                        alt=""
+                        srcset=""
+                      />
+                      <span>MasterCard / Visa</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
                   </div>
                   <div
-                    v-if="selectedMethode === 'Online'"
+                    v-if="checked"
                     class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
                   >
                     <form action="" class="w-full">
@@ -167,8 +207,8 @@
                           class="mt-2 h-auto w-full rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
                         />
                       </div>
-                      <div class="flex w-full flex-col justify-between gap-2">
-                        <div class="flex flex-col items-center gap-3 lg:flex-row">
+                      <div class="flex w-full justify-between gap-2">
+                        <div class="flex flex-col items-start gap-3">
                           <label class="font-semibold" for="vdatum">Expire Date</label>
                           <input
                             class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
@@ -177,7 +217,7 @@
                             placeholder="02-2203"
                           />
                         </div>
-                        <div class="flex flex-col items-center gap-3 lg:flex-row">
+                        <div class="flex flex-col items-start gap-3">
                           <label class="font-semibold" for="CC">CVC / CVV</label>
                           <input
                             class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
@@ -194,31 +234,69 @@
               </li>
             </RadioGroupOption>
 
-            <RadioGroupOption value="Mobile" class="focus:outline-none" v-slot="{ checked }">
+            <RadioGroupOption value="paypal" class="focus:outline-none" v-slot="{ checked }">
               <li
-                class="focus:outline-no ne mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600"
+                class="ne mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600 focus:outline-none"
                 :class="{
                   ' border-neutral-400 bg-neutral-100 text-neutral-900 ': checked,
                   ' bg-none  hover:border-neutral-500': !checked,
                 }"
               >
                 <div v-auto-animate>
-                  <div class="flex justify-between">
+                  <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
-                      <Mobile />
-                      <span>Mobile Payment</span>
+                      <img
+                        class="h-6 w-auto rounded"
+                        src="../../../public/paymentMethodes/paypal.png"
+                        alt=""
+                        srcset=""
+                      />
+                      <span>PayPal</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
                   </div>
                   <div
-                    v-if="selectedMethode === 'Mobile'"
+                    v-if="checked"
+                    class="mt-3 flex items-center justify-center border-t-2 border-neutral-400 bg-neutral-100 py-3"
+                  >
+                    <button class="rounded-3xl bg-[#EABC53] px-8 py-2 font-bold text-[#0C2688]">
+                      Pay with PayPal
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </RadioGroupOption>
+
+            <RadioGroupOption value="mobile" class="focus:outline-none" v-slot="{ checked }">
+              <li
+                class="ne mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600 focus:outline-none"
+                :class="{
+                  ' border-neutral-400 bg-neutral-100 text-neutral-900 ': checked,
+                  ' bg-none  hover:border-neutral-500': !checked,
+                }"
+              >
+                <div v-auto-animate>
+                  <div class="flex cursor-pointer justify-between">
+                    <div class="flex gap-2">
+                      <img
+                        class="h-6 w-auto rounded"
+                        src="../../../public/paymentMethodes/payconiq.png"
+                        alt=""
+                        srcset=""
+                      />
+                      <span>Payconiq</span>
+                    </div>
+                    <Check v-show="checked" class="fill-green-600 stroke-green-50" />
+                  </div>
+                  <div
+                    v-if="checked"
                     class="mt-3 flex items-center justify-center border-t-2 border-neutral-400 bg-neutral-100 py-3"
                   >
                     <QrcodeVue
                       value="https://www.youtube.com/watch?v=lpvT-Fciu-4"
                       :size="150"
                       level="H"
-                      class="border-4 border-neutral-50"
+                      class="rounded-lg border-4 border-neutral-50"
                     ></QrcodeVue>
                   </div>
                 </div>
@@ -229,7 +307,7 @@
       </div>
     </div>
     <!--Payment button-->
-    <div class="flex justify-center p-6">
+    <div class="mt-auto flex justify-center px-6 pb-3">
       <button
         class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 hover:bg-red-800"
       >
