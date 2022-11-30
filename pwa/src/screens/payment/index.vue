@@ -97,38 +97,41 @@
                   ' bg-none': !checked,
                 }"
               >
-                <div class="flex justify-between">
-                  <span>Online Payment</span>
-                  <Check v-show="checked" class="fill-green-600 stroke-green-50" />
+                <div v-auto-animate>
+                  <div class="flex justify-between">
+                    <span>Online Payment</span>
+                    <Check v-show="checked" class="fill-green-600 stroke-green-50" />
+                  </div>
+                  <div
+                    v-if="selected === 'Online'"
+                    class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
+                  >
+                    <form action="" class="w-full">
+                      <div class="mb-3">
+                        <label class="font-semibold" for="kaartnr">Cart Number</label>
+                        <input type="text" id="kaartnr" class="w-full px-1" />
+                      </div>
+                      <div class="flex w-full flex-col justify-between gap-2">
+                        <div class="flex flex-col gap-3 lg:flex-row">
+                          <label class="font-semibold" for="vdatum">Expire Date</label>
+                          <input class="px-1" type="month" id="vdatum" placeholder="02-2203" />
+                        </div>
+                        <div class="flex flex-col gap-3 lg:flex-row">
+                          <label class="font-semibold" for="CC">CVC / CVV</label>
+                          <input
+                            class="px-1"
+                            type="text"
+                            maxlength="4"
+                            placeholder="ex. 0157"
+                            id="CC"
+                          />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-                <div
-                  v-if="selected === 'Online'"
-                  class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
-                >
-                  <form action="" class="w-full">
-                    <div class="mb-3">
-                      <label class="font-semibold" for="kaartnr">Cart Number</label>
-                      <input type="text" id="kaartnr" class="w-full px-1" />
-                    </div>
-                    <div class="flex w-full flex-col justify-between gap-2">
-                      <div class="flex flex-col gap-3 lg:flex-row">
-                        <label class="font-semibold" for="vdatum">Expire Date</label>
-                        <input class="px-1" type="month" id="vdatum" placeholder="02-2203" />
-                      </div>
-                      <div class="flex flex-col gap-3 lg:flex-row">
-                        <label class="font-semibold" for="CC">CVC / CVV</label>
-                        <input
-                          class="px-1"
-                          type="text"
-                          maxlength="4"
-                          placeholder="ex. 0157"
-                          id="CC"
-                        />
-                      </div>
-                    </div>
-                  </form>
-                </div></li
-            ></RadioGroupOption>
+              </li>
+            </RadioGroupOption>
 
             <RadioGroupOption value="Mobile" v-slot="{ checked }">
               <li
@@ -138,20 +141,22 @@
                   ' bg-none': !checked,
                 }"
               >
-                <div class="flex justify-between">
-                  <span>Mobile Payment</span>
-                  <Check v-show="checked" class="fill-green-600 stroke-green-50" />
-                </div>
-                <div
-                  v-if="selected === 'Mobile'"
-                  class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
-                >
-                  <QrcodeVue
-                    value="https://www.youtube.com/watch?v=lpvT-Fciu-4"
-                    :size="150"
-                    level="H"
-                    class="border-4 border-neutral-50"
-                  ></QrcodeVue>
+                <div v-auto-animate>
+                  <div class="flex justify-between">
+                    <span>Mobile Payment</span>
+                    <Check v-show="checked" class="fill-green-600 stroke-green-50" />
+                  </div>
+                  <div
+                    v-if="selected === 'Mobile'"
+                    class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
+                  >
+                    <QrcodeVue
+                      value="https://www.youtube.com/watch?v=lpvT-Fciu-4"
+                      :size="150"
+                      level="H"
+                      class="border-4 border-neutral-50"
+                    ></QrcodeVue>
+                  </div>
                 </div>
               </li>
             </RadioGroupOption>
