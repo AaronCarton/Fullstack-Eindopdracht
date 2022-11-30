@@ -10,7 +10,7 @@
 
   .scrollbar::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: #f7f4ed;
+    background: #f8f8f8;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
@@ -30,7 +30,7 @@
 
   .scrollbar_cart::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: #f7f4ed;
+    background: #f8f8f8;
   }
 
   .scrollbar_cart::-webkit-scrollbar-thumb {

@@ -50,7 +50,7 @@
         <p class="text-xl">€{{ getCartTotal() }}</p>
       </div>
       <button
-        class="w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+        class="focus-visible::ring-2 w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 hover:bg-red-800 focus:outline-none focus-visible:ring-red-300"
         @click="checkout"
       >
         Checkout

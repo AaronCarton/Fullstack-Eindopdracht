@@ -1,24 +1,66 @@
 <template>
-  <div class="flex w-full flex-col justify-between gap-1 overflow-auto rounded-lg bg-white p-6">
-    <div>
-      <h1 class="mb-6 text-center text-4xl font-bold">Checkout</h1>
+  <div class="flex w-full flex-col justify-between gap-1 overflow-auto rounded-lg bg-white">
+    <h1 class="mb-6 w-full bg-red-700 p-4 text-center text-4xl font-bold text-neutral-50 shadow-md">
+      Checkout
+    </h1>
+
+    <div class="p-6">
       <!--Payment methodes-->
-      <div class="grid grid-cols-2 gap-5">
+
+      <div class="mx-auto my-0 grid grid-cols-2 gap-5">
         <div>
           <div class="flex flex-col gap-1">
             <h2 class="mb-3 text-lg font-semibold lg:text-2xl">Select a desired moment</h2>
-            <select
-              class="rounded-lg border-2 border-neutral-200 bg-white p-2"
-              value="As fast as possible"
-              id="time"
-              v-if="times.length > 0"
-            >
-              <option value="As fast as possible" selected>As fast as possible</option>
-              <option v-for="time in times" :key="time" :value="time">
-                {{ time }}
-              </option>
-            </select>
-            <select
+            <Listbox v-model="selectedTime">
+              <div class="relative mt-1">
+                <ListboxButton
+                  class="relative w-full cursor-pointer rounded-lg border-2 border-neutral-200 bg-white py-2 pl-3 pr-10 text-left hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300 sm:text-sm"
+                >
+                  <span class="block truncate">{{ selectedTime }}</span>
+                  <span
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+                  >
+                    <ListIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  </span>
+                </ListboxButton>
+
+                <transition
+                  leave-active-class="transition duration-100 ease-in"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0"
+                >
+                  <ListboxOptions
+                    class="scrollbar absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                  >
+                    <ListboxOption
+                      v-slot="{ selected }"
+                      v-for="time in times"
+                      :key="time"
+                      :value="time"
+                    >
+                      <li
+                        :class="[
+                          selected ? 'bg-red-100 text-red-900' : 'text-gray-900',
+                          'relative cursor-default select-none py-2 pl-10 pr-4',
+                        ]"
+                      >
+                        <span
+                          class="hover:font-medium"
+                          :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']"
+                          >{{ time }}</span
+                        >
+                        <span
+                          v-if="selected"
+                          class="absolute inset-y-0 left-0 flex items-center pl-3 text-red-600"
+                        >
+                        </span>
+                      </li>
+                    </ListboxOption>
+                  </ListboxOptions>
+                </transition>
+              </div>
+            </Listbox>
+            <!-- <select
               v-else
               name="As fast as possible"
               placeholder="As fast as possible"
@@ -32,7 +74,7 @@
               >
                 No options
               </option>
-            </select>
+            </select> -->
           </div>
           <div class="py-3">
             <h2 class="mb-3 text-lg font-semibold capitalize lg:text-2xl">
@@ -50,7 +92,7 @@
                   <label class="font-medium lg:text-lg" for="">Street name</label>
                   <input
                     type="text"
-                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2"
+                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
                     placeholder="ex. Nowherestreet"
                     :value="user?.street"
                   />
@@ -59,7 +101,7 @@
                   <label class="font-medium lg:text-lg" for="">Street nr.</label>
                   <input
                     type="number"
-                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2"
+                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
                     placeholder="ex. 155"
                     maxlength="4"
                     :value="user?.houseNumber"
@@ -68,16 +110,20 @@
                 <div class="col-span-1 flex flex-col gap-1">
                   <label class="font-medium lg:text-lg" for="pC">Postal code</label>
                   <div
-                    class="flex justify-between rounded-lg border-2 border-neutral-200 p-2 peer-focus:border-red-400"
+                    class="group flex justify-between rounded-lg border-2 border-neutral-300 p-2 hover:border-neutral-500"
                   >
                     <input
                       type="text"
-                      class="w-full bg-white focus:outline-none"
+                      class="peer w-full bg-white focus:outline-none"
                       placeholder="ex. Kortrijk or 8500"
                       id="pC"
                       v-model="city"
+                      peer
                     />
-                    <Clear @click="emptyInput()" class="cursor-pointer" />
+                    <Clear
+                      @click="emptyInput()"
+                      class="cursor-pointer rounded-full active:bg-red-200"
+                    />
                   </div>
                   <div></div>
                 </div>
@@ -87,39 +133,54 @@
         </div>
         <div>
           <h2 class="mb-3 text-lg font-semibold capitalize lg:text-2xl">Payment Methodes</h2>
-          <!-- <PaymentForm :methode="m" /> -->
-          <RadioGroup v-model="selected">
-            <RadioGroupOption class="" value="Online" v-slot="{ checked }">
+          <RadioGroup v-model="selectedMethode">
+            <RadioGroupOption
+              class="hover:border-neutral-500 focus:outline-none"
+              value="Online"
+              v-slot="{ checked }"
+            >
               <li
-                class="mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600"
+                class="mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600 focus:outline-none"
                 :class="{
-                  ' border-neutral-400  bg-neutral-100 text-neutral-900': checked,
-                  ' bg-none': !checked,
+                  ' border-neutral-400  bg-neutral-100 text-neutral-900  ': checked,
+                  ' bg-none  hover:border-neutral-500 ': !checked,
                 }"
               >
                 <div v-auto-animate>
                   <div class="flex justify-between">
-                    <span>Online Payment</span>
+                    <div class="flex gap-2">
+                      <Card />
+                      <span>Online Payment</span>
+                    </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
                   </div>
                   <div
-                    v-if="selected === 'Online'"
+                    v-if="selectedMethode === 'Online'"
                     class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
                   >
                     <form action="" class="w-full">
                       <div class="mb-3">
                         <label class="font-semibold" for="kaartnr">Cart Number</label>
-                        <input type="text" id="kaartnr" class="w-full px-1" />
+                        <input
+                          type="text"
+                          id="kaartnr"
+                          class="mt-2 h-auto w-full rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
+                        />
                       </div>
                       <div class="flex w-full flex-col justify-between gap-2">
-                        <div class="flex flex-col gap-3 lg:flex-row">
+                        <div class="flex flex-col items-center gap-3 lg:flex-row">
                           <label class="font-semibold" for="vdatum">Expire Date</label>
-                          <input class="px-1" type="month" id="vdatum" placeholder="02-2203" />
+                          <input
+                            class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
+                            type="month"
+                            id="vdatum"
+                            placeholder="02-2203"
+                          />
                         </div>
-                        <div class="flex flex-col gap-3 lg:flex-row">
+                        <div class="flex flex-col items-center gap-3 lg:flex-row">
                           <label class="font-semibold" for="CC">CVC / CVV</label>
                           <input
-                            class="px-1"
+                            class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
                             type="text"
                             maxlength="4"
                             placeholder="ex. 0157"
@@ -133,22 +194,25 @@
               </li>
             </RadioGroupOption>
 
-            <RadioGroupOption value="Mobile" v-slot="{ checked }">
+            <RadioGroupOption value="Mobile" class="focus:outline-none" v-slot="{ checked }">
               <li
-                class="mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600"
+                class="focus:outline-no ne mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600"
                 :class="{
-                  ' border-neutral-400  bg-neutral-100 text-neutral-900': checked,
-                  ' bg-none': !checked,
+                  ' border-neutral-400 bg-neutral-100 text-neutral-900 ': checked,
+                  ' bg-none  hover:border-neutral-500': !checked,
                 }"
               >
                 <div v-auto-animate>
                   <div class="flex justify-between">
-                    <span>Mobile Payment</span>
+                    <div class="flex gap-2">
+                      <Mobile />
+                      <span>Mobile Payment</span>
+                    </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
                   </div>
                   <div
-                    v-if="selected === 'Mobile'"
-                    class="mt-3 border-t-2 border-neutral-400 bg-neutral-100 py-3"
+                    v-if="selectedMethode === 'Mobile'"
+                    class="mt-3 flex items-center justify-center border-t-2 border-neutral-400 bg-neutral-100 py-3"
                   >
                     <QrcodeVue
                       value="https://www.youtube.com/watch?v=lpvT-Fciu-4"
@@ -165,47 +229,70 @@
       </div>
     </div>
     <!--Payment button-->
-    <div class="flex justify-center">
-      <button class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50">Pay</button>
+    <div class="flex justify-center p-6">
+      <button
+        class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 hover:bg-red-800"
+      >
+        Pay
+      </button>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { computed } from '@vue/reactivity'
-import { Ref, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import useCart from '../../composables/useCart'
-import PaymentForm from './components/PaymentForm.vue'
 import useUser from '../../composables/useUser'
-import { X as Clear, ChevronDown as Chevron, CheckCircle2 as Check } from 'lucide-vue-next'
-import { RadioGroup, RadioGroupOption, RadioGroupLabel } from '@headlessui/vue'
+import {
+  X as Clear,
+  ChevronDown as Chevron,
+  ChevronsUpDown as ListIcon,
+  CheckCircle2 as Check,
+  CreditCard as Card,
+  Smartphone as Mobile,
+} from 'lucide-vue-next'
+import {
+  RadioGroup,
+  RadioGroupOption,
+  RadioGroupLabel,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/vue'
 import { vAutoAnimate } from '@formkit/auto-animate'
 import QrcodeVue from 'qrcode.vue'
 
 export default {
   components: {
-    PaymentForm,
     RadioGroup,
     RadioGroupOption,
     RadioGroupLabel,
     Clear,
     Chevron,
+    ListIcon,
     Check,
     QrcodeVue,
+    Mobile,
+    Listbox,
+    Card,
+    ListboxButton,
+    ListboxOption,
+    ListboxOptions,
   },
 
   setup() {
     const route = useRoute()
-    const selected = ref('Online')
-    const showFormM = ref(false)
     const { user } = useUser()
+    const deliveryType = computed(() => route.query.type)
+    const { cart, getCartTotal } = useCart()
+
+    const selectedMethode = ref('')
     let times: string[] = []
     let time = new Date()
-    const { cart, getCartTotal } = useCart()
-    let m: Ref<string> = ref('')
-    const deliveryType = computed(() => route.query.type)
-    console.log(new Date().getHours())
-    const selectedTime = ref(times[0])
+    const selectedTime = ref('As soon as possible')
+
     const city = ref('')
     enum postalCodes {
       Heule = 8501,
@@ -218,13 +305,9 @@ export default {
       Aalbeke = 8511,
     }
 
-    watch(m, () => {
-      const newMethode = m
-      console.log(newMethode.value)
-    })
-
     watch(time, () => {
       makeTimes()
+      console.log(selectedTime.value)
     })
 
     watch(city, () => {
@@ -252,6 +335,7 @@ export default {
 
       let timeNumber = Number(timeString.replace(':', '.'))
       let timeList = []
+      timeList.push('As soon as possible')
       for (let i = 10; i < 23; i++) {
         for (let j = 0; j < 60; j += 15) {
           if (j == 0) {
@@ -269,16 +353,14 @@ export default {
         timeList = timeList.filter((t) => Number(t.replace(':', '.')) > timeNumber)
       }
       times = timeList
-      console.log(times)
+      console.log(times[0])
     }
     makeTimes()
 
     return {
       cart,
       user,
-      PaymentForm,
       getCartTotal,
-      m,
       makeTimes,
       times,
       postalCodes,
@@ -286,8 +368,7 @@ export default {
       selectedTime,
       city,
       emptyInput,
-      selected,
-      showFormM,
+      selectedMethode,
     }
   },
 }
