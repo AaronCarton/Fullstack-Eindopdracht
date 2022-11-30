@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { CreateOrderInput } from './dto/create-order.input'
 import { UpdateOrderInput } from './dto/update-order.input'
 import { PizzaService } from '../pizza/pizza.service'
@@ -11,33 +11,25 @@ import { UseGuards } from '@nestjs/common'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 import { RolesGuard } from 'src/auth/guards/role.guard'
 import { Role } from '../user/entities/user.entity'
+import { Review } from '../review/entities/review.entity'
+import { ReviewService } from '../review/review.service'
 
 @Resolver(() => Order)
 export class OrderResolver {
   constructor(
     private readonly orderService: OrderService,
     private readonly pizzaService: PizzaService,
+    private readonly reviewService: ReviewService,
   ) {}
 
   //////* FIELD RESOLVERS ///////
 
-  // @ResolveField()
-  // async total(@Parent() order: Order): Promise<number> {
-  //   const items = await Promise.all(
-  //     order.itemsIds.map((itemId) => this.pizzaService.findOne(itemId)),
-  //   )
-  //   console.log(items)
-
-  //   return items.reduce((total, item) => total + item.basePrice, 0)
-  // }
-
-  // @ResolveField()
-  // items(@Parent() order: Order): Promise<Pizza>[] {
-  //   return order.itemsIds.map(async (itemId) => {
-  //     const item = await this.pizzaService.findOne(itemId)
-  //     return item
-  //   })
-  // }
+  @ResolveField()
+  async review(@Parent() order: Order): Promise<Review> {
+    const rev = await this.reviewService.findOne(order.reviewId)
+    console.log('order review', rev, order.id)
+    return rev
+  }
 
   //////* USER ROUTES ///////
 

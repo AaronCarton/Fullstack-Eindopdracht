@@ -2,6 +2,7 @@ import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
 import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } from 'typeorm'
 import { ObjectId } from 'mongodb'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
+import { Review } from 'src/resources/review/entities/review.entity'
 
 export enum OrderStatus {
   'PENDING' = 'PENDING',
@@ -37,6 +38,14 @@ export class Order {
   @Field()
   @Column({ type: 'timestamp' })
   deliveryTime: Date
+
+  @Field(() => Review, { nullable: true })
+  @Column()
+  review: Review
+
+  @Field()
+  @Column()
+  reviewId: string
 
   // TODO: add service fees price
 
