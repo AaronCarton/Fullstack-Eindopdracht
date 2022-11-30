@@ -129,6 +129,26 @@
                 </div>
               </div>
             </div>
+            <div class="mt-3">
+              <a
+                class="cursor-pointer text-sm font-semibold text-red-600"
+                @click="
+                  $router.replace({
+                    name: $route.name!,
+                    query: {
+                      ...$route.query,
+                      type: deliveryType === 'takeaway' ? 'delivery' : 'takeaway',
+                    },
+                  })
+                "
+              >
+                Switch to
+                <span class="font-bold">{{
+                  deliveryType === 'takeaway' ? 'delivery' : 'takeaway'
+                }}</span>
+                instead?
+              </a>
+            </div>
           </div>
         </div>
         <div>

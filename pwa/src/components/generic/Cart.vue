@@ -3,7 +3,15 @@
     <div class="overflow-hidden">
       <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold">Order</h2>
-        <a class="font-medium capitalize">{{ deliveryType }}</a>
+        <div class="flex items-center gap-2">
+          <a class="font-medium capitalize">{{ deliveryType }}</a>
+          <template v-if="deliveryType === 'takeaway'">
+            <Home class="h-5 w-5" />
+          </template>
+          <template v-else>
+            <Car class="h-6 w-6" />
+          </template>
+        </div>
       </div>
       <div v-auto-animate class="scrollbar_cart h-[90%] overflow-y-auto overflow-x-hidden">
         <div v-for="{ id, item } in cart" class="w-full py-4 px-2">
@@ -62,7 +70,7 @@
 <script lang="ts">
 import { vAutoAnimate } from '@formkit/auto-animate'
 import useCart from '../../composables/useCart'
-import { Trash as Delete, Pencil as Edit } from 'lucide-vue-next'
+import { Trash as Delete, Pencil as Edit, Home, Car } from 'lucide-vue-next'
 import { countDuplicates } from '../../bootstrap/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
@@ -70,6 +78,8 @@ import { query } from 'express'
 
 export default {
   components: {
+    Car,
+    Home,
     Delete,
     Edit,
   },
