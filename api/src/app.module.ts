@@ -7,6 +7,7 @@ import { DatabaseSeedModule } from './seed/seed.module'
 import { UserModule } from './resources/user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { NotificationsModule } from './notifications/notifications.module'
+import { ItemModule } from './resources/item/item.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { NotificationsModule } from './notifications/notifications.module'
     NotificationsModule,
     DatabaseSeedModule,
     AuthModule,
+    ItemModule,
   ],
   controllers: [],
   providers: [],
