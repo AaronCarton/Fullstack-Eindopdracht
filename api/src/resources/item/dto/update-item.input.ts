@@ -4,18 +4,18 @@ import { ItemType } from '../entities/item.entity'
 
 @InputType()
 export class UpdateItemInput extends PartialType(CreateItemInput) {
-  @Field()
+  @Field({ nullable: true })
   name: string
 
-  @Field()
+  @Field({ nullable: true })
   description: string
 
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
   price: number
 
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
   stock: number
 
-  @Field(() => ItemType)
+  @Field(() => ItemType, { nullable: true })
   category: ItemType
 }

@@ -2,6 +2,7 @@ import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql'
 import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } from 'typeorm'
 import { ObjectId } from 'mongodb'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
+import { Item } from 'src/resources/item/entities/item.entity'
 
 export enum OrderStatus {
   'PENDING' = 'PENDING',
@@ -25,6 +26,10 @@ export class Order {
   @Field(() => [Pizza])
   @Column()
   items: Pizza[]
+
+  @Field(() => [Item])
+  @Column()
+  extras: Item[]
 
   @Field(() => OrderStatus, { defaultValue: OrderStatus.COOKING })
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.COOKING })
