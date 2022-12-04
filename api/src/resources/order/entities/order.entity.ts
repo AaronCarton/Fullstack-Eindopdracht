@@ -43,6 +43,10 @@ export class Order {
   @Column({ type: 'timestamp' })
   deliveryTime: Date
 
+  @Field()
+  @Column()
+  paymentMethod: string
+
   // TODO: add service fees price
 
   @Field()

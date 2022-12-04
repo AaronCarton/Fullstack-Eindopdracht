@@ -359,15 +359,18 @@ import { vAutoAnimate } from '@formkit/auto-animate'
 import QrcodeVue from 'qrcode.vue'
 import { filter } from 'graphql-anywhere'
 import { useMutation } from '@vue/apollo-composable'
-import { computed, reactive } from '@vue/reactivity'
-import { Ref, ref, watch } from 'vue'
+import { computed } from '@vue/reactivity'
+import { ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 
 import useCart from '../../composables/useCart'
 import useUser from '../../composables/useUser'
-import PaymentForm from './components/PaymentForm.vue'
-import { CREATE_ORDER, ORDER_INPUT_FRAGMENT } from '../../graphql/mutation.order'
+import {
+  CREATE_ORDER,
+  ORDER_INPUT_FRAGMENT,
+  EXTRA_INPUT_FRAGMENT,
+} from '../../graphql/mutation.order'
 
 export default {
   components: {
@@ -395,7 +398,7 @@ export default {
     const deliveryType = computed(() => route.query.type)
     const { cart, getCartTotal } = useCart()
 
-    const selectedMethode = ref('')
+    const selectedMethod = ref('')
     let times: string[] = []
     let time = new Date()
     const selectedTime = ref('As soon as possible')
@@ -412,19 +415,30 @@ export default {
       Aalbeke = 8511,
     }
     const submitOrder = async () => {
+      if (selectedMethod.value === '') {
+        toast.error('Please select a payment method')
+        return
+      }
       console.log('submitting order', cart.value)
 
       // filter cart items to match the correct OrderInput
       let orderItems = filter(
         ORDER_INPUT_FRAGMENT,
-        cart.value.map((ci) => ci.item),
+        cart.value.items.map((ci) => ci.item),
       )
+      let extraItems = filter(
+        EXTRA_INPUT_FRAGMENT,
+        cart.value.extras.map((ci) => ci.item),
+      )
+
       // create order mutation
       const { mutate: addOrder } = useMutation(CREATE_ORDER, () => ({
         variables: {
           items: orderItems,
-          time: Date.now(),
+          extras: extraItems,
           address: 'test',
+          time: Date.now(),
+          paymentMethod: selectedMethod.value.toUpperCase(),
         },
       }))
 
@@ -496,7 +510,7 @@ export default {
       deliveryType,
       selectedTime,
       city,
-      selectedMethode,
+      selectedMethode: selectedMethod,
 
       getCartTotal,
       submitOrder,

@@ -184,6 +184,7 @@
       "address": "Vogellaan 1, 1234 AB, Amsterdam",
       "deliveryTime": "1669829304451",
       "reviewId": "63879df46ceca7c179a0e6e6",
+      "paymentMethod": "VISA",
       "items": [
         {
           "basePrice": 13.43,
@@ -225,6 +226,7 @@
       "status": "COOKING",
       "address": "Vogellaan 1, 1234 AB, Amsterdam",
       "deliveryTime": "1669597195925",
+      "paymentMethod": "PAYPAL",
       "extras": [
         {
           "category": "drink",
