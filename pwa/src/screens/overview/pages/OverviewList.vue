@@ -1,21 +1,28 @@
 <template>
   <div>
-    <div
-      v-if="items"
-      class="grid-rows-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-    >
-      <Card
-        v-for="item of items"
-        :key="item.id"
-        :type="section === 'pizzas' ? 'items' : 'extras'"
-        :item="item"
-      />
-    </div>
-    <div v-else>
-      <div class="col-span-3">
-        <p class="text-center text-2xl font-semibold">Loading...</p>
+    <template v-if="items">
+      <div
+        v-if="items.length > 0"
+        class="grid-rows-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      >
+        <Card
+          v-for="item of items"
+          :key="item.id"
+          :type="section === 'pizzas' ? 'items' : 'extras'"
+          :item="item"
+        />
       </div>
-    </div>
+      <div v-else>
+        <div class="col-span-3">
+          <p class="mt-20 text-center text-2xl font-semibold text-white">Loading...</p>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="col-span-3">
+        <p class="mt-20 text-center text-2xl font-semibold text-white">No items found</p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -23,7 +30,7 @@
 import Card from '../components/Card.vue'
 import { useQuery } from '@vue/apollo-composable'
 import { PIZZAS } from '../../../graphql/query.pizza'
-import { DRINKS } from '../../../graphql/query.item'
+import { DRINKS, DESSERTS } from '../../../graphql/query.item'
 import { watch, ref } from 'vue'
 
 export default {
@@ -60,8 +67,14 @@ export default {
             items.value = result.data.extraItemsByCategory
           })
           break
+        case 'desserts':
+          const { onResult: deRes } = useQuery(DESSERTS)
+          deRes((result) => {
+            items.value = result.data.extraItemsByCategory
+          })
+          break
         default:
-          items.value = []
+          items.value = null
           break
       }
     }

@@ -14,3 +14,18 @@ export const DRINKS = gql`
     }
   }
 `
+
+export const DESSERTS = gql`
+  query {
+    extraItemsByCategory(category: "dessert") {
+      id
+      name
+      description
+      category
+      price
+      stock
+      createdAt
+      updatedAt
+    }
+  }
+`

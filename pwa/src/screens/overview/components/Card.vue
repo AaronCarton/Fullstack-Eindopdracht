@@ -1,5 +1,5 @@
 <template>
-  <div class="col-span-1 row-span-5 row-start-auto rounded-lg bg-white">
+  <div class="col-span-1 row-span-5 row-start-auto flex flex-col rounded-lg bg-white">
     <div class="relative h-40">
       <template v-if="outOfStock">
         <div
@@ -13,7 +13,7 @@
         class="h-full w-full rounded-t-lg object-cover object-top"
       />
     </div>
-    <div class="flex flex-col p-3">
+    <div class="flex grow flex-col p-3">
       <p class="mb-2 text-2xl font-semibold">{{ item.name }}</p>
 
       <p class="mb-6 overflow-hidden text-sm font-semibold text-neutral-400">
@@ -31,9 +31,10 @@
       <div class="mt-auto flex items-center justify-between">
         <p class="text-xl font-semibold">
           €{{
-            isPizza(item)
+            (isPizza(item)
               ? item.toppings.reduce((total, t) => total + t.price, item.basePrice)
               : item.price
+            ).toFixed(2)
           }}
         </p>
         <button

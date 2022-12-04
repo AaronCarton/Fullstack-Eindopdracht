@@ -6,24 +6,18 @@
           <Home class="fill h-6 w-6" />
         </RouterLink>
       </li>
-      <li class="text-neutral-400">|</li>
-      <li>
-        <button
-          class="text-xl font-bold text-neutral-900 hover:text-neutral-600"
-          @click="sectionChange('pizzas')"
-        >
-          Pizza
-        </button>
-      </li>
-      <li class="text-neutral-400">|</li>
-      <li>
-        <button
-          class="text-xl font-bold text-neutral-900 hover:text-neutral-600"
-          @click="sectionChange('drinks')"
-        >
-          Drinks
-        </button>
-      </li>
+      <li class="text-neutral-400 last:hidden">|</li>
+      <template v-for="section in sections">
+        <li>
+          <button
+            class="text-xl font-bold capitalize text-neutral-900 hover:text-neutral-600"
+            @click="sectionChange(section)"
+          >
+            {{ section }}
+          </button>
+        </li>
+        <li class="text-neutral-400 last:hidden">|</li>
+      </template>
     </ul>
   </div>
 </template>
@@ -43,7 +37,8 @@ export default {
   },
 
   setup() {
-    return {}
+    const sections = ['pizzas', 'drinks', 'desserts']
+    return { sections }
   },
 }
 </script>
