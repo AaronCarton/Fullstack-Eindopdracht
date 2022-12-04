@@ -1,49 +1,40 @@
 <template>
   <div>
     <OverviewNav
+      :section-change="sectionChange"
       class="col-start-1 col-end-5 row-start-1 row-end-1 mb-5 flex h-14 w-full items-center"
     />
     <div class="scrollbar col-span-4 row-span-2 row-start-2 h-[90%] overflow-y-auto p-3">
-      <div
-        v-if="pizzas"
-        class="grid-rows-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      >
-        <Card v-for="p of pizzas" :key="p.id" :pizza="p" />
-      </div>
-      <div v-else>
-        <div class="col-span-3">
-          <p class="text-center text-2xl font-semibold">Loading...</p>
-        </div>
-      </div>
+      <OverviewList :section="currSection" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed } from 'vue'
+import { computed, ref, Ref } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import { PIZZAS } from '../../../graphql/query.pizza'
 import Pizza from '../../../interfaces/pizza.interface'
 
-import Card from '../components/Card.vue'
 import OverviewNav from '../components/OverviewNav.vue'
+import OverviewList from './OverviewList.vue'
 
 export default {
   components: {
+    OverviewList,
     OverviewNav,
-    Card,
   },
   setup() {
-    const { result, loading, error } = useQuery(PIZZAS)
+    let currSection: Ref<string> = ref('pizzas')
 
-    const pizzas = computed(() => (result.value?.pizzas as Pizza[]) ?? [])
+    const sectionChange = (section: string) => {
+      currSection.value = section
+      console.log('section change to', currSection.value)
+    }
 
     return {
-      result,
-      loading,
-      error,
-
-      pizzas,
+      currSection,
+      sectionChange,
     }
   },
 }

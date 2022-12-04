@@ -1,12 +1,15 @@
 import { useQuery } from '@vue/apollo-composable'
 import { computed, Ref, ref, watch } from 'vue'
 import { TOPPINGS } from '../graphql/query.topping'
-import CartItem from '../interfaces/cartItem.interface'
+import Cart, { CartItem, ExtraCartItem } from '../interfaces/cart.interface'
+import ExtraItem from '../interfaces/extraItem.interface'
 import Pizza, { PizzaSize, PizzaType } from '../interfaces/pizza.interface'
 import Topping from '../interfaces/topping.interface'
 
-const cart: Ref<CartItem[]> = ref(
-  localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart') as string) : [],
+const cart: Ref<Cart> = ref(
+  localStorage.getItem('cart')
+    ? JSON.parse(localStorage.getItem('cart') as string)
+    : { items: [], extras: [] },
 )
 
 const databaseToppings: Ref<Topping[]> = ref([])
@@ -32,7 +35,7 @@ export default () => {
     // take note of toppings that are being used by items in the cart
     // iterate through each cart item's toppings and lower the topping stock by 1
     allToppings.value = fullToppings.map((topping) => {
-      cart.value.forEach(({ item }) => {
+      cart.value.items.forEach(({ item }) => {
         item.toppings.forEach((t) => {
           if (t.id === topping.id) {
             console.log(
@@ -52,11 +55,14 @@ export default () => {
     })
   }
 
-  const updateCart = (updateCallback: (cart: CartItem[]) => any) => {
+  const updateCart = (
+    type: 'items' | 'extras',
+    updateCallback: (cart: CartItem[] | ExtraCartItem[]) => (CartItem | ExtraCartItem)[],
+  ) => {
     // get new cart from callback
-    const newCart = updateCallback(cart.value)
+    const newCart = updateCallback(cart.value[type])
     // update cart
-    cart.value = newCart
+    cart.value = { ...cart.value, [type]: newCart }
     // calculate new topping stock
     console.log('Updating cart')
 
@@ -65,42 +71,50 @@ export default () => {
     localStorage.setItem('cart', JSON.stringify(newCart))
   }
 
-  const findItem = (id: string) => {
-    return cart.value.find((item) => item.id === id)
+  const findItem = (type: 'items' | 'extras', id: string) => {
+    return type === 'items'
+      ? cart.value.items.find((item) => item.id === id)
+      : cart.value.extras.find((item) => item.id === id)
   }
 
-  const addToCart = (pizza: Pizza) => {
-    const item: CartItem = {
+  const addToCart = (type: 'items' | 'extras', item: Pizza | ExtraItem) => {
+    const newItem = {
       id: Date.now().toString(),
-      item: { ...pizza, type: PizzaType.Classic, size: PizzaSize.Medium },
+      item: { ...item },
     }
-    updateCart((cart) => [...cart, item])
-    return item
+    if (type === 'items') {
+      newItem.item = { ...item, type: PizzaType.Classic, size: PizzaSize.Medium }
+    }
+    updateCart(type, (cart) => [...cart, newItem as CartItem | ExtraCartItem])
+    return newItem
   }
   const updateCartItem = (id: string, callback: (cartItem: CartItem) => CartItem) => {
-    const index = cart.value?.findIndex((item) => item.id === id)
-    let item = cart.value[index]
+    const index = cart.value.items?.findIndex((item) => item.id === id)
+    let item = cart.value.items[index]
     if (item) {
       // get item from callback
       item = callback(item)
       // update cart
-      updateCart((cart) => {
+      updateCart('items', (cart) => {
         cart[index] = item
         return cart
       })
     }
   }
 
-  const removeFromCart = (itemId: string) => {
-    const index = cart.value?.findIndex((item) => item.id === itemId)
+  const removeFromCart = (type: 'items' | 'extras', itemId: string) => {
+    const index = cart.value[type]?.findIndex((item) => item.id === itemId)
     if (index !== -1) {
-      updateCart((cart) => {
+      updateCart(type, (cart) => {
         cart.splice(index, 1)
         return cart
       })
     }
   }
-  const clearCart = () => updateCart(() => [])
+  const clearCart = () => {
+    updateCart('items', () => [])
+    updateCart('extras', () => [])
+  }
 
   // return price of pizza plus toppings and type
   const getCartItemPrice = (cartItem: CartItem) => {
@@ -111,10 +125,14 @@ export default () => {
     else if (cartItem.item.size === 'large') pizzaPrice += 3
     return pizzaPrice + toppingsPrice + typePrice
   }
-  // return total price of all items in cart
 
+  // return total price of all items in cart
   const getCartTotal = () => {
-    return cart.value.reduce((acc, item) => acc + getCartItemPrice(item), 0).toFixed(2)
+    const itemsTotal = cart.value.items
+      .reduce((acc, item) => acc + getCartItemPrice(item), 0)
+      .toFixed(2)
+    const extrasTotal = cart.value.extras.reduce((acc, item) => acc + item.item.price, 0).toFixed(2)
+    return (parseFloat(itemsTotal) + parseFloat(extrasTotal)).toFixed(2)
   }
 
   return {

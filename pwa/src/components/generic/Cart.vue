@@ -14,40 +14,25 @@
         </div>
       </div>
       <div v-auto-animate class="scrollbar_cart h-[90%] overflow-y-auto overflow-x-hidden">
-        <div v-for="{ id, item } in cart" class="w-full py-4 px-2">
-          <div class="flex items-center justify-between">
-            <h2 class="justify-self-start text-xl font-medium">{{ item.name }}</h2>
-            <!-- TODO calculate price -->
-            <p class="self-end justify-self-end text-xl">€{{ priceItem(item) }}</p>
-          </div>
-          <div>
-            <div class="flex justify-between">
-              <p
-                class="whitespace-nowrap align-middle text-sm font-medium capitalize text-neutral-400"
-              >
-                {{ item.size }} {{ item.type }}
-              </p>
-              <!-- TODO: add edit and delete button -->
-              <div class="flex gap-3">
-                <Edit class="h-4 w-4 cursor-pointer" @click="editItem(id, item)" />
-                <Delete class="h-4 w-4 cursor-pointer text-red-700" @click="deleteItem(id, item)" />
-              </div>
-            </div>
-            <p
-              v-if="item.toppings.filter((t) => t.default === false).length > 0"
-              class="align-middle text-sm font-medium text-neutral-400"
-            >
-              <span class="align-baseline text-xl leading-none text-green-500">+</span>
-              {{
-                // filter out the base topping, map the names, and count the duplicates
-                countDuplicates(item.toppings.filter((t) => t.default === false).map((t) => t.name))
-                  // map  [ [ "Olive", 3 ], [ "Spicy meat", 2 ], [ "Mushroom", 1 ] ]
-                  // to "3x Olive, 2x Spicy meat, Mushroom"
-                  .map((t) => (t[1] > 1 ? `${t[1]}x ${t[0]}` : t[0]))
-                  .join(', ')
-              }}
-            </p>
-          </div>
+        <div v-for="{ id, item } in cart.items" class="w-full py-4 px-2">
+          <CartItem
+            :key="id"
+            type="items"
+            :id="id"
+            :item="item"
+            :edit-item="editItem"
+            :delete-item="deleteItem"
+          />
+        </div>
+        <div v-for="{ id, item } in cart.extras" class="w-full py-4 px-2">
+          <CartItem
+            :key="id"
+            type="extras"
+            :id="id"
+            :item="item"
+            :edit-item="editItem"
+            :delete-item="deleteItem"
+          />
         </div>
       </div>
     </div>
@@ -71,10 +56,12 @@
 import { vAutoAnimate } from '@formkit/auto-animate'
 import useCart from '../../composables/useCart'
 import { Trash as Delete, Pencil as Edit, Home, Car } from 'lucide-vue-next'
-import { countDuplicates } from '../../bootstrap/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
-import { query } from 'express'
+
+import CartItem from './CartItem.vue'
+import ExtraItem from '../../interfaces/extraItem.interface'
+import Pizza from '../../interfaces/pizza.interface'
 
 export default {
   components: {
@@ -82,6 +69,7 @@ export default {
     Home,
     Delete,
     Edit,
+    CartItem,
   },
   setup() {
     const { cart, removeFromCart, getCartTotal, getCartItemPrice } = useCart()
@@ -101,31 +89,16 @@ export default {
       })
     }
 
-    //Calculate price of cart item based on size , type and toppings
-    const priceItem = (item: any) => {
-      let price = item.basePrice
-      if (item.type === 'cheesyCrust') price += 5
-
-      if (item.size === 'small') price -= 3
-      else if (item.size === 'large') price += 3
-      //@ts-ignore
-      return item.toppings.reduce((total, t) => total + t.price, price).toFixed(2)
-    }
-
-    // const totalPrice = () => {
-    //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
-    // }
-
-    const editItem = (id: string, item: any) => {
+    const editItem = (id: string, item: Pizza | ExtraItem) => {
       push({
         name: 'customize',
         params: { id: item.id },
         query: { item: id, type: searchQuery.value.type },
       })
     }
-    const deleteItem = (id: string, item: any) => {
+    const deleteItem = (id: string, type: 'items' | 'extras') => {
       const isCurrentItem = searchQuery.value.item == id
-      removeFromCart(id)
+      removeFromCart(type, id)
       // TODO: remove from localstorage
 
       if (isCurrentItem) {
@@ -136,15 +109,17 @@ export default {
       }
     }
 
+    // const totalPrice = () => {
+    //   return cart.value.reduce((acc, { item }) => acc + Number(priceItem(item)), 0).toFixed(2)
+    // }
+
     return {
       cart,
       deliveryType: searchQuery.value.type,
       isNotPayment,
       editItem,
       deleteItem,
-      countDuplicates,
       getCartTotal,
-      priceItem,
       checkout,
     }
   },

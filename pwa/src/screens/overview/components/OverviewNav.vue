@@ -10,7 +10,7 @@
       <li>
         <button
           class="text-xl font-bold text-neutral-900 hover:text-neutral-600"
-          @click="cat = 'Pizza'"
+          @click="sectionChange('pizzas')"
         >
           Pizza
         </button>
@@ -19,7 +19,7 @@
       <li>
         <button
           class="text-xl font-bold text-neutral-900 hover:text-neutral-600"
-          @click="cat = 'Drank'"
+          @click="sectionChange('drinks')"
         >
           Drinks
         </button>
@@ -33,22 +33,18 @@ import { ref, Ref, watch } from 'vue'
 import { Home } from 'lucide-vue-next'
 
 export default {
+  props: {
+    sectionChange: {
+      type: Function,
+      required: true,
+    },
+  },
   components: {
     Home,
   },
 
   setup() {
-    let cat: Ref<String> = ref('Pizza')
-
-    watch(cat, () => {
-      const newCat = cat
-
-      console.log(newCat.value)
-    })
-
-    return {
-      cat,
-    }
+    return {}
   },
 }
 </script>
