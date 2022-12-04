@@ -4,17 +4,21 @@ import { Item } from './entities/item.entity'
 import { CreateItemInput } from './dto/create-item.input'
 import { UpdateItemInput } from './dto/update-item.input'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
+import { UseGuards } from '@nestjs/common'
+import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
+import { RolesGuard } from 'src/auth/guards/role.guard'
+import { Role } from '../user/entities/user.entity'
 
 @Resolver(() => Item)
 export class ItemResolver {
   constructor(private readonly itemService: ItemService) {}
 
-  @Mutation(() => Item)
-  createItem(@Args('createItemInput') createItemInput: CreateItemInput) {
-    return this.itemService.create(createItemInput)
+  @Query(() => [Item], { name: 'extraItemsByCategory' })
+  findByCategory(@Args('category', { type: () => String }) category: string) {
+    return this.itemService.findByCategory(category)
   }
 
-  @Query(() => [Item], { name: 'item' })
+  @Query(() => [Item], { name: 'items' })
   findAll() {
     return this.itemService.findAll()
   }
@@ -24,6 +28,15 @@ export class ItemResolver {
     return this.itemService.findOne(id)
   }
 
+  //////* ADMIN ROUTES ///////
+
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
+  @Mutation(() => Item)
+  createItem(@Args('createItemInput') createItemInput: CreateItemInput) {
+    return this.itemService.create(createItemInput)
+  }
+
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => Item)
   async updateItem(
     @Args('id', { type: () => String }) id: string,
@@ -34,6 +47,7 @@ export class ItemResolver {
     return this.itemService.findOne(id)
   }
 
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => ClientMessage)
   removeItem(@Args('id', { type: () => String }) id: string) {
     return new Promise((resolve) =>

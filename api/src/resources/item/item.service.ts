@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateItemInput } from './dto/create-item.input'
 import { UpdateItemInput } from './dto/update-item.input'
-import { Item } from './entities/item.entity'
+import { Item, ItemType } from './entities/item.entity'
 
 @Injectable()
 export class ItemService {
@@ -22,6 +22,10 @@ export class ItemService {
 
   findOne(id: string) {
     return this.itemRepo.findOne(new ObjectId(id))
+  }
+
+  findByCategory(category: string) {
+    return this.itemRepo.findBy({ category: ItemType[category] })
   }
 
   update(id: string, updateItemInput: UpdateItemInput) {
