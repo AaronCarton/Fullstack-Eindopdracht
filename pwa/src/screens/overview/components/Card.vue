@@ -1,7 +1,7 @@
 <template>
   <div class="col-span-1 row-span-5 row-start-auto rounded-lg bg-white">
     <div class="relative h-40">
-      <template v-if="outOfStock()">
+      <template v-if="outOfStock">
         <div
           class="absolute flex h-full w-full items-center justify-center rounded-t-lg bg-gray-800 bg-opacity-80"
         >
@@ -9,36 +9,35 @@
         </div>
       </template>
       <img
-        :src="`/${type === 'items' ? 'pizza' : (item as ExtraItem).category}s/${item.name}.jpg`"
+        :src="`/${isPizza(item) ? 'pizza' : item.category}s/${item.name}.jpg`"
         class="h-full w-full rounded-t-lg object-cover object-top"
       />
     </div>
     <div class="flex flex-col p-3">
       <p class="mb-2 text-2xl font-semibold">{{ item.name }}</p>
-      <template v-if="type === 'items'">
-        <p class="mb-6 h-10 overflow-hidden text-sm font-semibold text-neutral-400">
-          {{
-            (item as Pizza).toppings
-              .map((t) => t.name)
-              .toString()
-              .split(',')
-              .join(', ')
-          }}
-        </p>
-      </template>
-      <div class="flex items-center justify-between">
+
+      <p class="mb-6 overflow-hidden text-sm font-semibold text-neutral-400">
+        {{
+          isPizza(item)
+            ? item.toppings
+                .map((t) => t.name)
+                .toString()
+                .split(',')
+                .join(', ')
+            : item.description
+        }}
+      </p>
+
+      <div class="mt-auto flex items-center justify-between">
         <p class="text-xl font-semibold">
           €{{
-            type === 'items'
-              ? (item as Pizza).toppings.reduce(
-                  (total, t) => total + t.price,
-                  (item as Pizza).basePrice,
-                )
-              : (item as ExtraItem).price
+            isPizza(item)
+              ? item.toppings.reduce((total, t) => total + t.price, item.basePrice)
+              : item.price
           }}
         </p>
         <button
-          :disabled="outOfStock()"
+          :disabled="outOfStock"
           @click="addItem(item)"
           class="self-center rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 disabled:opacity-50"
         >
@@ -53,14 +52,10 @@
 import { useRoute, useRouter } from 'vue-router'
 import useCart from '../../../composables/useCart'
 import ExtraItem from '../../../interfaces/extraItem.interface'
-import Pizza from '../../../interfaces/pizza.interface'
+import Pizza, { isPizza } from '../../../interfaces/pizza.interface'
 
 export default {
   props: {
-    type: {
-      type: String as () => 'items' | 'extras',
-      required: true,
-    },
     item: {
       type: Object as () => Pizza | ExtraItem,
       required: true,
@@ -72,8 +67,8 @@ export default {
     const { cart, addToCart } = useCart()
 
     const addItem = (item: Pizza | ExtraItem) => {
-      const cartItem = addToCart(props.type, item)
-      if (props.type === 'items')
+      const cartItem = addToCart(item)
+      if (isPizza(item))
         push({
           name: 'customize',
           params: { id: item.id },
@@ -81,16 +76,12 @@ export default {
         })
     }
 
-    const outOfStock = () => {
-      if (props.type === 'items') {
-        const item = props.item as Pizza
-        return item.toppings.some((t) => t.stock === 0)
-      } else {
-        const item = props.item as ExtraItem
-        return item.stock === 0
-      }
-    }
+    const outOfStock = isPizza(props.item)
+      ? props.item.toppings.some((t) => t.stock === 0)
+      : props.item.stock === 0
+
     return {
+      isPizza,
       addItem,
       outOfStock,
     }

@@ -92,6 +92,7 @@ import Pizza, { PizzaSize, PizzaType } from '../../../interfaces/pizza.interface
 import { TOPPINGS } from '../../../graphql/query.topping'
 import Topping from '../../../interfaces/topping.interface'
 import { useToast } from 'vue-toastification'
+import { CartItem } from '../../../interfaces/cart.interface'
 
 export default {
   components: {
@@ -110,7 +111,7 @@ export default {
       id: params.id,
     })
 
-    const orderItem = computed(() => findItem(`${query.item}`))
+    const orderItem = computed(() => findItem('items', `${query.item}`) as CartItem | undefined)
 
     watch(pRes, (res: any) => {
       pizza.value = res.pizza as Pizza

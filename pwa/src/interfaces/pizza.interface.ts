@@ -1,5 +1,7 @@
 import Topping from './topping.interface'
 
+export const isPizza = (item: any): item is Pizza => (item as Pizza).toppings !== undefined
+
 export default interface Pizza {
   id: string
   name: string

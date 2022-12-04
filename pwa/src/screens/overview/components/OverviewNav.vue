@@ -29,7 +29,6 @@
 </template>
 
 <script lang="ts">
-import { ref, Ref, watch } from 'vue'
 import { Home } from 'lucide-vue-next'
 
 export default {

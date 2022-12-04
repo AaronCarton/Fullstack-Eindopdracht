@@ -1,9 +1,9 @@
 import { useQuery } from '@vue/apollo-composable'
-import { computed, Ref, ref, watch } from 'vue'
+import { Ref, ref } from 'vue'
 import { TOPPINGS } from '../graphql/query.topping'
 import Cart, { CartItem, ExtraCartItem } from '../interfaces/cart.interface'
 import ExtraItem from '../interfaces/extraItem.interface'
-import Pizza, { PizzaSize, PizzaType } from '../interfaces/pizza.interface'
+import Pizza, { isPizza, PizzaSize, PizzaType } from '../interfaces/pizza.interface'
 import Topping from '../interfaces/topping.interface'
 
 const cart: Ref<Cart> = ref(
@@ -68,7 +68,9 @@ export default () => {
 
     calculateToppingStock()
     // save cart to local storage
-    localStorage.setItem('cart', JSON.stringify(newCart))
+    console.log('Saving cart to local storage', newCart)
+
+    localStorage.setItem('cart', JSON.stringify(cart.value))
   }
 
   const findItem = (type: 'items' | 'extras', id: string) => {
@@ -77,15 +79,18 @@ export default () => {
       : cart.value.extras.find((item) => item.id === id)
   }
 
-  const addToCart = (type: 'items' | 'extras', item: Pizza | ExtraItem) => {
+  const addToCart = (item: Pizza | ExtraItem) => {
     const newItem = {
       id: Date.now().toString(),
       item: { ...item },
     }
-    if (type === 'items') {
+    if (isPizza(item)) {
       newItem.item = { ...item, type: PizzaType.Classic, size: PizzaSize.Medium }
     }
-    updateCart(type, (cart) => [...cart, newItem as CartItem | ExtraCartItem])
+    updateCart(isPizza(item) ? 'items' : 'extras', (cart) => [
+      ...cart,
+      newItem as CartItem | ExtraCartItem,
+    ])
     return newItem
   }
   const updateCartItem = (id: string, callback: (cartItem: CartItem) => CartItem) => {

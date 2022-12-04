@@ -11,10 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ref, Ref } from 'vue'
-import { useQuery } from '@vue/apollo-composable'
-import { PIZZAS } from '../../../graphql/query.pizza'
-import Pizza from '../../../interfaces/pizza.interface'
+import { ref, Ref } from 'vue'
 
 import OverviewNav from '../components/OverviewNav.vue'
 import OverviewList from './OverviewList.vue'
@@ -29,7 +26,6 @@ export default {
 
     const sectionChange = (section: string) => {
       currSection.value = section
-      console.log('section change to', currSection.value)
     }
 
     return {

@@ -42,7 +42,6 @@ export default {
     watch(
       () => props.section,
       () => {
-        console.log('ovvereve section change to', props.section)
         getItems()
       },
     )
@@ -53,14 +52,12 @@ export default {
           const { onResult: pRes } = useQuery(PIZZAS)
           pRes((result) => {
             items.value = result.data.pizzas
-            console.log('pizzas', items.value)
           })
           break
         case 'drinks':
           const { onResult: dRes } = useQuery(DRINKS)
           dRes((result) => {
             items.value = result.data.extraItemsByCategory
-            console.log('drinks', items.value)
           })
           break
         default:

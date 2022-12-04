@@ -15,3 +15,5 @@ export enum ExtraItemType {
   SPECIAL = 'special',
   APPETIZER = 'appetizer',
 }
+
+export const isExtraItem = (item: any): item is ExtraItem => (item as ExtraItem).stock !== undefined

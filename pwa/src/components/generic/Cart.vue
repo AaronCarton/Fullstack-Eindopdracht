@@ -61,7 +61,7 @@ import { computed } from '@vue/reactivity'
 
 import CartItem from './CartItem.vue'
 import ExtraItem from '../../interfaces/extraItem.interface'
-import Pizza from '../../interfaces/pizza.interface'
+import Pizza, { isPizza } from '../../interfaces/pizza.interface'
 
 export default {
   components: {
@@ -90,15 +90,16 @@ export default {
     }
 
     const editItem = (id: string, item: Pizza | ExtraItem) => {
-      push({
-        name: 'customize',
-        params: { id: item.id },
-        query: { item: id, type: searchQuery.value.type },
-      })
+      if (isPizza(item))
+        push({
+          name: 'customize',
+          params: { id: item.id },
+          query: { item: id, type: searchQuery.value.type },
+        })
     }
-    const deleteItem = (id: string, type: 'items' | 'extras') => {
+    const deleteItem = (id: string, item: Pizza | ExtraItem) => {
       const isCurrentItem = searchQuery.value.item == id
-      removeFromCart(type, id)
+      removeFromCart(isPizza(item) ? 'items' : 'extras', id)
       // TODO: remove from localstorage
 
       if (isCurrentItem) {
