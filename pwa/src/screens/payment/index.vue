@@ -166,7 +166,7 @@
                   <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
                       <img class="h-6 w-auto rounded" :src="bancontactURL" alt="" srcset="" />
-                      <span>Payconiq</span>
+                      <span>Bancontact</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
                   </div>
