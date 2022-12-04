@@ -16,6 +16,8 @@ export class DatabaseSeedCommand {
     console.log('adding toppings', t)
     const p = await this.seedService.addPizzas()
     console.log('adding pizzas', p)
+    const i = await this.seedService.addItems()
+    console.log('adding items', i)
     const o = await this.seedService.addOrders()
     console.log('adding orders', o)
     console.log('🌱 Seeding done 🏁')

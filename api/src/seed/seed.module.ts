@@ -6,9 +6,10 @@ import { CommandModule } from 'nestjs-command' //https://www.npmjs.com/package/n
 import { Topping } from 'src/resources/topping/entities/topping.entity'
 import { Order } from 'src/resources/order/entities/order.entity'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
+import { Item } from 'src/resources/item/entities/item.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Pizza, Topping, Order]), CommandModule], //<---import CommandModule
+  imports: [TypeOrmModule.forFeature([Pizza, Topping, Item, Order]), CommandModule], //<---import CommandModule
   providers: [DatabaseSeedCommand, DatabaseSeedService],
 })
 export class DatabaseSeedModule {}

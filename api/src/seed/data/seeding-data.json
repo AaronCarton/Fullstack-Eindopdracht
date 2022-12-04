@@ -134,12 +134,132 @@
       ]
     }
   ],
+  "items": [
+    {
+      "_id": "638c312e3f6f89d4940e65c6",
+      "category": "drink",
+      "name": "Pepsi",
+      "description": "mmmm, bepis",
+      "price": 2.1,
+      "stock": 24,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    },
+    {
+      "_id": "638c31283f6f89d4940e65c5",
+      "category": "dessert",
+      "name": "Tiramisu",
+      "description": "A fluffy Italian dessert that will make you feel like you're walking on clouds",
+      "price": 3.3,
+      "stock": 24,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    },
+    {
+      "_id": "638c31233f6f89d4940e65c4",
+      "category": "dessert",
+      "name": "Brownies",
+      "description": "Indulge in the rich and fudgy goodness of a freshly baked batch of brownies",
+      "price": 4.0,
+      "stock": 0,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    },
+    {
+      "_id": "638c31123f6f89d4940e65c3",
+      "category": "drink",
+      "name": "Red Wine",
+      "description": "Savor the bold and complex flavors of a glass of red wine",
+      "price": 19.4,
+      "stock": 5,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    }
+  ],
   "orders": [
     {
-      "_id": "6348309cdfe8e72a086b73bb",
+      "_id": "638792b859c05dacbcb4dbbd",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "status": "DELIVERED",
+      "address": "Vogellaan 1, 1234 AB, Amsterdam",
+      "deliveryTime": "1669829304451",
+      "reviewId": "63879df46ceca7c179a0e6e6",
+      "items": [
+        {
+          "basePrice": 13.43,
+          "name": "Pepperoni",
+          "size": "medium",
+          "toppings": [
+            {
+              "category": "sauce",
+              "default": false,
+              "name": "Tomato Sauce",
+              "price": 2.13
+            },
+            {
+              "category": "cheese",
+              "default": false,
+              "name": "Mozzarella",
+              "price": 2.43
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Pepperoni",
+              "price": 1.23
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Spicy meat",
+              "price": 1.76
+            }
+          ],
+          "type": "classic"
+        }
+      ]
+    },
+    {
+      "_id": "6384080c92ca44563689e56d",
+      "customerId": "6tGR0EesbcKXgrrIOHYoWOWfL32",
       "status": "COOKING",
-      "itemsIds": ["63409bbd2bf7174a20eb7a52"],
-      "customerId": "etm6sBX9dPO1fOZQWQP8gXgg1Jk1"
+      "address": "Vogellaan 1, 1234 AB, Amsterdam",
+      "deliveryTime": "1669597195925",
+      "extras": [
+        {
+          "category": "drink",
+          "name": "Pepsi",
+          "price": 2.1
+        }
+      ],
+      "items": [
+        {
+          "basePrice": 12.43,
+          "name": "Margherita",
+          "size": "medium",
+          "toppings": [
+            {
+              "category": "sauce",
+              "default": false,
+              "name": "Tomato Sauce",
+              "price": 2.13
+            },
+            {
+              "category": "cheese",
+              "default": false,
+              "name": "Mozzarella",
+              "price": 2.43
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Spicy meat",
+              "price": 1.76
+            }
+          ],
+          "type": "classic"
+        }
+      ]
     }
   ]
 }
