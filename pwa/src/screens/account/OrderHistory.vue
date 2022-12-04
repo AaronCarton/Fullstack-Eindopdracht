@@ -24,10 +24,10 @@
               <td class="py-4 px-6">
                 {{ new Date(order.createdAt).toLocaleDateString() }}
               </td>
-              <td class="py-4 px-6">€ {{ order.total }}</td>
+              <td class="py-4 px-6">€ {{ calculateTotal(order) }}</td>
               <td class="py-4 px-6">
                 <div
-                  v-if="order.status === 'delivered'"
+                  v-if="order.status === 'DELIVERED'"
                   class="rounded-lg bg-green-200 py-0.5 text-center font-bold text-green-500"
                 >
                   Delivered
@@ -63,9 +63,15 @@ export default {
     const { result, loading, error } = useQuery(GET_OWN_ORDERS)
 
     const orders = computed(() => (result.value?.findOwnOrders as Order[]) ?? [])
+    const calculateTotal = (order: Order) =>
+      order.items.reduce((acc, item) => {
+        return acc + item.toppings.reduce((acc, topping) => acc + topping.price, 0)
+      }, 0) + order.extras.reduce((acc, item) => acc + item.price, 0)
+
     watch(orders, (val) => console.log(val))
 
     return {
+      calculateTotal,
       orders,
       result,
       loading,

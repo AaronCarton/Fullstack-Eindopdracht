@@ -1,5 +1,5 @@
 <template>Manage Pizzas</template>
 
-<script>
+<script lang="ts">
 export default {}
 </script>
