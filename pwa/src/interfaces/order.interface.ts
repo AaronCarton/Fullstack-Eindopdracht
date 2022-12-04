@@ -1,3 +1,4 @@
+import ExtraItem from './extraItem.interface'
 import Pizza from './pizza.interface'
 
 export default interface Order {
@@ -5,6 +6,7 @@ export default interface Order {
   status: 'PENDING' | 'COOKING' | 'DELIVERING' | 'DELIVERED'
   customerId: string
   items: Pizza[]
+  extras: ExtraItem[]
   createdAt: string
 }
 
