@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [
     vue(),
     Unocss({
-      rules: [['font-title', { 'font-family': 'barber-complete, sans-serif;' }]],
+      rules: [
+        ['font-title', { 'font-family': 'barber-complete, sans-serif;' }],
+        ['font-subtitle', { 'font-family': 'fredoka one, sans-serif;' }],
+      ],
     }),
     VitePluginFonts({
       typekit: {
