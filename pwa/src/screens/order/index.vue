@@ -10,34 +10,48 @@
         class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black py-20 px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
       >
         <div
-          class="flex h-full w-full flex-col items-center justify-between gap-6 rounded-lg bg-white p-5"
+          class="flex h-full w-full flex-col place-items-center justify-between gap-6 rounded-lg bg-white p-5"
         >
           <h1 class="text-2xl font-bold">Order: {{ order.id }}</h1>
           <!-- Tracking graphic -->
 
           <div
-            class="flex w-[65%] flex-col items-center gap-5 rounded-3xl bg-red-700 px-7 py-5"
-            v-auto-animate
+            class="relative flex h-8 w-5/6 items-center rounded-full bg-gray-300 dark:bg-gray-700"
           >
-            <div class="flex flex-col items-center gap-3">
-              <div v-if="order.status === 'PENDING'">
-                <Pending class="h-10 w-10 stroke-white" />
+            <div>
+              <div
+                :class="`
+                absolute -translate-y-1/2 -translate-x-1/2 rounded-2xl p-2
+                ${progress >= 0 ? 'bg-red-700' : 'bg-gray-300'}`"
+              >
+                <Clock class="h-10 w-10 text-white" />
+                <p class="-translate-x-1/6 absolute mt-2 text-center font-medium">Pending</p>
               </div>
-              <div v-else-if="order.status === 'COOKING'">
-                <Cooking class="wiggle h-10 w-10 stroke-white" />
+              <div
+                :class="`absolute left-1/3 -translate-y-1/2 -translate-x-1/2 rounded-2xl p-2 
+                ${progress >= 33 ? 'bg-red-700' : 'bg-gray-300'}`"
+              >
+                <ChefHat class="h-10 w-10 text-white" />
+                <p class="-translate-x-1/6 absolute mt-2 text-center font-medium">Cooking</p>
               </div>
-              <div v-else-if="order.status === 'DELIVERING'">
-                <Delivering class="scooter h-10 w-10 stroke-white" />
+              <div
+                :class="`absolute left-2/3 -translate-y-1/2 -translate-x-1/2 rounded-2xl bg-gray-300 p-2 
+                ${progress >= 66 ? 'bg-red-700' : 'bg-gray-300'}`"
+              >
+                <Car class="h-10 w-10 text-white" />
+                <p class="-translate-x-1/5 absolute mt-2 text-center font-medium">Delivering</p>
               </div>
-              <div v-else-if="order.status === 'DELIVERED'">
-                <Delivered class="h-10 w-10 stroke-white" />
+              <div
+                :class="`absolute left-full -translate-y-1/2 -translate-x-1/2 rounded-2xl bg-gray-300 p-2 
+                ${progress >= 100 ? 'bg-red-700' : 'bg-gray-300'}`"
+              >
+                <Check class="h-10 w-10 text-white" />
+                <p class="-translate-x-1/5 absolute mt-2 text-center font-medium">Delivered</p>
               </div>
-              <p class="font-subtitle text-4xl text-white">{{ order.status }}</p>
             </div>
-            <div class="h-5 w-full rounded-full bg-gray-600 dark:bg-gray-700" v>
-              <div class="h-5 rounded-full bg-white" v-bind:style="{ width: progressBar }"></div>
-            </div>
+            <div class="h-8 rounded-full bg-red-700" :style="`width: ${progress}%`"></div>
           </div>
+
           <div class="flex w-1/5 flex-col items-center gap-5">
             <h3 class="text-xl font-bold">How was your experience?</h3>
             <StarRating :ratingChange="ratingChange" />
@@ -66,6 +80,7 @@ import { useRoute } from 'vue-router'
 import { computed } from '@vue/reactivity'
 import { useQuery } from '@vue/apollo-composable'
 import StarRating from '../../components/generic/StarRating.vue'
+import { Clock, ChefHat, Car, Check } from 'lucide-vue-next'
 
 import 'animate.css'
 /* import font awesome icon component */
@@ -87,15 +102,19 @@ export default {
     Cooking,
     Delivering,
     Delivered,
+    Clock,
+    ChefHat,
+    Car,
+    Check,
   },
   setup() {
     enum trackingProgress {
-      PENDING = '25%',
-      COOKING = '50%',
-      DELIVERING = '75%',
-      DELIVERED = '100%',
+      PENDING = 0,
+      COOKING = 33,
+      DELIVERING = 66,
+      DELIVERED = 100,
     }
-    let progress: string = ''
+    let progress = ref<number>(0)
     const rating = ref<number>(0)
     const driverPosition = ref<LiveLocation | null>(null)
     const { params } = useRoute()
@@ -108,20 +127,6 @@ export default {
       rating.value = num
     }
 
-    const progressBar = computed(() => {
-      let progress: string = ''
-      if (result.value?.order?.status === 'PENDING') {
-        progress = trackingProgress.PENDING
-      } else if (result.value?.order?.status === 'COOKING') {
-        progress = trackingProgress.COOKING
-      } else if (result.value?.order?.status === 'DELIVERING') {
-        progress = trackingProgress.DELIVERING
-      } else if (result.value?.order?.status === 'DELIVERED') {
-        progress = trackingProgress.DELIVERED
-      }
-
-      return progress
-    })
     // check what the status of the order is and add the corosponding icon
 
     connectToServer()
@@ -130,8 +135,14 @@ export default {
       driverPosition.value = location
     })
 
-    const order = computed(() => (result.value?.order as Order) ?? undefined)
-    watch(order, (val) => console.log(val))
+    const order = computed(() => (result.value?.order as Order) ?? [])
+    watch(order, (val) => {
+      console.log('order changed', val)
+
+      if (val) {
+        progress.value = trackingProgress[val.status]
+      }
+    })
 
     return {
       rating,
@@ -140,7 +151,6 @@ export default {
       progress,
       trackingProgress,
       driverPosition,
-      progressBar,
 
       ratingChange,
     }
