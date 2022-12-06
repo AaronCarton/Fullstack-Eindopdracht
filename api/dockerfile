@@ -1,0 +1,25 @@
+FROM node:16.14.0-alpine As build
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm i
+
+COPY . .
+
+RUN npm run build
+
+# Set NODE_ENV environment variable
+ENV NODE_ENV production
+
+
+FROM node:16.14.0-alpine As production
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm i --only=production && npm cache clean --force
+
+COPY --chown=node:node --from=build /app/dist ./dist
+
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]
