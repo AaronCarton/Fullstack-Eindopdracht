@@ -1,4 +1,4 @@
-FROM node:16.14.0 as build
+FROM node:16.14.0-alpine as build
 WORKDIR /app
 
 
@@ -9,7 +9,7 @@ COPY . .
 RUN npm run build
 
 
-FROM nginx:1.17.8 as deploy
+FROM nginx:1.17.8-alpine as deploy
 EXPOSE 8082
 
 COPY --from=build /app/dist /usr/share/nginx/html
