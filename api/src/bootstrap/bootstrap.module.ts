@@ -1,11 +1,13 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { ConfigModule } from '@nestjs/config'
 import { Module } from '@nestjs/common'
 import { DataSource } from 'typeorm'
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       sortSchema: true,
@@ -24,7 +26,7 @@ import { DataSource } from 'typeorm'
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'mongodb',
-        url: 'mongodb://localhost:27007/project_api',
+        url: process.env.MONGO_URI,
         entities: [__dirname + '/../**/*.entity.{js,ts}'],
         synchronize: true, // Careful with this in production
         useNewUrlParser: true,
