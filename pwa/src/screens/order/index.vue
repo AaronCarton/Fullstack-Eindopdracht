@@ -63,7 +63,7 @@ export default {
       driverPosition.value = location
     })
 
-    const order = computed(() => (result.value?.order as Order) ?? [])
+    const order = computed(() => (result.value?.order as Order) ?? undefined)
     watch(order, (val) => console.log(val))
 
     return {

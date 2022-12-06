@@ -1,5 +1,5 @@
 import mapboxgl, { Map, MapMouseEvent, Marker } from 'mapbox-gl'
-import { ref, Ref } from 'vue'
+import { ref, Ref } from 'vue-demi'
 import MapProps from '../interfaces/map-props.interface'
 
 export default (props: MapProps) => {

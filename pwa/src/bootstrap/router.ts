@@ -75,15 +75,6 @@ const routes: RouteRecordRaw[] = [
           needsAuthentication: true,
         },
       },
-
-      {
-        path: 'owner',
-        component: () => import('../screens/owner/index.vue'),
-        meta: {
-          needsAuthentication: true,
-        },
-      },
-
       {
         path: 'account',
         redirect: '/account/details',

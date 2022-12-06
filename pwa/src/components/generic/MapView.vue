@@ -6,9 +6,9 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 import { LngLatLike } from 'mapbox-gl'
-import { onMounted, Ref, ref, watch } from 'vue'
+import { onMounted, Ref, ref, watch } from 'vue-demi'
 
-import useMapbox from '../../composables/useMapbox'
+import useMapbox from '../../composables/useMapBox'
 
 export default {
   props: {
