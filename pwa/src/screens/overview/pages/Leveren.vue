@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[url(/HomeBG.jpg)] sm:bg-cover">
+  <div class="main-bg sm:bg-cover">
     <div class="bg-opacity-65 min-h-screen bg-black py-6 px-12 sm:px-60">
       <div class="grid-rows-auto grid grid-cols-4 gap-6">
         <OverviewNav class="col-start-1 col-end-4 row-start-1 row-end-1 flex items-center" />

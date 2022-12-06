@@ -165,12 +165,7 @@
                 <div v-auto-animate>
                   <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
-                      <img
-                        class="h-6 w-auto rounded"
-                        src="../../../public/paymentMethodes/Bancontact.png"
-                        alt=""
-                        srcset=""
-                      />
+                      <img class="h-6 w-auto rounded" :src="bancontactURL" alt="" srcset="" />
                       <span>Payconiq</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
@@ -204,12 +199,7 @@
                 <div v-auto-animate>
                   <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
-                      <img
-                        class="h-6 w-auto rounded"
-                        src="../../../public/paymentMethodes/Visa.png"
-                        alt=""
-                        srcset=""
-                      />
+                      <img class="h-6 w-auto rounded" :src="visaURL" alt="" srcset="" />
                       <span>MasterCard / Visa</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
@@ -265,12 +255,7 @@
                 <div v-auto-animate>
                   <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
-                      <img
-                        class="h-6 w-auto rounded"
-                        src="../../../public/paymentMethodes/paypal.png"
-                        alt=""
-                        srcset=""
-                      />
+                      <img class="h-6 w-auto rounded" :src="paypalURL" alt="" srcset="" />
                       <span>PayPal</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
@@ -298,12 +283,7 @@
                 <div v-auto-animate>
                   <div class="flex cursor-pointer justify-between">
                     <div class="flex gap-2">
-                      <img
-                        class="h-6 w-auto rounded"
-                        src="../../../public/paymentMethodes/payconiq.png"
-                        alt=""
-                        srcset=""
-                      />
+                      <img class="h-6 w-auto rounded" :src="payconiqURL" alt="" srcset="" />
                       <span>Payconiq</span>
                     </div>
                     <Check v-show="checked" class="fill-green-600 stroke-green-50" />
@@ -371,6 +351,11 @@ import {
   ORDER_INPUT_FRAGMENT,
   EXTRA_INPUT_FRAGMENT,
 } from '../../graphql/mutation.order'
+
+import bancontactURL from '../../assets/paymentMethods/bancontact.png'
+import visaURL from '../../assets/paymentMethods/visa.png'
+import paypalURL from '../../assets/paymentMethods/paypal.png'
+import payconiqURL from '../../assets/paymentMethods/payconiq.png'
 
 export default {
   components: {
@@ -516,6 +501,11 @@ export default {
       submitOrder,
       emptyInput,
       makeTimes,
+
+      bancontactURL,
+      visaURL,
+      paypalURL,
+      payconiqURL,
     }
   },
 }

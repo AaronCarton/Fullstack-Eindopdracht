@@ -1,6 +1,6 @@
 <template>
   <!--Background image + overlay-->
-  <div class="bg-[url(/HomeBG.jpg)] sm:bg-cover">
+  <div :class="`main-bg sm:bg-cover`">
     <div class="bg-opacity-65 min-h-screen bg-black">
       <!--Link to account page-->
       <RouterLink class="group absolute right-1 m-5 flex items-center gap-4" to="/account">

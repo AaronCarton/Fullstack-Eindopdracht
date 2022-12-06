@@ -8,7 +8,7 @@
           <Back class="stroke-2.5 absolute h-7 w-7 cursor-pointer" @click="goBack()" />
         </div>
         <img
-          :src="`/pizzas/${pizza.name}.jpg`"
+          :src="`/assets/pizzas/${pizza.name}.jpg`"
           :alt="`image of ${pizza.name} pizza`"
           class="h-full w-full rounded-l-lg object-cover"
         />

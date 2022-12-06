@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen place-items-center bg-[url(/HomeBG.jpg)]">
+  <div class="main-bg flex min-h-screen place-items-center">
     <div class="bg-opacity-65 absolute z-0 min-h-screen w-full bg-black" />
     <div class="container z-10 mx-auto w-full">
       <div class="divide-x-3 flex h-[30rem] divide-neutral-300 rounded-xl bg-neutral-200 shadow-md">

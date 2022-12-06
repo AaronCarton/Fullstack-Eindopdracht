@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.main-bg {
+  background-image: url(./assets/HomeBG.jpg);
+}
+
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 15px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen bg-[url(/HomeBG.jpg)] sm:bg-auto">
+  <div class="main-bg h-screen w-screen sm:bg-auto">
     <div
       class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
     >

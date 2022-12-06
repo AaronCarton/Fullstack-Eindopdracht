@@ -9,7 +9,7 @@
         </div>
       </template>
       <img
-        :src="`/${isPizza(item) ? 'pizza' : item.category}s/${item.name}.jpg`"
+        :src="`/assets/${isPizza(item) ? 'pizza' : item.category}s/${item.name}.jpg`"
         class="h-full w-full rounded-t-lg object-cover object-top"
       />
     </div>

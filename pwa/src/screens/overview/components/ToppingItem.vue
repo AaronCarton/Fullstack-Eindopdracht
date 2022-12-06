@@ -6,7 +6,7 @@
     } items-center justify-between rounded-lg bg-neutral-200 px-4 py-4`"
   >
     <div class="flex content-center items-center gap-3">
-      <img :src="`/toppings/${topping.name}.png`" alt="" class="h-6 w-6" />
+      <img :src="`/assets/toppings/${topping.name}.png`" alt="" class="h-6 w-6" />
       <a class="font-semibold">{{ topping.name }}</a>
       <template v-if="type === 'remove' && topping.default === false">
         <a class="opacity-50">+{{ topping.price }}</a>
