@@ -9,14 +9,16 @@
       <div
         class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black py-20 px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
       >
-        <div
-          class="flex h-full w-full flex-col place-items-center justify-between gap-6 rounded-lg bg-white p-5"
-        >
-          <h1 class="text-2xl font-bold">Order: {{ order.id }}</h1>
+        <div class="flex h-full w-full flex-col justify-between rounded-lg bg-white">
+          <h1
+            class="mb-10 w-full rounded-t-lg bg-red-700 p-4 text-center text-2xl font-bold text-neutral-50"
+          >
+            Your order has been placed
+          </h1>
           <!-- Tracking graphic -->
 
           <div
-            class="relative flex h-8 w-5/6 items-center rounded-full bg-gray-300 dark:bg-gray-700"
+            class="relative mb-10 flex h-8 w-5/6 items-center self-center rounded-full bg-gray-300 dark:bg-gray-700"
           >
             <div>
               <div
@@ -51,22 +53,66 @@
             </div>
             <div class="h-8 rounded-full bg-red-700" :style="`width: ${progress}%`"></div>
           </div>
+          <div class="flex h-full w-full justify-evenly">
+            <div class="mx-5 mb-10 h-[50%] w-[25%] self-center">
+              <div
+                class="border-1 scrollbar flex h-[100%] w-full flex-col justify-start overflow-auto rounded-t-lg border-neutral-400 bg-neutral-100"
+              >
+                <div class="flex w-full flex-col p-5">
+                  <div
+                    v-for="item in order.items"
+                    class="flex w-full items-center justify-start gap-5"
+                  >
+                    <div class="flex w-full justify-between">
+                      <div>
+                        <p class="font-bold">{{ item.name }}</p>
+                        <div v-for="topping in item.toppings" class="last:mb-5">
+                          <p v-if="!topping.default">+ {{ topping.name }}</p>
+                        </div>
+                      </div>
 
-          <div class="flex w-1/5 flex-col items-center gap-5">
-            <h3 class="text-xl font-bold">How was your experience?</h3>
-            <StarRating :ratingChange="ratingChange" />
-            <textarea
-              class="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:bg-white focus:text-gray-700 focus:outline-none"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              placeholder="Leave a comment?"
-            ></textarea>
-            <button
-              class="w-1/3 rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+                      <p class="font-semibold">€{{ randomPrice() }}</p>
+                    </div>
+                  </div>
+                  <div
+                    v-for="item in order.extras"
+                    class="flex w-full items-center justify-start gap-5"
+                  >
+                    <div class="flex w-full justify-between">
+                      <p class="font-bold">{{ item.name }}</p>
+
+                      <p class="font-semibold">€{{ randomPrice() }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex justify-between rounded-b-lg bg-red-700 py-2 px-5 font-bold text-neutral-50"
+              >
+                <p>Total:</p>
+                <p class="px-4">€{{ randomPrice() }}</p>
+              </div>
+            </div>
+            <div
+              v-if="deliveryType === 'takeaway' || order.status === 'DELIVERED'"
+              class="flex w-1/5 flex-col items-center gap-5 self-center"
             >
-              Submit
-            </button>
+              <h3 class="text-xl font-bold">How was your experience?</h3>
+              <StarRating :ratingChange="ratingChange" />
+              <textarea
+                class="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:bg-white focus:text-gray-700 focus:outline-none"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                placeholder="Leave a comment?"
+              ></textarea>
+              <button
+                class="w-1/3 rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+              >
+                Submit
+              </button>
+            </div>
           </div>
+          <p>{{ order.extras }}</p>
           <div>{{ JSON.stringify(driverPosition, null, 2) || 'Driver position not found' }}</div>
         </div>
       </div>
@@ -117,6 +163,10 @@ export default {
     let progress = ref<number>(0)
     const rating = ref<number>(0)
     const driverPosition = ref<LiveLocation | null>(null)
+
+    const route = useRoute()
+    const deliveryType = computed(() => route.query.type)
+
     const { params } = useRoute()
     const { connectToServer, connected, trackOrder, socketServer } = useTracking()
     const { result, loading, error } = useQuery(GET_ORDER, {
@@ -125,6 +175,21 @@ export default {
 
     const ratingChange = (num: number) => {
       rating.value = num
+    }
+
+    //check how many times an item is in order and add the amount to the item
+    const getAmount = (item: any) => {
+      let amount = 0
+      order.value.items.forEach((i: any) => {
+        if (i.name === item.name) {
+          amount++
+        }
+      })
+      return amount
+    }
+
+    const randomPrice = () => {
+      return Math.floor(Math.random() * 100) + 1
     }
 
     // check what the status of the order is and add the corosponding icon
@@ -151,7 +216,9 @@ export default {
       progress,
       trackingProgress,
       driverPosition,
-
+      getAmount,
+      randomPrice,
+      deliveryType,
       ratingChange,
     }
   },

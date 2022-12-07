@@ -50,6 +50,11 @@ export const GET_ORDER = gql`
           category
         }
       }
+      extras {
+        category
+        name
+        price
+      }
       createdAt
     }
   }

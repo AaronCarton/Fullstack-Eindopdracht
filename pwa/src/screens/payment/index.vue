@@ -382,6 +382,7 @@ export default {
     const { push } = useRouter()
     const deliveryType = computed(() => route.query.type)
     const { cart, getCartTotal } = useCart()
+    const searchQuery = computed(() => route.query)
 
     const selectedMethod = ref('')
     let times: string[] = []
@@ -431,7 +432,13 @@ export default {
 
       if (res?.data.createOrder.id) {
         console.log('order created', res.data.createOrder.id)
-        push({ name: 'order', params: { id: res.data.createOrder.id } })
+        push({
+          name: 'order',
+          params: { id: res.data.createOrder.id },
+          query: {
+            ...searchQuery.value,
+          },
+        })
       } else toast.error('Something went wrong')
     }
 
