@@ -10,12 +10,12 @@
         <img
           :src="`/assets/pizzas/${pizza.name}.jpg`"
           :alt="`image of ${pizza.name} pizza`"
-          class="h-full w-full rounded-l-lg object-cover"
+          class="h-full w-full rounded-l-lg object-cover object-left"
         />
       </div>
       <div class="col-span-3 m-3 flex flex-col overflow-hidden px-4 py-3">
         <a class="mb-3 text-3xl font-bold">{{ pizza.name }}</a>
-        <div class="mt-3 mb-6 flex gap-14">
+        <div class="mt-3 mb-6 flex flex-row gap-14 md:flex-col md:gap-6">
           <div>
             <h3 class="mb-6 text-2xl font-semibold">Size</h3>
 
@@ -36,11 +36,11 @@
             />
           </div>
         </div>
-        <div class="">
+        <div class="flex flex-col overflow-y-scroll">
           <!-- TODO add overflow to this nested div instead of full parent div -->
-          <div class="mb-3">
-            <h3 class="mb-6 text-2xl font-semibold">Toppings</h3>
-            <div class="scrollbar flex h-48 flex-col overflow-y-scroll scroll-smooth">
+          <div class="mb-4">
+            <h3 class="mb-4 text-2xl font-semibold">Toppings</h3>
+            <div class="">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in orderItem.item.toppings"
@@ -51,9 +51,9 @@
               />
             </div>
           </div>
-          <div class="my-3">
-            <h3 class="mb-6 text-2xl font-semibold">Extra Toppings</h3>
-            <div class="scrollbar flex h-64 flex-col overflow-y-scroll scroll-smooth">
+          <div class="mb-4">
+            <h3 class="mb-4 text-2xl font-semibold">Extra Toppings</h3>
+            <div class="">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
                 v-for="topping in allToppings"
@@ -67,7 +67,7 @@
         </div>
         <button
           @click="goBack()"
-          class="mx-auto mt-auto mb-2 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+          class="mx-auto mt-3 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
         >
           Add to Cart
         </button>
