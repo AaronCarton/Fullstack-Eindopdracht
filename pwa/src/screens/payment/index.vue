@@ -82,8 +82,8 @@
             </h2>
             <div v-if="deliveryType === 'takeaway'">
               <div class="border-1 rounded-md border-neutral-400 bg-neutral-50 p-2">
-                <p class="font-semibold">Restaurant Kortrijk</p>
-                <p class="text-neutral-400">President Kennedylaan 100, 8500 Kortrijk</p>
+                <p class="font-semibold">Pizza Time Restaurant</p>
+                <p class="text-neutral-400">Sint-Martens-Latemlaan 1B, 8500 Kortrijk</p>
               </div>
             </div>
             <div v-else>

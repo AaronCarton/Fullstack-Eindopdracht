@@ -11,6 +11,9 @@
       <template v-if="type === 'remove' && topping.default === false">
         <a class="opacity-50">+{{ topping.price }}</a>
       </template>
+      <template v-if="type === 'add'">
+        <a class="opacity-50">+{{ topping.price }}</a>
+      </template>
       <template v-if="type === 'add' && topping.stock <= 5">
         <a class="mt-0.5 text-sm font-bold text-red-600">{{
           topping.stock <= 0 ? 'Out of stock' : `only ${topping.stock} left`
