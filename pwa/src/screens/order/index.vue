@@ -41,7 +41,19 @@
                 ${progress >= 66 ? 'bg-red-700' : 'bg-gray-300'}`"
               >
                 <Car class="h-10 w-10 text-white" />
-                <p class="-translate-x-1/5 absolute mt-2 text-center font-medium">Delivering</p>
+                <p
+                  v-if="deliveryType === 'delivery'"
+                  class="-translate-x-1/5 absolute mt-2 text-center font-medium"
+                >
+                  Delivering
+                </p>
+
+                <p
+                  v-if="deliveryType === 'takeaway'"
+                  class="w-38 absolute mt-2 -translate-x-1/3 text-center font-medium"
+                >
+                  Ready for pickup
+                </p>
               </div>
               <div
                 :class="`absolute left-full -translate-y-1/2 -translate-x-1/2 rounded-2xl bg-gray-300 p-2 
