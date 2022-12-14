@@ -35,6 +35,9 @@ export class Pizza {
   @Column()
   type: PizzaType
 
+  @Field({ defaultValue: true })
+  default: boolean
+
   @Field(() => PizzaSize, { nullable: true })
   @Column()
   size: PizzaSize

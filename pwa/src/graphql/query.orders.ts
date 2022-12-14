@@ -48,6 +48,7 @@ export const GET_ORDER = gql`
           name
           default
           category
+          price
         }
       }
       extras {

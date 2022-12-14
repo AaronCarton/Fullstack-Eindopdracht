@@ -47,7 +47,6 @@
                 >
                   Delivering
                 </p>
-
                 <p
                   v-if="deliveryType === 'takeaway'"
                   class="w-38 absolute mt-2 -translate-x-1/3 text-center font-medium"
@@ -60,13 +59,15 @@
                 ${progress >= 100 ? 'bg-red-700' : 'bg-gray-300'}`"
               >
                 <Check class="h-10 w-10 text-white" />
-                <p class="-translate-x-1/5 absolute mt-2 text-center font-medium">Delivered</p>
+                <p class="-translate-x-1/5 absolute mt-2 text-center font-medium">
+                  {{ deliveryType === 'takeaway' ? 'Picked up' : 'Delivered' }}
+                </p>
               </div>
             </div>
             <div class="h-8 rounded-full bg-red-700" :style="`width: ${progress}%`"></div>
           </div>
           <div class="flex h-full w-full justify-evenly">
-            <div class="mx-5 mb-10 h-[50%] w-[25%] self-center">
+            <div class="mx-5 mb-10 h-2/3 w-1/3 self-center">
               <div
                 class="border-1 scrollbar flex h-[100%] w-full flex-col justify-start overflow-auto rounded-t-lg border-neutral-400 bg-neutral-100"
               >
@@ -83,7 +84,7 @@
                         </div>
                       </div>
 
-                      <p class="font-semibold">€{{ randomPrice() }}</p>
+                      <p class="font-semibold">€{{ priceItem(item) }}</p>
                     </div>
                   </div>
                   <div
@@ -93,7 +94,7 @@
                     <div class="flex w-full justify-between">
                       <p class="font-bold">{{ item.name }}</p>
 
-                      <p class="font-semibold">€{{ randomPrice() }}</p>
+                      <p class="font-semibold">€{{ priceItem(item) }}</p>
                     </div>
                   </div>
                 </div>
@@ -102,11 +103,11 @@
                 class="flex justify-between rounded-b-lg bg-red-700 py-2 px-5 font-bold text-neutral-50"
               >
                 <p>Total:</p>
-                <p class="px-4">€{{ randomPrice() }}</p>
+                <p class="px-4">€{{ orderTotal }}</p>
               </div>
             </div>
             <div
-              v-if="deliveryType === 'takeaway' || order.status === 'DELIVERED'"
+              v-if="order.status === 'DELIVERED'"
               class="flex w-1/5 flex-col items-center gap-5 self-center"
             >
               <h3 class="text-xl font-bold">How was your experience?</h3>
@@ -123,6 +124,13 @@
                 Submit
               </button>
             </div>
+            <div v-else-if="order.status === 'DELIVERING' && deliveryType === 'delivery'">
+              <MapView
+                class="h-[50%] w-[50%] rounded-md"
+                :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
+                :markers="[driverCoords]"
+              />
+            </div>
           </div>
           <p>{{ order.extras }}</p>
           <div>{{ JSON.stringify(driverPosition, null, 2) || 'Driver position not found' }}</div>
@@ -137,14 +145,18 @@ import { watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { computed } from '@vue/reactivity'
 import { useQuery } from '@vue/apollo-composable'
-import StarRating from '../../components/generic/StarRating.vue'
 import { Clock, ChefHat, Car, Check } from 'lucide-vue-next'
+import { LngLatLike } from 'mapbox-gl'
+import StarRating from '../../components/generic/StarRating.vue'
+import MapView from '../../components/generic/MapView.vue'
 
 import 'animate.css'
 /* import font awesome icon component */
 import Order from '../../interfaces/order.interface'
 import { GET_ORDER } from '../../graphql/query.orders'
 import useTracking from '../../composables/useTracking'
+import ExtraItem from '../../interfaces/extraItem.interface'
+import Pizza, { isPizza } from '../../interfaces/pizza.interface'
 import LiveLocation from '../../interfaces/live-location.interface'
 import {
   Clipboard as Pending,
@@ -155,6 +167,7 @@ import {
 
 export default {
   components: {
+    MapView,
     StarRating,
     Pending,
     Cooking,
@@ -175,6 +188,7 @@ export default {
     let progress = ref<number>(0)
     const rating = ref<number>(0)
     const driverPosition = ref<LiveLocation | null>(null)
+    const driverCoords = ref<LngLatLike>([3.3232699, 50.8425729])
 
     const route = useRoute()
     const deliveryType = computed(() => route.query.type)
@@ -211,6 +225,11 @@ export default {
       console.log('location received', location)
       driverPosition.value = location
     })
+    watch(driverPosition, (val) => {
+      if (val) {
+        driverCoords.value = val.geolocation.coordinates as LngLatLike
+      }
+    })
 
     const order = computed(() => (result.value?.order as Order) ?? [])
     watch(order, (val) => {
@@ -221,6 +240,24 @@ export default {
       }
     })
 
+    const priceItem = (item: Pizza | ExtraItem) => {
+      if (isPizza(item)) {
+        let price = item.basePrice
+        if (item.type === 'cheesyCrust') price += 5
+
+        if (item.size === 'small') price -= 3
+        else if (item.size === 'large') price += 3
+        return item.toppings.reduce((total, t) => total + t.price, price).toFixed(2)
+      } else {
+        return item.price.toFixed(2)
+      }
+    }
+    const orderTotal = computed(() => {
+      return order.value.items.reduce((total, item) => {
+        return total + parseFloat(priceItem(item))
+      }, 0)
+    })
+
     return {
       rating,
       order,
@@ -228,10 +265,13 @@ export default {
       progress,
       trackingProgress,
       driverPosition,
+      driverCoords,
       getAmount,
       randomPrice,
       deliveryType,
       ratingChange,
+      priceItem,
+      orderTotal,
     }
   },
 }

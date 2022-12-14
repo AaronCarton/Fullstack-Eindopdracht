@@ -34,7 +34,7 @@ export class OrderService {
   }
 
   async findActiveOrders() {
-    return this.orderRepo.find({ where: { status: OrderStatus.COOKING } })
+    return this.orderRepo.find({ where: { status: OrderStatus.DELIVERING } })
   }
 
   addReviewToOrder(id: string, reviewId: string) {

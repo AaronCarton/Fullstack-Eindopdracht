@@ -39,6 +39,12 @@ export default (props: MapProps) => {
     for (const marker of props.markers!) {
       const m = new mapboxgl.Marker().setLngLat(marker).addTo(map.value)
       markers.value.push(m)
+
+      map.value.flyTo({
+        center: marker,
+        zoom: 10,
+        speed: 1,
+      })
     }
   }
 
