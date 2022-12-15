@@ -28,6 +28,12 @@ export class ItemService {
     return this.itemRepo.findBy({ category: ItemType[category] })
   }
 
+  async decreaseStock(id: string) {
+    const item = await this.itemRepo.findOneBy(new ObjectId(id))
+    if (item.stock <= 0) throw new Error('No more stock')
+    this.itemRepo.update(id, { stock: item.stock - 1 })
+  }
+
   update(id: string, updateItemInput: UpdateItemInput) {
     return this.itemRepo.update(new ObjectId(id), updateItemInput)
   }

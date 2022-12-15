@@ -25,6 +25,12 @@ export class ToppingService {
     return this.toppingRepo.findOne(new ObjectId(id))
   }
 
+  async decreaseStock(id: string) {
+    const topping = await this.toppingRepo.findOneBy(new ObjectId(id))
+    if (topping.stock <= 0) throw new Error('No more stock')
+    await this.toppingRepo.update(id, { stock: topping.stock - 1 })
+  }
+
   async update(id: string, updateToppingInput: UpdateToppingInput) {
     await this.toppingRepo.update(id, updateToppingInput)
     return this.toppingRepo.findOneBy({ id: id })
