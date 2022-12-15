@@ -54,14 +54,14 @@
         as="template"
       >
         <div class="fixed inset-y-0 right-0 flex w-full max-w-sm flex-col bg-white">
-          <div class="flex items-center justify-between p-4 shadow">
-            <div>
+          <div class="flex items-center justify-between bg-red-700 p-4 shadow">
+            <div class="text-white">
               <DialogTitle class="text-xl font-bold">Cart summary</DialogTitle>
-              <h2 class="text-md font-semibold text-neutral-500">{{ deliveryType }}</h2>
+              <h2 class="text-md font-semibold text-neutral-50">{{ deliveryType }}</h2>
             </div>
-            <button
+            <!-- <button
               @click="setIsOpen(false)"
-              class="rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-neutral-200 focus:ring-offset-2"
+              class="rounded-full bg-white p-1 focus:outline-none focus:ring-2 focus:ring-neutral-200 focus:ring-offset-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </button>
+            </button> -->
           </div>
 
           <div class="flex flex-1 flex-col">

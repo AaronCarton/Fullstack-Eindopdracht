@@ -13,8 +13,10 @@
         />
       </div>
       <div v-else>
-        <div class="col-span-3">
-          <p class="mt-20 text-center text-2xl font-semibold text-white">Loading...</p>
+        <div
+          class="grid-rows-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          <SkeletonView v-for="s of skeletons" :key="s" />
         </div>
       </div>
     </template>
@@ -31,7 +33,8 @@ import Card from '../components/Card.vue'
 import { useQuery } from '@vue/apollo-composable'
 import { PIZZAS } from '../../../graphql/query.pizza'
 import { DRINKS, DESSERTS } from '../../../graphql/query.item'
-import { watch, ref } from 'vue'
+import { watch, ref, Ref } from 'vue'
+import SkeletonView from '../components/SkeletonView.vue'
 
 export default {
   props: {
@@ -42,9 +45,11 @@ export default {
   },
   components: {
     Card,
+    SkeletonView,
   },
   setup(props) {
     const items = ref()
+    const skeletons: Ref<number> = ref(6)
 
     watch(
       () => props.section,
@@ -80,7 +85,17 @@ export default {
     }
     getItems()
 
-    return { items }
+    return { items, skeletons }
   },
 }
 </script>
+<style>
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>

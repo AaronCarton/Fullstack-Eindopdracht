@@ -1,19 +1,19 @@
 <template>
-  <div class="z-50 hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 lg:flex">
+  <div class="z-50 hidden flex-col justify-between rounded-lg bg-neutral-50 lg:flex">
     <div class="overflow-hidden">
-      <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-semibold">Order</h2>
+      <div class="flex items-center justify-between rounded-t-lg bg-red-700 p-3">
+        <h2 class="text-2xl font-semibold text-neutral-50">Order</h2>
         <div class="flex items-center gap-2">
-          <a class="font-medium capitalize">{{ deliveryType }}</a>
+          <a class="font-medium capitalize text-neutral-50">{{ deliveryType }}</a>
           <template v-if="deliveryType === 'takeaway'">
-            <Home class="h-5 w-5" />
+            <Home class="h-5 w-5 stroke-neutral-50" />
           </template>
           <template v-else>
-            <Car class="h-6 w-6" />
+            <Car class="h-6 w-6 stroke-neutral-50" />
           </template>
         </div>
       </div>
-      <div v-auto-animate class="scrollbar_cart h-[90%] overflow-y-auto overflow-x-hidden">
+      <div v-auto-animate class="scrollbar_cart h-[90%] overflow-y-auto overflow-x-hidden p-3">
         <div v-for="{ id, item } in cart.items" class="w-full py-4 px-2">
           <CartItem
             :key="id"
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-end">
+    <div class="flex flex-col justify-end p-3">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
         <p class="text-xl font-bold">Total price</p>
         <!-- TODO calculate price -->
