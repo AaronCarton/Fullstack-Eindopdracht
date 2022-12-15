@@ -17,6 +17,10 @@ export default (props: MapProps) => {
     map.value.on('style.load', () => {
       map.value.setFog({})
     })
+
+    map.value.on('load', function () {
+      map.value.resize()
+    })
   }
 
   const removeMapData = () => {

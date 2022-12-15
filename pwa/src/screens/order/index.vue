@@ -66,44 +66,46 @@
             </div>
             <div class="h-8 rounded-full bg-red-700" :style="`width: ${progress}%`"></div>
           </div>
-          <div class="flex h-full w-full justify-evenly">
-            <div class="mx-5 mb-10 h-2/3 w-1/3 self-center">
-              <div
-                class="border-1 scrollbar flex h-[100%] w-full flex-col justify-start overflow-auto rounded-t-lg border-neutral-400 bg-neutral-100"
-              >
-                <div class="flex w-full flex-col p-5">
-                  <div
-                    v-for="item in order.items"
-                    class="flex w-full items-center justify-start gap-5"
-                  >
-                    <div class="flex w-full justify-between">
-                      <div>
-                        <p class="font-bold">{{ item.name }}</p>
-                        <div v-for="topping in item.toppings" class="last:mb-5">
-                          <p v-if="!topping.default">+ {{ topping.name }}</p>
+          <div class="flex h-full w-full justify-center gap-6 p-7">
+            <div class="my-3 h-full w-1/3">
+              <div class="h-full">
+                <div
+                  class="border-1 scrollbar flex h-[100%] w-full flex-col justify-start overflow-auto rounded-t-lg border-neutral-400 bg-neutral-100"
+                >
+                  <div class="flex w-full flex-col p-5">
+                    <div
+                      v-for="item in order.items"
+                      class="flex w-full items-center justify-start gap-5"
+                    >
+                      <div class="flex w-full justify-between">
+                        <div>
+                          <p class="font-bold">{{ item.name }}</p>
+                          <div v-for="topping in item.toppings" class="last:mb-5">
+                            <p v-if="!topping.default">+ {{ topping.name }}</p>
+                          </div>
                         </div>
+
+                        <p class="font-semibold">€{{ priceItem(item) }}</p>
                       </div>
-
-                      <p class="font-semibold">€{{ priceItem(item) }}</p>
                     </div>
-                  </div>
-                  <div
-                    v-for="item in order.extras"
-                    class="flex w-full items-center justify-start gap-5"
-                  >
-                    <div class="flex w-full justify-between">
-                      <p class="font-bold">{{ item.name }}</p>
+                    <div
+                      v-for="item in order.extras"
+                      class="flex w-full items-center justify-start gap-5"
+                    >
+                      <div class="flex w-full justify-between">
+                        <p class="font-bold">{{ item.name }}</p>
 
-                      <p class="font-semibold">€{{ priceItem(item) }}</p>
+                        <p class="font-semibold">€{{ priceItem(item) }}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="flex justify-between rounded-b-lg bg-red-700 py-2 px-5 font-bold text-neutral-50"
-              >
-                <p>Total:</p>
-                <p class="px-4">€{{ orderTotal }}</p>
+                <div
+                  class="flex justify-between rounded-b-lg bg-red-700 py-2 px-5 font-bold text-neutral-50"
+                >
+                  <p>Total:</p>
+                  <p class="px-4">€{{ orderTotal }}</p>
+                </div>
               </div>
             </div>
             <div
@@ -124,16 +126,14 @@
                 Submit
               </button>
             </div>
-            <div v-else-if="order.status === 'DELIVERING' && deliveryType === 'delivery'">
+            <template v-else-if="order.status === 'DELIVERING' && deliveryType === 'delivery'">
               <MapView
-                class="h-[50%] w-[50%] rounded-md"
+                class="my-3 h-full w-full rounded-md"
                 :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
                 :markers="[driverCoords]"
               />
-            </div>
+            </template>
           </div>
-          <p>{{ order.extras }}</p>
-          <div>{{ JSON.stringify(driverPosition, null, 2) || 'Driver position not found' }}</div>
         </div>
       </div>
     </div>
