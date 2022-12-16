@@ -130,7 +130,9 @@
               <MapView
                 class="my-3 h-full w-full rounded-md"
                 :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
-                :markers="[driverCoords]"
+                :markers="[driverCoords as LngLatLike, orderCoords as LngLatLike]"
+                :start-route="driverCoords"
+                :end-route="orderCoords"
               />
             </template>
           </div>
@@ -188,7 +190,8 @@ export default {
     let progress = ref<number>(0)
     const rating = ref<number>(0)
     const driverPosition = ref<LiveLocation | null>(null)
-    const driverCoords = ref<LngLatLike>([3.3232699, 50.8425729])
+    const driverCoords = ref<number[]>()
+    const orderCoords = ref<number[]>()
 
     const route = useRoute()
     const deliveryType = computed(() => route.query.type)
@@ -227,7 +230,7 @@ export default {
     })
     watch(driverPosition, (val) => {
       if (val) {
-        driverCoords.value = val.geolocation.coordinates as LngLatLike
+        driverCoords.value = val.geolocation.coordinates
       }
     })
 
@@ -237,6 +240,7 @@ export default {
 
       if (val) {
         progress.value = trackingProgress[val.status]
+        orderCoords.value = [val.lng, val.lat]
       }
     })
 
@@ -266,6 +270,7 @@ export default {
       trackingProgress,
       driverPosition,
       driverCoords,
+      orderCoords,
       getAmount,
       randomPrice,
       deliveryType,

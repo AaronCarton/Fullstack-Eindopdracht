@@ -55,6 +55,14 @@ export class Order {
 
   @Field()
   @Column()
+  lat: number
+
+  @Field()
+  @Column()
+  lng: number
+
+  @Field()
+  @Column()
   paymentMethod: string
   @Field(() => Review, { nullable: true })
   @Column()

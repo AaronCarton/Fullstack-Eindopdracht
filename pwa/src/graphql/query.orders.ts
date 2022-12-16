@@ -31,6 +31,8 @@ export const GET_ACTIVE_ORDERS = gql`
     findActiveOrders {
       id
       status
+      lng
+      lat
       createdAt
       items {
         name
@@ -44,6 +46,8 @@ export const GET_ORDER = gql`
     order(id: $id) {
       id
       status
+      lng
+      lat
       items {
         name
         size

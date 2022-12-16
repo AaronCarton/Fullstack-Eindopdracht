@@ -21,10 +21,20 @@ export default {
       required: false,
       default: () => [],
     },
+    startRoute: {
+      type: Object as () => number[],
+      required: false,
+      default: () => undefined,
+    },
+    endRoute: {
+      type: Object as () => number[],
+      required: false,
+      default: () => undefined,
+    },
   },
 
   setup(props, { emit }) {
-    const { createMap, renderMarkerIfAny, removeMapData } = useMapbox(props)
+    const { createMap, renderMarkerIfAny, removeMapData, getRoute } = useMapbox(props)
 
     const mapElement: Ref<HTMLElement | null> = ref(null)
 
@@ -41,10 +51,11 @@ export default {
 
       // When props change, update the map data each time
       watch(props, async () => {
-        console.log('Map props changed')
+        console.log('Map props changed', props)
 
         await removeMapData()
         renderMarkerIfAny()
+        getRoute()
       })
     })
 

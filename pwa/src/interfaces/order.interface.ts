@@ -6,6 +6,8 @@ export default interface Order {
   status: 'PENDING' | 'COOKING' | 'DELIVERING' | 'DELIVERED'
   customerId: string
   deliveryType: 'DELIVERY' | 'TAKEAWAY'
+  lng: number
+  lat: number
   items: Pizza[]
   extras: ExtraItem[]
   createdAt: string

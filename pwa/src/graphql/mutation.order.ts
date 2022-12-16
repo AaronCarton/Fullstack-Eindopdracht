@@ -4,6 +4,8 @@ export const CREATE_ORDER = gql`
   mutation CreateOrder(
     $time: DateTime!
     $address: String!
+    $lat: Float!
+    $lng: Float!
     $deliveryType: DeliveryType!
     $paymentMethod: String!
     $items: [CreatePizzaOrderInput!]!
@@ -14,6 +16,8 @@ export const CREATE_ORDER = gql`
         deliveryTime: $time
         deliveryType: $deliveryType
         address: $address
+        lat: $lat
+        lng: $lng
         paymentMethod: $paymentMethod
         items: $items
         extras: $extras

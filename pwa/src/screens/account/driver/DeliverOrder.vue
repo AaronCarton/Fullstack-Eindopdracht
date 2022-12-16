@@ -45,7 +45,9 @@
     <MapView
       class="h-80 w-full rounded-md"
       :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
-      :markers="[driverPos]"
+      :markers="[driverPos as LngLatLike, orderPos as LngLatLike]"
+      :start-route="driverPos"
+      :end-route="orderPos"
     />
   </div>
 </template>
@@ -68,7 +70,8 @@ export default {
   setup() {
     const tracking = ref(false)
     const toast = useToast()
-    const driverPos = ref<LngLatLike>([3.3232699, 50.8425729])
+    const driverPos = ref<number[]>()
+    const orderPos = ref<number[]>()
     const selectedOrder = ref<String | null>(null)
     const { result, loading, error } = useQuery(GET_ACTIVE_ORDERS)
     const { connectToServer, disconnectFromServer, trackOrder, trackDriver } = useTracking()
@@ -82,8 +85,14 @@ export default {
           connectToServer()
           trackDriver(selectedOrder.value.toString())
           trackOrder(selectedOrder.value.toString(), (location) => {
-            driverPos.value = location.geolocation.coordinates as LngLatLike
+            driverPos.value = location.geolocation.coordinates
           })
+          const order = orders.value.find((order) => order.id === selectedOrder.value)
+          if (order) {
+            console.log(order)
+
+            orderPos.value = [order.lng, order.lat]
+          }
         } else {
           tracking.value = false
           toast.error('Select an order first!', {
@@ -98,6 +107,8 @@ export default {
       if (!val) {
         tracking.value = false
         disconnectFromServer()
+
+        driverPos.value = undefined
       }
     })
 
@@ -107,6 +118,7 @@ export default {
       tracking,
       selectedOrder,
       driverPos,
+      orderPos,
     }
   },
 }

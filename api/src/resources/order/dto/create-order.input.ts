@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql'
-import { ArrayMinSize, IsDate, IsNotEmpty, IsString } from 'class-validator'
+import { ArrayMinSize, IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator'
 import { CreateItemOrderInput } from 'src/resources/item/dto/create-itemOrder.input'
 import { Item } from 'src/resources/item/entities/item.entity'
 import { CreatePizzaOrderInput } from 'src/resources/pizza/dto/create-pizzaOrder.input'
@@ -12,6 +12,14 @@ export class CreateOrderInput {
   @IsString()
   @IsNotEmpty()
   address: string
+
+  @Field()
+  @IsNumber()
+  lat: number
+
+  @Field()
+  @IsNumber()
+  lng: number
 
   @Field()
   @IsDate()

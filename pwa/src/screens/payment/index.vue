@@ -351,6 +351,7 @@ import {
   ORDER_INPUT_FRAGMENT,
   EXTRA_INPUT_FRAGMENT,
 } from '../../graphql/mutation.order'
+import { getLocation } from 'graphql'
 
 import bancontactURL from '../../assets/paymentMethods/bancontact.png'
 import visaURL from '../../assets/paymentMethods/visa.png'
@@ -417,12 +418,17 @@ export default {
         cart.value.extras.map((ci) => ci.item),
       )
 
+      const location: any = await getLocation()
+      console.log('location found', location)
+
       // create order mutation
       const { mutate: addOrder, onError } = useMutation(CREATE_ORDER, () => ({
         variables: {
           items: orderItems,
           extras: extraItems,
           address: 'test',
+          lng: location?.coords.longitude,
+          lat: location?.coords.latitude,
           time: Date.now(),
           deliveryType: deliveryType.value?.toString().toUpperCase(),
           paymentMethod: selectedMethod.value.toUpperCase(),
@@ -464,6 +470,12 @@ export default {
         city.value = city.value
       }
     })
+
+    const getLocation = () => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject)
+      })
+    }
 
     //list of postal codes
     const emptyInput = () => {
