@@ -418,7 +418,7 @@ export default {
       )
 
       // create order mutation
-      const { mutate: addOrder } = useMutation(CREATE_ORDER, () => ({
+      const { mutate: addOrder, onError } = useMutation(CREATE_ORDER, () => ({
         variables: {
           items: orderItems,
           extras: extraItems,
@@ -428,6 +428,10 @@ export default {
           paymentMethod: selectedMethod.value.toUpperCase(),
         },
       }))
+      onError((err) => {
+        console.log(err)
+        toast.error(err.message || 'Something went wrong')
+      })
 
       let res = await addOrder()
 
@@ -440,7 +444,7 @@ export default {
             ...searchQuery.value,
           },
         })
-      } else toast.error('Something went wrong')
+      }
     }
 
     watch(time, () => {
