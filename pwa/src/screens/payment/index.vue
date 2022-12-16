@@ -424,6 +424,7 @@ export default {
           extras: extraItems,
           address: 'test',
           time: Date.now(),
+          deliveryType: deliveryType.value?.toString().toUpperCase(),
           paymentMethod: selectedMethod.value.toUpperCase(),
         },
       }))

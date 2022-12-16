@@ -12,6 +12,11 @@ export enum OrderStatus {
   'DELIVERED' = 'DELIVERED',
 }
 registerEnumType(OrderStatus, { name: 'OrderStatus' })
+export enum DeliveryType {
+  'DELIVERY' = 'DELIVERY',
+  'TAKEAWAY' = 'TAKEAWAY',
+}
+registerEnumType(DeliveryType, { name: 'DeliveryType' })
 
 @Entity()
 @ObjectType()
@@ -36,13 +41,17 @@ export class Order {
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.COOKING })
   status: OrderStatus
 
-  @Field()
-  @Column()
-  address: string
+  @Field(() => DeliveryType)
+  @Column({ type: 'enum', enum: DeliveryType })
+  deliveryType: string
 
   @Field()
   @Column({ type: 'timestamp' })
   deliveryTime: Date
+
+  @Field()
+  @Column()
+  address: string
 
   @Field()
   @Column()

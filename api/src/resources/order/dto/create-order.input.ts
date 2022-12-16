@@ -4,6 +4,7 @@ import { CreateItemOrderInput } from 'src/resources/item/dto/create-itemOrder.in
 import { Item } from 'src/resources/item/entities/item.entity'
 import { CreatePizzaOrderInput } from 'src/resources/pizza/dto/create-pizzaOrder.input'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
+import { DeliveryType } from '../entities/order.entity'
 
 @InputType()
 export class CreateOrderInput {
@@ -15,6 +16,9 @@ export class CreateOrderInput {
   @Field()
   @IsDate()
   deliveryTime: Date
+
+  @Field(() => DeliveryType)
+  deliveryType: DeliveryType
 
   @Field()
   @IsString()

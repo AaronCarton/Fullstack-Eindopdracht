@@ -5,8 +5,12 @@ export const GET_OWN_ORDERS = gql`
     findOwnOrders {
       id
       status
+      deliveryType
+      extras {
+        name
+        price
+      }
       items {
-        id
         name
         type
         size
@@ -14,9 +18,10 @@ export const GET_OWN_ORDERS = gql`
         toppings {
           name
           default
+          category
+          price
         }
       }
-      total
       createdAt
     }
   }

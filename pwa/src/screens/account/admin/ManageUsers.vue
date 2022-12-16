@@ -1,6 +1,6 @@
 <template>
   <div class="w-full p-5">
-    <h2 class="mb-4 text-xl font-medium">Order History</h2>
+    <h2 class="mb-4 text-xl font-medium">Manage Users</h2>
     <div>
       <table class="text-md w-full border-neutral-700 text-left text-neutral-800">
         <thead class="text-sm font-medium uppercase text-neutral-600">
