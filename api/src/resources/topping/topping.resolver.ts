@@ -39,6 +39,16 @@ export class ToppingResolver {
 
   @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
   @Mutation(() => Topping)
+  async setToppingStock(
+    @Args('id', { type: () => String }) id: string,
+    @Args('amount') amount: number,
+  ) {
+    await this.toppingService.setStock(id, amount)
+    return this.toppingService.findOne(id)
+  }
+
+  @UseGuards(FirebaseGuard, RolesGuard(Role.ADMIN))
+  @Mutation(() => Topping)
   async updateTopping(
     @Args('id', { type: () => String }) id: string,
     @Args('updateToppingInput') updateToppingInput: UpdateToppingInput,

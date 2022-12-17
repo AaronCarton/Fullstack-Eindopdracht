@@ -6,6 +6,14 @@
   background-image: url(./assets/HomeBG.jpg);
 }
 
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 15px;

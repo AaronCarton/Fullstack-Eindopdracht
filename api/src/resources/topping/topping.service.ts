@@ -30,6 +30,12 @@ export class ToppingService {
     return this.toppingRepo.findOneBy({ name: name })
   }
 
+  async setStock(id: string, amount: number) {
+    const topping = await this.toppingRepo.findOneBy(new ObjectId(id))
+    if (amount < 0) throw new HttpException(`${topping.name} stock cannot be negative`, 400)
+    await this.toppingRepo.update(id, { stock: amount })
+  }
+
   async decreaseStock(id: string, amount = 1) {
     const topping = await this.toppingRepo.findOneBy(new ObjectId(id))
     if (topping.stock <= 0) throw new HttpException(`${topping.name} is out of stock`, 400)
