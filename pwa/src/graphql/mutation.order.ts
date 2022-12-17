@@ -1,5 +1,14 @@
 import gql from 'graphql-tag'
 
+export const UPDATE_ORDER_STATUS = gql`
+  mutation UpdateOrderStatus($id: String!, $status: OrderStatus!) {
+    updateOrderStatus(id: $id, status: $status) {
+      id
+      status
+    }
+  }
+`
+
 export const CREATE_ORDER = gql`
   mutation CreateOrder(
     $time: DateTime!

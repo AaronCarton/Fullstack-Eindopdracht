@@ -1,7 +1,6 @@
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { CreateOrderInput } from './dto/create-order.input'
-import { UpdateOrderInput } from './dto/update-order.input'
-import { Order } from './entities/order.entity'
+import { Order, OrderStatus } from './entities/order.entity'
 import { OrderService } from './order.service'
 import { ClientMessage, MessageTypes } from 'src/bootstrap/entities/ClientMessage'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
@@ -86,11 +85,11 @@ export class OrderResolver {
 
   @UseGuards(FirebaseGuard, RolesGuard(Role.DRIVER))
   @Mutation(() => Order)
-  async updateOrder(
+  async updateOrderStatus(
     @Args('id', { type: () => String }) id: string,
-    @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
+    @Args('status', { type: () => OrderStatus }) status: OrderStatus,
   ) {
-    await this.orderService.update(id, updateOrderInput)
+    await this.orderService.updateStatus(id, status)
     return this.orderService.findOne(id)
   }
 

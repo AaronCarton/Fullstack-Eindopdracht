@@ -35,6 +35,7 @@
           </div>
           <button
             :disabled="!tracking"
+            @click="completeDelivery"
             class="block cursor-pointer select-none rounded-lg bg-green-600 py-1 px-3 font-semibold text-neutral-50 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-300"
           >
             Complete delivery
@@ -53,12 +54,13 @@
 </template>
 
 <script lang="ts">
-import { useQuery } from '@vue/apollo-composable'
+import { useMutation, useQuery } from '@vue/apollo-composable'
 import { ref, watch } from 'vue'
 import useTracking from '../../../composables/useTracking'
 import MapView from '../../../components/generic/MapView.vue'
 import { computed } from '@vue/reactivity'
 import { GET_ACTIVE_ORDERS } from '../../../graphql/query.orders'
+import { UPDATE_ORDER_STATUS } from '../../../graphql/mutation.order'
 import Order from '../../../interfaces/order.interface'
 import { useToast } from 'vue-toastification'
 import { LngLatLike } from 'mapbox-gl'
@@ -73,7 +75,7 @@ export default {
     const driverPos = ref<number[]>()
     const orderPos = ref<number[]>()
     const selectedOrder = ref<String | null>(null)
-    const { result, loading, error } = useQuery(GET_ACTIVE_ORDERS)
+    const { result, loading, error, refetch: refetchOrders } = useQuery(GET_ACTIVE_ORDERS)
     const { connectToServer, disconnectFromServer, trackOrder, trackDriver } = useTracking()
 
     const orders = computed(() => (result.value?.findActiveOrders as Order[]) ?? [])
@@ -112,6 +114,32 @@ export default {
       }
     })
 
+    const completeDelivery = () => {
+      // complete order
+      const { mutate, onDone } = useMutation(UPDATE_ORDER_STATUS, {
+        variables: {
+          id: selectedOrder.value,
+          status: 'DELIVERED',
+        },
+      })
+      mutate()
+
+      onDone(() => {
+        // stop tracking
+        tracking.value = false
+        disconnectFromServer()
+        driverPos.value = undefined
+
+        // refresh orders
+        selectedOrder.value = null
+        refetchOrders()
+
+        toast.success('Delivery completed!', {
+          timeout: 5000,
+        })
+      })
+    }
+
     return {
       toast,
       orders,
@@ -119,6 +147,7 @@ export default {
       selectedOrder,
       driverPos,
       orderPos,
+      completeDelivery,
     }
   },
 }
