@@ -1,7 +1,7 @@
 <template>
   <button
     @click="setIsOpen(true)"
-    class="fixed right-3 bottom-3 rounded-full bg-neutral-700 p-4 shadow-md hover:bg-gray-800 2xl:hidden"
+    class="fixed right-3 bottom-3 rounded-full bg-neutral-700 p-4 shadow-md hover:bg-gray-800 xl:hidden"
   >
     <span
       v-if="cart.items.length > 0"

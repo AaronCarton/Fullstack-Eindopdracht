@@ -5,7 +5,7 @@
     </div>
   </template>
   <template v-else-if="order">
-    <div class="h-screen w-screen bg-[url(/HomeBG.jpg)] sm:bg-auto">
+    <div class="main-bg h-screen w-screen sm:bg-auto">
       <div
         class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black py-20 px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
       >
@@ -250,7 +250,7 @@ export default {
       }
     })
 
-    const order = computed(() => (result.value?.order as Order) ?? [])
+    const order = computed(() => (result.value?.order as Order) ?? undefined)
     watch(order, (val) => {
       console.log('order changed', val)
 

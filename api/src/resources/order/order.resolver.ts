@@ -43,15 +43,16 @@ export class OrderResolver {
     const order = await this.orderService.create(user.uid, createOrderInput)
 
     // verify and lower stock of toppings
-    const decTop = {}
+    const decTop: { [id: string]: number } = {}
     for (const item of order.items) {
       for (const t of item.toppings) {
         const topping = await this.toppingService.findByName(t.name)
         if (!topping) throw new HttpException('TOPPING_NOT_FOUND', HttpStatus.BAD_REQUEST)
-
         decTop[topping.id] = decTop[topping.id] ? decTop[topping.id] + 1 : 1
-        await this.toppingService.decreaseStock(topping.id, decTop[topping.id])
       }
+    }
+    for (const id of Object.keys(decTop)) {
+      await this.toppingService.decreaseStock(id, decTop[id])
     }
 
     // verify and lower stock of extras
@@ -59,9 +60,10 @@ export class OrderResolver {
     for (const extra of order.extras) {
       const item = await this.itemService.findByName(extra.name)
       if (!item) throw new HttpException('ITEM_NOT_FOUND', HttpStatus.BAD_REQUEST)
-
       decItem[item.id] = decTop[item.id] ? decTop[item.id] + 1 : 1
-      await this.itemService.decreaseStock(item.id, decItem[item.id])
+    }
+    for (const id of Object.keys(decItem)) {
+      await this.itemService.decreaseStock(id, decItem[id])
     }
 
     return order

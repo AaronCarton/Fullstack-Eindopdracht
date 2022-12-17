@@ -142,13 +142,12 @@ export default (props: MapProps) => {
       if (!marker) return
       const m = new mapboxgl.Marker().setLngLat(marker).addTo(map.value)
       markers.value.push(m)
-
-      map.value.flyTo({
-        center: marker,
-        zoom: 10,
-        speed: 1,
-      })
     }
+    map.value.flyTo({
+      center: props.markers.at(-1),
+      zoom: 12,
+      speed: 1,
+    })
   }
 
   const createMap = (htmlRef: HTMLElement): Map => {

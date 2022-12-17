@@ -1,5 +1,5 @@
 <template>
-  <div class="z-50 hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 2xl:flex">
+  <div class="z-50 hidden grow-0 flex-col justify-between rounded-lg bg-neutral-50 xl:flex">
     <div class="overflow-hidden">
       <div class="flex items-center justify-between rounded-t-lg bg-red-700 p-3">
         <h2 class="text-2xl font-semibold text-neutral-50">Order</h2>
@@ -13,8 +13,11 @@
           </template>
         </div>
       </div>
-      <div v-auto-animate class="scrollbar_cart h-[90%] overflow-y-auto overflow-x-hidden p-3">
-        <div v-for="{ id, item } in cart.items" class="w-full py-4 px-2">
+      <div
+        v-auto-animate
+        class="scrollbar_cart flex h-[90%] flex-col gap-6 overflow-y-auto overflow-x-hidden p-4"
+      >
+        <div v-for="{ id, item } in cart.items" class="w-full">
           <CartItem
             :key="id"
             type="items"
