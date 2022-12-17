@@ -53,11 +53,11 @@ export class Order {
   @Column()
   address: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   lat: number
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   lng: number
 
@@ -68,7 +68,7 @@ export class Order {
   @Column()
   review: Review
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   reviewId: string
 

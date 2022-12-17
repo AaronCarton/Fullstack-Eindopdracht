@@ -3,7 +3,7 @@
     <div class="flex w-1/2 flex-col">
       <RatingOverview class="w-full" :reviews="reviews" />
     </div>
-    <div class="flex h-full w-1/2 flex-col gap-4 p-4">
+    <div class="flex h-full w-1/2 flex-col gap-4 overflow-y-scroll p-4">
       <template v-if="reviews.length > 0">
         <ReviewCard v-for="review in reviews" :review="review" />
       </template>

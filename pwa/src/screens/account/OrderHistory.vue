@@ -51,15 +51,7 @@
               </td>
               <td class="py-4 px-6">
                 <button
-                  @click="
-                    $router.push({
-                      name: 'order',
-                      params: { id: order.id },
-                      query: {
-                        type: order.deliveryType.toLowerCase(),
-                      },
-                    })
-                  "
+                  @click="goToOrder(order)"
                   class="rounded-lg bg-red-700 px-4 py-1 font-bold text-neutral-50 hover:bg-red-800"
                 >
                   View
@@ -86,9 +78,11 @@ import Order from '../../interfaces/order.interface'
 import Pizza, { isPizza } from '../../interfaces/pizza.interface'
 import ExtraItem from '../../interfaces/extraItem.interface'
 import { io } from 'socket.io-client'
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    const router = useRouter()
     const { result, loading, error } = useQuery(GET_OWN_ORDERS)
 
     const orders = computed(() => (result.value?.findOwnOrders as Order[]) ?? [])
@@ -117,6 +111,18 @@ export default {
       }, 0)
     }
 
+    const goToOrder = (order: Order) => {
+      console.log('go to order', order)
+
+      router.push({
+        name: 'order',
+        params: { id: order.id },
+        query: {
+          type: order.deliveryType.toLowerCase(),
+        },
+      })
+    }
+
     return {
       calculateTotal,
       orders,
@@ -125,6 +131,7 @@ export default {
       error,
 
       orderTotal,
+      goToOrder,
     }
   },
 }
