@@ -37,6 +37,9 @@ export const GET_ACTIVE_ORDERS = gql`
       items {
         name
       }
+      extras {
+        name
+      }
     }
   }
 `
@@ -48,6 +51,11 @@ export const GET_ORDER = gql`
       status
       lng
       lat
+      reviewId
+      review {
+        rating
+        comment
+      }
       items {
         name
         size

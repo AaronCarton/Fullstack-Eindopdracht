@@ -1,5 +1,5 @@
 <template>
-  <div class="rating flex items-center gap-1">
+  <div :class="`rating flex items-center gap-1 ${disabled ? 'disabled' : ''}`">
     <Star :num="1" :active="rating >= 1" :click="click" />
     <Star :num="2" :active="rating >= 2" :click="click" />
     <Star :num="3" :active="rating >= 3" :click="click" />
@@ -13,6 +13,14 @@ import { ref } from 'vue'
 import Star from './Star.vue'
 export default {
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    rating: {
+      type: Number,
+      required: true,
+    },
     ratingChange: {
       type: Function,
       required: true,
@@ -22,11 +30,12 @@ export default {
     Star,
   },
   setup(props) {
-    const rating = ref(0)
+    const rating = ref(props.rating)
 
     const click = (id: number) => {
-      rating.value = id
+      if (props.disabled) return
       props.ratingChange(id)
+      rating.value = id
     }
 
     return {
@@ -48,12 +57,12 @@ export default {
   transition: scale 0.25s linear;
 }
 /* when hovering parent turn all yellow */
-.rating:hover .star {
+.rating:hover:not(.disabled) .star {
   color: #facc15;
   scale: 1.3;
 }
 /* turn all stars after hovered star grey */
-.rating .star:hover ~ .star {
+.rating:not(.disabled) .star:hover ~ .star {
   color: #d1d5db !important;
   scale: 1;
 }

@@ -11,6 +11,11 @@ export default interface Order {
   items: Pizza[]
   extras: ExtraItem[]
   createdAt: string
+  reviewId?: string
+  review?: {
+    rating: number
+    comment: string
+  }
 }
 
 export interface OrderItem {

@@ -61,7 +61,7 @@
                   v-if="deliveryType === 'takeaway'"
                   class="-translate-x-2/6 absolute mt-2 text-center text-sm font-medium lg:-translate-x-1/4 lg:text-lg"
                 >
-                  Ready for pickup
+                  Ready
                 </p>
               </div>
               <div
@@ -121,8 +121,13 @@
                 class="mx-auto flex h-full w-4/6 flex-col content-center items-center justify-center gap-5 py-7"
               >
                 <h3 class="text-xl font-bold">How was your experience?</h3>
-                <StarRating :ratingChange="ratingChange" />
+                <StarRating
+                  :disabled="order.reviewId !== null"
+                  :rating="rating"
+                  :ratingChange="ratingChange"
+                />
                 <textarea
+                  :disabled="order.reviewId !== null"
                   class="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:bg-white focus:text-gray-700 focus:outline-none"
                   id="exampleFormControlTextarea1"
                   rows="3"
@@ -130,10 +135,11 @@
                   v-model="review"
                 ></textarea>
                 <button
+                  :disabled="order.reviewId !== null || !review || rating === 0"
                   @click="submitReview"
-                  class="w-1/3 rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+                  class="w-fit rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Submit
+                  {{ order.reviewId !== null ? 'Review submitted' : 'Submit review' }}
                 </button>
               </div>
             </div>
@@ -157,7 +163,8 @@
 import { watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { computed } from '@vue/reactivity'
-import { useQuery } from '@vue/apollo-composable'
+import { useToast } from 'vue-toastification'
+import { useMutation, useQuery } from '@vue/apollo-composable'
 import { Clock, ChefHat, Car, Check } from 'lucide-vue-next'
 import { LngLatLike } from 'mapbox-gl'
 import StarRating from '../../components/generic/StarRating.vue'
@@ -166,6 +173,7 @@ import MapView from '../../components/generic/MapView.vue'
 import 'animate.css'
 /* import font awesome icon component */
 import Order from '../../interfaces/order.interface'
+import { ADD_REVIEW } from '../../graphql/mutation.review'
 import { GET_ORDER } from '../../graphql/query.orders'
 import useTracking from '../../composables/useTracking'
 import ExtraItem from '../../interfaces/extraItem.interface'
@@ -200,11 +208,12 @@ export default {
     }
     let progress = ref<number>(0)
     const rating = ref<number>(0)
-    const review = ref<string>('')
+    const review = ref<string>(null)
     const driverPosition = ref<LiveLocation | null>(null)
     const driverCoords = ref<number[]>()
     const orderCoords = ref<number[]>()
 
+    const toast = useToast()
     const route = useRoute()
     const deliveryType = computed(() => route.query.type)
 
@@ -222,10 +231,27 @@ export default {
 
     const ratingChange = (num: number) => {
       rating.value = num
+      console.log('rating change', rating.value, num)
     }
 
     const submitReview = () => {
       console.log('submit review', rating.value, review.value)
+      const { mutate, onError, onDone } = useMutation(ADD_REVIEW, {
+        variables: {
+          orderId: params.id,
+          rating: rating.value,
+          comment: review.value,
+        },
+      })
+      mutate()
+      onError((err) => {
+        console.log('error', err)
+        toast.error(err.message)
+      })
+      onDone(() => {
+        toast.success('Review submitted')
+        refetchOrder()
+      })
     }
 
     //check how many times an item is in order and add the amount to the item
@@ -268,6 +294,8 @@ export default {
       if (val) {
         progress.value = trackingProgress[val.status]
         orderCoords.value = [val.lng, val.lat]
+        rating.value = val.review?.rating ?? 0
+        review.value = val.review?.comment ?? null
       }
     })
 
@@ -284,14 +312,14 @@ export default {
       }
     }
     const orderTotal = computed(() => {
-      return (
-        order.value.items.reduce((total, item) => {
-          return total + parseFloat(priceItem(item))
-        }, 0) +
-        order.value.extras.reduce((total, item) => {
-          return total + item.price
-        }, 0)
-      )
+      const itemsTotal = order.value.items.reduce((total, item) => {
+        return total + parseFloat(priceItem(item))
+      }, 0)
+      const extrasTotal = order.value.extras.reduce((total, item) => {
+        return total + item.price
+      }, 0)
+
+      return (itemsTotal + extrasTotal).toFixed(2)
     })
 
     return {

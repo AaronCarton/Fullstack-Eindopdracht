@@ -48,14 +48,14 @@ export default {
       }
     }
     const orderTotal = computed(() => {
-      return (
-        order.items.reduce((total, item) => {
-          return total + parseFloat(priceItem(item))
-        }, 0) +
-        order.extras.reduce((total, item) => {
-          return total + item.price
-        }, 0)
-      )
+      const itemsTotal = order.items.reduce((total, item) => {
+        return total + parseFloat(priceItem(item))
+      }, 0)
+      const extrasTotal = order.extras.reduce((total, item) => {
+        return total + item.price
+      }, 0)
+
+      return (itemsTotal + extrasTotal).toFixed(2)
     })
 
     return { orderTotal }
