@@ -209,8 +209,14 @@ export default {
     const deliveryType = computed(() => route.query.type)
 
     const { params } = useRoute()
-    const { connectToServer, connected, trackOrder, socketServer } = useTracking()
-    const { result, loading, error } = useQuery(GET_ORDER, {
+    const { connectToServer, connected, trackOrder, socketServer, onOrderStatusChange } =
+      useTracking()
+    const {
+      result,
+      loading,
+      error,
+      refetch: refetchOrder,
+    } = useQuery(GET_ORDER, {
       id: params.id,
     })
 
@@ -248,6 +254,11 @@ export default {
       if (val) {
         driverCoords.value = val.geolocation.coordinates
       }
+    })
+    onOrderStatusChange(({ orderId, status }) => {
+      console.log('status changed', status)
+      refetchOrder()
+      progress.value = trackingProgress[status]
     })
 
     const order = computed(() => (result.value?.order as Order) ?? undefined)

@@ -76,7 +76,8 @@ export default {
     const orderPos = ref<number[]>()
     const selectedOrder = ref<String | null>(null)
     const { result, loading, error, refetch: refetchOrders } = useQuery(GET_ACTIVE_ORDERS)
-    const { connectToServer, disconnectFromServer, trackOrder, trackDriver } = useTracking()
+    const { connectToServer, disconnectFromServer, trackOrder, trackDriver, changeOrderStatus } =
+      useTracking()
 
     const orders = computed(() => (result.value?.findActiveOrders as Order[]) ?? [])
     watch(orders, (val) => console.log(val))
@@ -125,6 +126,9 @@ export default {
       mutate()
 
       onDone(() => {
+        // send order complete emit
+        changeOrderStatus(selectedOrder.value.toString(), 'DELIVERED')
+
         // stop tracking
         tracking.value = false
         disconnectFromServer()

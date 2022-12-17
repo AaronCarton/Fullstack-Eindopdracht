@@ -33,6 +33,22 @@ export default () => {
     })
   }
 
+  const changeOrderStatus = (
+    orderId: string,
+    status: 'PENDING' | 'COOKING' | 'DELIVERING' | 'DELIVERED',
+  ) => {
+    socketServer.value!.emit(`order:statusChange`, { orderId, status })
+  }
+
+  const onOrderStatusChange = (
+    cb: (data: {
+      orderId: string
+      status: 'PENDING' | 'COOKING' | 'DELIVERING' | 'DELIVERED'
+    }) => void,
+  ) => {
+    socketServer.value!.on(`order:statusChange`, cb)
+  }
+
   const _connect = () => {
     console.log('Connected')
     connected.value = true
@@ -74,6 +90,8 @@ export default () => {
 
     trackOrder,
     trackDriver,
+    changeOrderStatus,
+    onOrderStatusChange,
     connectToServer,
     disconnectFromServer,
   }
