@@ -1,12 +1,12 @@
 <template>
   <button
     @click="setIsOpen(true)"
-    class="fixed right-3 bottom-3 rounded-full bg-neutral-700 p-4 shadow-md hover:bg-gray-800 xl:hidden"
+    class="fixed right-3 bottom-3 rounded-full bg-neutral-700 p-4 shadow-md hover:bg-gray-800 2xl:hidden"
   >
     <span
       v-if="cart.items.length > 0"
       class="absolute top-0 left-0 -m-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-700 text-xs font-bold leading-none text-white"
-      >{{ totalItems }}</span
+      >{{ cart.items.length + cart.extras.length }}</span
     >
     <span v-else> </span>
     <svg
@@ -85,34 +85,24 @@
               <div class="absolute inset-0 overflow-y-scroll">
                 <div class="flex flex-col divide-y divide-gray-100">
                   <div v-for="{ id, item } in cart.items" :key="id" class="w-full p-4">
-                    <div class="flex flex-col">
-                      <div class="flex items-center justify-between">
-                        <h3 class="justify-self-start text-xl font-semibold leading-tight">
-                          {{ item.name }}
-                        </h3>
-                        <p class="mt-2 justify-self-end leading-normal text-gray-800">
-                          €{{ priceItem(item) }}
-                        </p>
-                      </div>
-                      <div class="flex justify-between">
-                        <p
-                          class="whitespace-nowrap align-middle text-sm font-medium capitalize text-neutral-400"
-                        >
-                          {{ item.size }} {{ item.type }}
-                        </p>
-                        <!-- TODO: add edit and delete button -->
-                        <div class="flex gap-3">
-                          <Edit
-                            class="h-4 w-4 cursor-pointer stroke-neutral-900"
-                            @click="editItem(id, item), setIsOpen(false)"
-                          />
-                          <Delete
-                            class="h-4 w-4 cursor-pointer text-red-700"
-                            @click="deleteItem(id, item), setIsOpen(false)"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <CartItem
+                      :key="id"
+                      type="items"
+                      :id="id"
+                      :item="item"
+                      :edit-item="editItem"
+                      :delete-item="deleteItem"
+                    />
+                  </div>
+                  <div v-for="{ id, item } in cart.extras" class="w-full py-4 px-2">
+                    <CartItem
+                      :key="id"
+                      type="extras"
+                      :id="id"
+                      :item="item"
+                      :edit-item="editItem"
+                      :delete-item="deleteItem"
+                    />
                   </div>
                   <div v-for="{ id, item } in cart.extras" :key="id" class="w-full p-4">
                     <div class="flex flex-col">
@@ -147,23 +137,23 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="bg-neutral-50 py-6 px-4">
-              <div
-                class="flex items-center justify-between gap-4 rounded-lg bg-neutral-200 px-3 py-2"
+          <div class="bg-neutral-50 py-6 px-4">
+            <div
+              class="flex items-center justify-between gap-4 rounded-lg bg-neutral-200 px-3 py-2"
+            >
+              <div class="text-center text-xl font-semibold">Total price</div>
+              <div class="text-center text-xl font-semibold">€{{ getCartTotal() }}</div>
+            </div>
+            <div class="mt-4 flex flex-col space-y-2">
+              <RouterLink
+                class="rounded-lg bg-red-700 p-3 text-center font-bold text-white hover:bg-red-800 focus:ring-2 focus:ring-red-400"
+                to="/overview/payment"
+                @click="setIsOpen(false)"
               >
-                <div class="text-center text-xl font-semibold">Total price</div>
-                <div class="text-center text-xl font-semibold">€{{ getCartTotal() }}</div>
-              </div>
-              <div class="mt-4 flex flex-col space-y-2">
-                <RouterLink
-                  class="rounded-lg bg-red-700 p-3 text-center font-bold text-white hover:bg-red-800 focus:ring-2 focus:ring-red-400"
-                  to="/overview/payment"
-                  @click="setIsOpen(false)"
-                >
-                  Checkout
-                </RouterLink>
-              </div>
+                Checkout
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -188,6 +178,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed } from '@vue/reactivity'
 import Pizza, { isPizza } from '../../../interfaces/pizza.interface'
 import ExtraItem from '../../../interfaces/extraItem.interface'
+import CartItem from '../../../components/generic/CartItem.vue'
+
 export default {
   components: {
     Dialog,
@@ -198,6 +190,7 @@ export default {
     TransitionChild,
     Edit,
     Delete,
+    CartItem,
   },
   setup() {
     const { cart, getCartTotal, removeFromCart } = useCart()
@@ -221,12 +214,13 @@ export default {
       return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
     }
 
-    const editItem = (id: string, item: any) => {
-      push({
-        name: 'customize',
-        params: { id: item.id },
-        query: { item: id, type: searchQuery.value.type },
-      })
+    const editItem = (id: string, item: Pizza | ExtraItem) => {
+      if (isPizza(item))
+        push({
+          name: 'customize',
+          params: { id: item.id },
+          query: { item: id, type: searchQuery.value.type },
+        })
     }
     const deleteItem = (id: string, item: Pizza | ExtraItem) => {
       const isCurrentItem = searchQuery.value.item == id
@@ -243,7 +237,6 @@ export default {
     return {
       //Cart
       cart,
-      totalItems,
       priceItem,
       getCartTotal,
       editItem,

@@ -1,10 +1,10 @@
 <template>
-  <div class="main-bg h-screen w-screen sm:bg-auto">
+  <div class="main-bg h-screen w-screen bg-cover">
     <div
       class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
     >
       <div
-        class="grid-rows-10 grid-cols-auto grid h-[90vh] w-full gap-8 overflow-hidden xl:grid-cols-5"
+        class="grid-rows-10 grid-cols-auto grid h-[90vh] w-full gap-8 overflow-hidden 2xl:grid-cols-5"
       >
         <!-- ? :key="$route.fullPath" forces rerender, even when only the param of a path changes -->
         <!-- ? like switching between cart items -->

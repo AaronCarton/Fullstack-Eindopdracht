@@ -9,7 +9,9 @@
       <div
         class="bg-opacity-65 mx-auto flex h-full w-screen items-center bg-black py-20 px-4 sm:px-10 md:px-10 lg:px-10 xl:px-36"
       >
-        <div class="flex h-full w-full flex-col justify-between rounded-lg bg-white">
+        <div
+          class="scroll flex h-full w-full flex-col justify-between overflow-y-auto rounded-lg bg-white"
+        >
           <h1
             class="mb-10 w-full rounded-t-lg bg-red-700 p-4 text-center text-2xl font-bold text-neutral-50"
           >
@@ -18,7 +20,7 @@
           <!-- Tracking graphic -->
 
           <div
-            class="relative mb-10 flex h-8 w-5/6 items-center self-center rounded-full bg-gray-300 dark:bg-gray-700"
+            class="relative mb-10 flex h-3 w-4/6 items-center self-center rounded-full bg-gray-300 dark:bg-gray-700 lg:h-8 lg:w-5/6"
           >
             <div>
               <div
@@ -26,30 +28,38 @@
                 absolute -translate-y-1/2 -translate-x-1/2 rounded-2xl p-2
                 ${progress >= 0 ? 'bg-red-700' : 'bg-gray-300'}`"
               >
-                <Clock class="h-10 w-10 text-white" />
-                <p class="-translate-x-1/6 absolute mt-2 text-center font-medium">Pending</p>
+                <Clock class="h-5 w-5 text-white lg:h-10 lg:w-10 xl:h-10 xl:w-10" />
+                <p
+                  class="-translate-x-2/6 lg:-translate-x-1/5 absolute mt-2 text-center text-sm font-medium lg:text-lg"
+                >
+                  Pending
+                </p>
               </div>
               <div
                 :class="`absolute left-1/3 -translate-y-1/2 -translate-x-1/2 rounded-2xl p-2 
                 ${progress >= 33 ? 'bg-red-700' : 'bg-gray-300'}`"
               >
-                <ChefHat class="h-10 w-10 text-white" />
-                <p class="-translate-x-1/6 absolute mt-2 text-center font-medium">Cooking</p>
+                <ChefHat class="h-5 w-5 text-white lg:h-10 lg:w-10 xl:h-10 xl:w-10" />
+                <p
+                  class="-translate-x-2/6 lg:-translate-x-1/5 absolute mt-2 text-center text-sm font-medium lg:text-lg"
+                >
+                  Cooking
+                </p>
               </div>
               <div
                 :class="`absolute left-2/3 -translate-y-1/2 -translate-x-1/2 rounded-2xl bg-gray-300 p-2 
                 ${progress >= 66 ? 'bg-red-700' : 'bg-gray-300'}`"
               >
-                <Car class="h-10 w-10 text-white" />
+                <Car class="h-5 w-5 text-white lg:h-10 lg:w-10 xl:h-10 xl:w-10" />
                 <p
                   v-if="deliveryType === 'delivery'"
-                  class="-translate-x-1/5 absolute mt-2 text-center font-medium"
+                  class="-translate-x-2/6 absolute mt-2 text-center text-sm font-medium lg:-translate-x-1/4 lg:text-lg"
                 >
                   Delivering
                 </p>
                 <p
                   v-if="deliveryType === 'takeaway'"
-                  class="w-38 absolute mt-2 -translate-x-1/3 text-center font-medium"
+                  class="-translate-x-2/6 absolute mt-2 text-center text-sm font-medium lg:-translate-x-1/4 lg:text-lg"
                 >
                   Ready for pickup
                 </p>
@@ -58,25 +68,26 @@
                 :class="`absolute left-full -translate-y-1/2 -translate-x-1/2 rounded-2xl bg-gray-300 p-2 
                 ${progress >= 100 ? 'bg-red-700' : 'bg-gray-300'}`"
               >
-                <Check class="h-10 w-10 text-white" />
-                <p class="-translate-x-1/5 absolute mt-2 text-center font-medium">
+                <Check class="h-5 w-5 text-white lg:h-10 lg:w-10 xl:h-10 xl:w-10" />
+                <p
+                  class="-translate-x-2/6 absolute mt-2 text-center text-sm font-medium lg:-translate-x-1/4 lg:text-lg"
+                >
                   {{ deliveryType === 'takeaway' ? 'Picked up' : 'Delivered' }}
                 </p>
               </div>
             </div>
-            <div class="h-8 rounded-full bg-red-700" :style="`width: ${progress}%`"></div>
+            <div class="h-3 rounded-full bg-red-700 lg:h-8" :style="`width: ${progress}%`"></div>
           </div>
-          <div class="flex h-full w-full justify-center gap-6 p-7">
-            <div class="my-3 h-full w-1/3">
-              <div class="h-full">
+          <div
+            class="flex h-full w-full flex-col items-center justify-center gap-6 self-center p-9 lg:flex-row lg:p-9 lg:px-28"
+          >
+            <div class="my-3 h-full w-full lg:w-1/3">
+              <div class="relative h-full">
                 <div
-                  class="border-1 scrollbar flex h-[100%] w-full flex-col justify-start overflow-auto rounded-t-lg border-neutral-400 bg-neutral-100"
+                  class="border-1 scrollbar flex h-full w-full flex-col overflow-auto rounded-lg border-neutral-400 bg-neutral-100"
                 >
-                  <div class="flex w-full flex-col p-5">
-                    <div
-                      v-for="item in order.items"
-                      class="flex w-full items-center justify-start gap-5"
-                    >
+                  <div class="h-50 flex w-full flex-col p-5">
+                    <div v-for="item in order.items" class="flex w-full items-center gap-5">
                       <div class="flex w-full justify-between">
                         <div>
                           <p class="font-bold">{{ item.name }}</p>
@@ -88,10 +99,7 @@
                         <p class="font-semibold">€{{ priceItem(item) }}</p>
                       </div>
                     </div>
-                    <div
-                      v-for="item in order.extras"
-                      class="flex w-full items-center justify-start gap-5"
-                    >
+                    <div v-for="item in order.extras" class="flex w-full items-center gap-5">
                       <div class="flex w-full justify-between">
                         <p class="font-bold">{{ item.name }}</p>
 
@@ -99,12 +107,12 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="flex justify-between rounded-b-lg bg-red-700 py-2 px-5 font-bold text-neutral-50"
-                >
-                  <p>Total:</p>
-                  <p class="px-4">€{{ orderTotal }}</p>
+                  <div
+                    class="absolute bottom-0 right-0 flex w-full justify-between rounded-b-lg bg-red-700 py-2 px-5 font-bold text-neutral-50"
+                  >
+                    <p>Total:</p>
+                    <p class="px-4">€{{ orderTotal }}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -128,7 +136,7 @@
             </div>
             <template v-else-if="order.status === 'DELIVERING' && deliveryType === 'delivery'">
               <MapView
-                class="my-3 h-full w-full rounded-md"
+                class="h-100 my-3 w-full rounded-md lg:h-full"
                 :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
                 :markers="[driverCoords as LngLatLike, orderCoords as LngLatLike]"
                 :start-route="driverCoords"

@@ -1,5 +1,5 @@
 <template>
-  <div class="z-50 hidden flex-col justify-between rounded-lg bg-neutral-50 lg:flex">
+  <div class="z-50 hidden flex-col justify-between rounded-lg bg-neutral-50 p-3 2xl:flex">
     <div class="overflow-hidden">
       <div class="flex items-center justify-between rounded-t-lg bg-red-700 p-3">
         <h2 class="text-2xl font-semibold text-neutral-50">Order</h2>

@@ -1,16 +1,17 @@
 <template>
-  <div class="rounded-full bg-neutral-50 px-8 py-1">
-    <ul class="flex items-center gap-6">
+  <div
+    class="relative flex items-center justify-center rounded-full bg-neutral-50 px-2 py-1 lg:px-8"
+  >
+    <ul class="flex items-center justify-center gap-1 lg:gap-6">
       <li>
         <RouterLink to="/">
-          <Home class="fill h-6 w-6" />
+          <Home class="fill absolute left-6 top-4 h-6 w-6" />
         </RouterLink>
       </li>
-      <li class="text-neutral-400 last:hidden">|</li>
       <template v-for="section in sections">
         <li>
           <button
-            class="text-xl font-bold capitalize text-neutral-900 hover:text-neutral-600"
+            class="sm:text-md font-bold capitalize text-neutral-900 hover:text-neutral-600 lg:text-xl"
             @click="sectionChange(section)"
           >
             {{ section }}

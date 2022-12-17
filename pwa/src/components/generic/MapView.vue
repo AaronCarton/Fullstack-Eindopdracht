@@ -1,5 +1,5 @@
 <template>
-  <div class="my-3" ref="mapElement"></div>
+  <div class="" ref="mapElement"></div>
 </template>
 
 <script lang="ts">
