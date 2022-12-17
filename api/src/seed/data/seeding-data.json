@@ -190,8 +190,12 @@
       "status": "DELIVERED",
       "address": "Vogellaan 1, 1234 AB, Amsterdam",
       "deliveryTime": "1669829304451",
+      "deliveryType": "DELIVERY",
       "reviewId": "63879df46ceca7c179a0e6e6",
       "paymentMethod": "VISA",
+      "lat": 50.82611,
+      "lng": 3.270026,
+      "extras": [],
       "items": [
         {
           "basePrice": 13.43,
@@ -230,10 +234,13 @@
     {
       "_id": "6384080c92ca44563689e56d",
       "customerId": "6tGR0EesbcKXgrrIOHYoWOWfL32",
-      "status": "COOKING",
+      "status": "DELIVERING",
       "address": "Vogellaan 1, 1234 AB, Amsterdam",
       "deliveryTime": "1669597195925",
+      "deliveryType": "DELIVERY",
       "paymentMethod": "PAYPAL",
+      "lat": 50.844554,
+      "lng": 3.196217,
       "extras": [
         {
           "category": "drink",
@@ -269,15 +276,77 @@
           "type": "classic"
         }
       ]
+    },
+    {
+      "_id": "639e1d358df6a16f4c149cd3",
+      "status": "DELIVERED",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "deliveryType": "TAKEAWAY",
+      "reviewId": "639e1045a7b9af56699c6c85",
+      "extras": [
+        {
+          "name": "Red Wine",
+          "category": "drink",
+          "price": 19.4
+        }
+      ],
+      "items": [
+        {
+          "name": "Hawaiian",
+          "size": "large",
+          "type": "cheesyCrust",
+          "basePrice": 13.43,
+          "toppings": [
+            {
+              "name": "Tomato Sauce",
+              "category": "sauce",
+              "default": true,
+              "price": 2.13
+            },
+            {
+              "name": "Mozzarella",
+              "category": "cheese",
+              "default": true,
+              "price": 2.43
+            },
+            {
+              "name": "Pineapple",
+              "category": "vegetable",
+              "default": true,
+              "price": 1.23
+            },
+            {
+              "name": "Mushroom",
+              "category": "vegetable",
+              "default": true,
+              "price": 1.23
+            },
+            {
+              "name": "Pineapple",
+              "category": "vegetable",
+              "default": false,
+              "price": 1.23
+            }
+          ]
+        }
+      ],
+      "createdAt": "2022-12-17T19:49:09.082Z"
     }
   ],
   "reviews": [
     {
       "_id": "63879df46ceca7c179a0e6e6",
       "orderId": "638792b859c05dacbcb4dbbd",
-      "customerId": "EmesbcKXgrrIOHYoWOWfL32",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
       "rating": 5,
       "comment": "The pizza was delicious"
+    },
+    {
+      "_id": "639e1045a7b9af56699c6c85",
+      "orderId": "639e1d358df6a16f4c149cd3",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "rating": 1,
+      "comment": "Absolutely terrible, my dissapointment is immeasurable and my day is ruined"
     }
   ]
 }
