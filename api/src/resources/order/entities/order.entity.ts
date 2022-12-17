@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } fr
 import { ObjectId } from 'mongodb'
 import { Pizza } from 'src/resources/pizza/entities/pizza.entity'
 import { Item } from 'src/resources/item/entities/item.entity'
+import { Review } from 'src/resources/review/entities/review.entity'
 
 export enum OrderStatus {
   'PENDING' = 'PENDING',
@@ -46,6 +47,13 @@ export class Order {
   @Field()
   @Column()
   paymentMethod: string
+  @Field(() => Review, { nullable: true })
+  @Column()
+  review: Review
+
+  @Field()
+  @Column()
+  reviewId: string
 
   // TODO: add service fees price
 

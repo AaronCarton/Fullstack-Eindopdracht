@@ -37,6 +37,10 @@ export class OrderService {
     return this.orderRepo.find({ where: { status: OrderStatus.COOKING } })
   }
 
+  addReviewToOrder(id: string, reviewId: string) {
+    return this.orderRepo.update(id, { reviewId })
+  }
+
   async update(id: string, updateOrderInput: UpdateOrderInput) {
     await this.orderRepo.update(new ObjectId(id), updateOrderInput)
     return this.orderRepo.findOne(new ObjectId(id))

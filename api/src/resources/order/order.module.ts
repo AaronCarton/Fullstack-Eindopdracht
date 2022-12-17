@@ -7,9 +7,11 @@ import { Order } from './entities/order.entity'
 import { OrderService } from './order.service'
 import { User } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
+import { Review } from '../review/entities/review.entity'
+import { ReviewService } from '../review/review.service'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, Pizza, User])],
-  providers: [OrderResolver, OrderService, PizzaService, UserService],
+  imports: [TypeOrmModule.forFeature([Order, Pizza, User, Review])],
+  providers: [OrderResolver, OrderService, PizzaService, UserService, ReviewService],
 })
 export class OrderModule {}

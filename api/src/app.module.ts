@@ -8,6 +8,7 @@ import { UserModule } from './resources/user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { NotificationsModule } from './notifications/notifications.module'
 import { ItemModule } from './resources/item/item.module'
+import { ReviewModule } from './resources/review/review.module'
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ItemModule } from './resources/item/item.module'
     DatabaseSeedModule,
     AuthModule,
     ItemModule,
+    ReviewModule,
   ],
   controllers: [],
   providers: [],
