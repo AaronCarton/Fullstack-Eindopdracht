@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } from 'typeorm'
 import { ObjectType, Field, ID } from '@nestjs/graphql'
 import { ObjectId } from 'mongodb'
+import { Order } from 'src/resources/order/entities/order.entity'
 
 @Entity()
 @ObjectType()
@@ -16,6 +17,9 @@ export class Review {
   @Field()
   @Column()
   orderId: string
+
+  @Field(() => Order)
+  order: Order
 
   @Field()
   @Column()

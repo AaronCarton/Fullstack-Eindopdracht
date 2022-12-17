@@ -108,6 +108,11 @@ const routes: RouteRecordRaw[] = [
             component: () => import('../screens/account/admin/ManageToppings.vue'),
             meta: { needsAdmin: true },
           },
+          {
+            path: 'admin/manage-reviews',
+            component: () => import('../screens/account/admin/ManageReviews.vue'),
+            meta: { needsAdmin: true },
+          },
         ],
         meta: {
           needsAuthentication: true,

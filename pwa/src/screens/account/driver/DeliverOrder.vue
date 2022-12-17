@@ -11,7 +11,11 @@
         >
           <option :value="null" selected>No order selected</option>
           <option v-for="order in orders" :key="order.id" :value="order.id">
-            {{ `${order.items.map((item) => item.name).join(', ')} (${order.id})` }}
+            {{
+              `${[...order.items.map((i) => i.name), ...order.extras.map((i) => i.name)].join(
+                ', ',
+              )} (${order.id})`
+            }}
           </option>
         </select>
       </div>

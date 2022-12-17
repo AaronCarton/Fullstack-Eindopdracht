@@ -284,9 +284,14 @@ export default {
       }
     }
     const orderTotal = computed(() => {
-      return order.value.items.reduce((total, item) => {
-        return total + parseFloat(priceItem(item))
-      }, 0)
+      return (
+        order.value.items.reduce((total, item) => {
+          return total + parseFloat(priceItem(item))
+        }, 0) +
+        order.value.extras.reduce((total, item) => {
+          return total + item.price
+        }, 0)
+      )
     })
 
     return {

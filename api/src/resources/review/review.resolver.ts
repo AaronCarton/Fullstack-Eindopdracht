@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { FirebaseGuard } from 'src/auth/guards/firebase.guard'
 import { UseGuards } from '@nestjs/common'
 import { ReviewService } from './review.service'
@@ -9,6 +9,7 @@ import { Role } from '../user/entities/user.entity'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
 import { UserRecord } from 'firebase-admin/auth'
 import { OrderService } from '../order/order.service'
+import { Order } from '../order/entities/order.entity'
 
 @Resolver(() => Review)
 export class ReviewResolver {
@@ -16,6 +17,15 @@ export class ReviewResolver {
     private readonly reviewService: ReviewService,
     private readonly orderService: OrderService,
   ) {}
+
+  //////* FIELD RESOLVERS ///////
+
+  @ResolveField()
+  order(@Parent() review: Review): Promise<Order> {
+    return this.orderService.findOne(review.orderId)
+  }
+
+  //////* USER ROUTES ///////
 
   @UseGuards(FirebaseGuard)
   @Mutation(() => Review)
@@ -30,6 +40,9 @@ export class ReviewResolver {
     }
     if (order?.status !== 'DELIVERED') {
       throw new Error('Order has not been delivered yet')
+    }
+    if (order?.reviewId) {
+      throw new Error('Order has already been reviewed')
     }
     const review = await this.reviewService.create(user.uid, createReviewInput)
     // update order with review

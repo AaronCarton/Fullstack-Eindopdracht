@@ -32,6 +32,14 @@
           </template>
           <template v-if="isAdmin">
             <router-link
+              to="/account/admin/manage-reviews"
+              class="flex content-center items-center rounded-tl-xl border-b-2 border-neutral-300 py-4 px-10 align-middle font-medium hover:bg-neutral-300"
+              active-class="bg-neutral-300"
+            >
+              <Star class="mr-2 h-6 w-6" />
+              <p class="align-middle">Reviews</p>
+            </router-link>
+            <router-link
               to="/account/admin/manage-users"
               class="flex content-center items-center rounded-tl-xl border-b-2 border-neutral-300 py-4 px-10 align-middle font-medium hover:bg-neutral-300"
               active-class="bg-neutral-300"
@@ -67,9 +75,10 @@
 
 <script lang="ts">
 import useUser from '../../composables/useUser'
-import { User, History, Settings, Bike } from 'lucide-vue-next'
+import { Star, User, History, Settings, Bike } from 'lucide-vue-next'
 export default {
   components: {
+    Star,
     Bike,
     User,
     History,
