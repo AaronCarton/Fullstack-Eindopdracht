@@ -116,27 +116,30 @@
                 </div>
               </div>
             </div>
-            <div
-              v-if="order.status === 'DELIVERED'"
-              class="flex w-1/5 flex-col items-center gap-5 self-center"
-            >
-              <h3 class="text-xl font-bold">How was your experience?</h3>
-              <StarRating :ratingChange="ratingChange" />
-              <textarea
-                class="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:bg-white focus:text-gray-700 focus:outline-none"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                placeholder="Leave a comment?"
-              ></textarea>
-              <button
-                class="w-1/3 rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+            <div v-if="order.status === 'DELIVERED'" class="h-full w-4/5 rounded-md bg-gray-200">
+              <div
+                class="mx-auto flex h-full w-4/6 flex-col content-center items-center justify-center gap-5 py-7"
               >
-                Submit
-              </button>
+                <h3 class="text-xl font-bold">How was your experience?</h3>
+                <StarRating :ratingChange="ratingChange" />
+                <textarea
+                  class="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:bg-white focus:text-gray-700 focus:outline-none"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  placeholder="Leave a comment?"
+                  v-model="review"
+                ></textarea>
+                <button
+                  @click="submitReview"
+                  class="w-1/3 rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800"
+                >
+                  Submit
+                </button>
+              </div>
             </div>
             <template v-else-if="order.status === 'DELIVERING' && deliveryType === 'delivery'">
               <MapView
-                class="h-100 my-3 w-full rounded-md lg:h-full"
+                class="my-3 w-full rounded-md lg:h-full"
                 :map-coordinates="{ lng: 3.3232699, lat: 50.8425729 }"
                 :markers="[driverCoords as LngLatLike, orderCoords as LngLatLike]"
                 :start-route="driverCoords"
@@ -197,6 +200,7 @@ export default {
     }
     let progress = ref<number>(0)
     const rating = ref<number>(0)
+    const review = ref<string>('')
     const driverPosition = ref<LiveLocation | null>(null)
     const driverCoords = ref<number[]>()
     const orderCoords = ref<number[]>()
@@ -212,6 +216,10 @@ export default {
 
     const ratingChange = (num: number) => {
       rating.value = num
+    }
+
+    const submitReview = () => {
+      console.log('submit review', rating.value, review.value)
     }
 
     //check how many times an item is in order and add the amount to the item
@@ -285,6 +293,8 @@ export default {
       ratingChange,
       priceItem,
       orderTotal,
+      review,
+      submitReview,
     }
   },
 }
