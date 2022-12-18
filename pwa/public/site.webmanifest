@@ -1,0 +1,11 @@
+{
+  "name": "PizzaTime",
+  "short_name": "PT",
+  "icons": [],
+  "theme_color": "#b91c1c",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
