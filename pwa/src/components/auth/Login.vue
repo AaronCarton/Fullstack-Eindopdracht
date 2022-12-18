@@ -98,7 +98,7 @@ export default defineComponent({
   },
 
   setup() {
-    const { push } = useRouter()
+    const { replace } = useRouter()
     const { redirectedFrom } = useRoute()
     const { login } = useAuthentication()
 
@@ -122,7 +122,7 @@ export default defineComponent({
         .then((u) => {
           // TODO: fix bug when redirecting from /takeaway
           // becomes /auth/overview?type=takeaway
-          push({ path: redirectedFrom?.path || '/' })
+          replace({ path: redirectedFrom?.path || '/' })
         })
         .catch((error) => {
           errorMessage.value = error.message
