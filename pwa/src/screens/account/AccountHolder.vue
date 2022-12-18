@@ -18,7 +18,7 @@
             active-class="bg-neutral-300"
           >
             <History class="mr-2 h-6 w-6" />
-            <p class="align-middle">Previous Orders</p>
+            <p class="align-middle">{{ $t('account.previousOrders') }}</p>
           </router-link>
           <template v-if="isDriver || isAdmin">
             <router-link
@@ -27,7 +27,7 @@
               active-class="bg-neutral-300"
             >
               <Bike class="mr-2 h-6 w-6" />
-              <p class="align-middle">Deliver Order</p>
+              <p class="align-middle">{{ $t('account.deliverOrder') }}</p>
             </router-link>
           </template>
           <template v-if="isAdmin">
@@ -37,7 +37,7 @@
               active-class="bg-neutral-300"
             >
               <Star class="mr-2 h-6 w-6" />
-              <p class="align-middle">Reviews</p>
+              <p class="align-middle">{{ $t('account.reviews') }}</p>
             </router-link>
             <router-link
               to="/account/admin/manage-users"
@@ -45,7 +45,7 @@
               active-class="bg-neutral-300"
             >
               <Settings class="mr-2 h-6 w-6" />
-              <p class="align-middle">Manage Users</p>
+              <p class="align-middle">{{ $t('account.manageUsers') }}</p>
             </router-link>
             <router-link
               to="/account/admin/manage-pizzas"
@@ -53,7 +53,7 @@
               active-class="bg-neutral-300"
             >
               <Settings class="mr-2 h-6 w-6" />
-              <p class="align-middle">Manage Pizzas</p>
+              <p class="align-middle">{{ $t('account.managePizzas') }}</p>
             </router-link>
             <router-link
               to="/account/admin/manage-toppings"
@@ -61,7 +61,7 @@
               active-class="bg-neutral-300"
             >
               <Settings class="mr-2 h-6 w-6" />
-              <p class="align-middle">Manage Toppings</p>
+              <p class="align-middle">{{ $t('account.manageToppings') }}</p>
             </router-link>
           </template>
           <div

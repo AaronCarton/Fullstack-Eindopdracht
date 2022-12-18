@@ -15,7 +15,7 @@
           <h1
             class="mb-10 w-full rounded-t-lg bg-red-700 p-4 text-center text-2xl font-bold text-neutral-50"
           >
-            Your order has been placed
+            {{ $t('order.title') }}
           </h1>
           <!-- Tracking graphic -->
 
@@ -32,7 +32,7 @@
                 <p
                   class="-translate-x-2/6 lg:-translate-x-1/5 absolute mt-2 text-center text-sm font-medium lg:text-lg"
                 >
-                  Pending
+                  {{ $t('order.pending') }}
                 </p>
               </div>
               <div
@@ -43,7 +43,7 @@
                 <p
                   class="-translate-x-2/6 lg:-translate-x-1/5 absolute mt-2 text-center text-sm font-medium lg:text-lg"
                 >
-                  Cooking
+                  {{ $t('order.cooking') }}
                 </p>
               </div>
               <div
@@ -55,13 +55,13 @@
                   v-if="deliveryType === 'delivery'"
                   class="-translate-x-2/6 absolute mt-2 text-center text-sm font-medium lg:-translate-x-1/4 lg:text-lg"
                 >
-                  Delivering
+                  {{ $t('order.delivering') }}
                 </p>
                 <p
                   v-if="deliveryType === 'takeaway'"
                   class="-translate-x-2/6 absolute mt-2 text-center text-sm font-medium lg:-translate-x-1/4 lg:text-lg"
                 >
-                  Ready
+                  {{ $t('order.delivered') }}
                 </p>
               </div>
               <div
@@ -120,7 +120,7 @@
               <div
                 class="mx-auto flex h-full w-4/6 flex-col content-center items-center justify-center gap-5 py-7"
               >
-                <h3 class="text-xl font-bold">How was your experience?</h3>
+                <h3 class="text-xl font-bold">{{ $t('order.reviewTitle') }}</h3>
                 <StarRating
                   :disabled="order.reviewId !== null"
                   :rating="rating"
@@ -131,7 +131,7 @@
                   class="form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:bg-white focus:text-gray-700 focus:outline-none"
                   id="exampleFormControlTextarea1"
                   rows="3"
-                  placeholder="Leave a comment?"
+                  :placeholder="$t('order.reviewPlaceholder')"
                   v-model="review"
                 ></textarea>
                 <button
@@ -139,7 +139,9 @@
                   @click="submitReview"
                   class="w-fit rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 active:bg-red-800 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {{ order.reviewId !== null ? 'Review submitted' : 'Submit review' }}
+                  {{
+                    order.reviewId !== null ? $t('order.reviewSuccess') : $t('order.reviewButton')
+                  }}
                 </button>
               </div>
             </div>

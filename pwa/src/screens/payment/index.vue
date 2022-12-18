@@ -1,7 +1,7 @@
 <template>
   <div class="flex w-full flex-col gap-1 overflow-auto rounded-lg bg-white">
     <h1 class="mb-6 w-full bg-red-700 p-4 text-center text-4xl font-bold text-neutral-50 shadow-md">
-      Checkout
+      {{ $t('checkout.title') }}
     </h1>
 
     <div class="justify-self-start px-6 py-0">
@@ -10,7 +10,9 @@
       <div class="mx-auto my-0 grid grid-cols-2 gap-5">
         <div>
           <div class="flex flex-col gap-1">
-            <h2 class="mb-3 text-lg font-semibold lg:text-2xl">Select a desired moment</h2>
+            <h2 class="mb-3 text-lg font-semibold lg:text-2xl">
+              {{ $t('checkout.desiredMoment') }}
+            </h2>
             <Listbox v-model="selectedTime">
               <div class="relative mt-1">
                 <ListboxButton
@@ -89,7 +91,7 @@
             <div v-else>
               <div class="gap-3 rounded-lg">
                 <div class="flex flex-col gap-1">
-                  <label class="font-medium lg:text-lg" for="">Street name</label>
+                  <label class="font-medium lg:text-lg" for="">{{ $t('checkout.street') }}</label>
                   <input
                     type="text"
                     class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
@@ -98,7 +100,9 @@
                   />
                 </div>
                 <div class="col-span-1 flex flex-col gap-1">
-                  <label class="font-medium lg:text-lg" for="">Street nr.</label>
+                  <label class="font-medium lg:text-lg" for="">{{
+                    $t('checkout.houseNumber')
+                  }}</label>
                   <input
                     type="number"
                     class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
@@ -108,7 +112,7 @@
                   />
                 </div>
                 <div class="col-span-1 flex flex-col gap-1">
-                  <label class="font-medium lg:text-lg" for="pC">Postal code</label>
+                  <label class="font-medium lg:text-lg" for="pC">{{ $t('checkout.postal') }}</label>
                   <div
                     class="group flex justify-between rounded-lg border-2 border-neutral-300 p-2 hover:border-neutral-500"
                   >

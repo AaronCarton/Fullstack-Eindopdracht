@@ -1,0 +1,43 @@
+{
+  "nl": {
+    "languageChanged": "Taal ingesteld op Nederlands",
+
+    "home.takeaway": "AFHALEN",
+    "home.delivery": "LEVEREN",
+
+    "overview.drinks": "Dranken",
+    "overview.desserts": "Desserts",
+
+    "customize.size": "Grootte",
+    "customize.type": "Type",
+    "customize.toppings": "Beleg",
+    "customize.addToCart": "Toevoegen aan winkelwagen",
+
+    "cart.title": "Winkelwagen",
+    "cart.totalPrice": "Totaal prijs",
+    "cart.checkout": "Afrekenen",
+
+    "checkout.title": "Afrekenen",
+    "checkout.desiredMoment": "Gewenste moment",
+    "checkout.street": "Straat",
+    "checkout.houseNumber": "Huisnummer",
+    "checkout.postal": "Postcode",
+
+    "account.previousOrders": "Vorige bestellingen",
+    "account.deliverOrder": "Bestelling leveren",
+    "account.reviews": "Reviews",
+    "account.manageUsers": "Users beheren",
+    "account.managePizzas": "Pizzas beheren",
+    "account.manageToppings": "Beleg beheren",
+
+    "order.title": "Je bestelling is geplaatst",
+    "order.pending": "In behandeling",
+    "order.cooking": "Koken",
+    "order.delivering": "Leveren",
+    "order.delivered": "Geleverd",
+    "order.reviewTitle": "Hoe was je bestelling?",
+    "order.reviewPlaceholder": "Schrijf hier je review",
+    "order.reviewButton": "Verstuur",
+    "order.reviewSuccess": "Bedankt voor je review!"
+  }
+}

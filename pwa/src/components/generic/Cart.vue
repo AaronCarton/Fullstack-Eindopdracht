@@ -41,7 +41,7 @@
     </div>
     <div class="flex flex-col justify-end p-3">
       <div class="mb-3 flex w-full justify-between rounded-lg bg-neutral-200 p-3">
-        <p class="text-xl font-bold">Total price</p>
+        <p class="text-xl font-bold">{{ $t('cart.totalPrice') }}</p>
         <!-- TODO calculate price -->
         <p class="text-xl">€{{ getCartTotal() }}</p>
       </div>
@@ -49,7 +49,7 @@
         class="focus-visible::ring-2 w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 hover:bg-red-800 focus:outline-none focus-visible:ring-red-300"
         @click="checkout"
       >
-        Checkout
+        {{ $t('cart.checkout') }}
       </button>
     </div>
   </div>

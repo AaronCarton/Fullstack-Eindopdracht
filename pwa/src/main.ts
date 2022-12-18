@@ -8,6 +8,7 @@ import './main.css'
 
 import App from './App.vue'
 
+import { createI18n } from 'vue-i18n'
 import router from './bootstrap/router'
 import useAuthentication from './composables/useAuthentication'
 import useUser from './composables/useUser'
@@ -15,8 +16,10 @@ import useUser from './composables/useUser'
 import Toast, { PluginOptions } from 'vue-toastification'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import useCart from './composables/useCart'
+import usei18n from './composables/usei18n'
 
 const app: VueApp = createApp(App)
+const { i18n, loadLocale } = usei18n()
 
 const { restoreUser } = useAuthentication()
 const { loadUser } = useUser()
@@ -31,7 +34,9 @@ const { loadToppings } = useCart()
       })
   })
   await loadToppings()
+  await loadLocale()
 
+  app.use(i18n)
   app.use(router)
   app.use(autoAnimatePlugin)
   app.use(Toast, { hideProgressBar: true, timeout: 3500 } as PluginOptions)

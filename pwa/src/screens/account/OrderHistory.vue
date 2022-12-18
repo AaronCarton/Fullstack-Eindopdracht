@@ -19,7 +19,7 @@
               :key="order.id"
               class="border-b-2 border-neutral-300 last:border-b-0"
             >
-              <td class="py-4 px-6">{{ order.id }}</td>
+              <td class="py-4 px-6 font-mono text-sm">{{ order.id.slice(-6) }}</td>
               <td class="py-4 px-6">
                 {{
                   [...order.items.map((p) => p.name), ...order.extras.map((i) => i.name)].join(', ')

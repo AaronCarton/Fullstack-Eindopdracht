@@ -17,7 +17,7 @@
         <a class="mb-3 text-3xl font-bold">{{ pizza.name }}</a>
         <div class="mt-3 mb-6 flex flex-col gap-6">
           <div>
-            <h3 class="mb-6 text-2xl font-semibold">Size</h3>
+            <h3 class="mb-6 text-2xl font-semibold">{{ $t('customize.size') }}</h3>
 
             <ButtonGroup
               :onClick="handleSize"
@@ -27,7 +27,7 @@
             />
           </div>
           <div class="">
-            <h3 class="mb-6 text-2xl font-semibold">Type</h3>
+            <h3 class="mb-6 text-2xl font-semibold">{{ $t('customize.type') }}</h3>
             <ButtonGroup
               :onClick="handleType"
               :group="'type'"
@@ -39,7 +39,7 @@
         <div class="scrollbar flex flex-col overflow-y-scroll">
           <!-- TODO add overflow to this nested div instead of full parent div -->
           <div class="mb-4">
-            <h3 class="mb-4 text-2xl font-semibold">Toppings</h3>
+            <h3 class="mb-4 text-2xl font-semibold">{{ $t('customize.toppings') }}</h3>
             <div class="">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="mb-4">
-            <h3 class="mb-4 text-2xl font-semibold">Extra Toppings</h3>
+            <h3 class="mb-4 text-2xl font-semibold">Extra {{ $t('customize.toppings') }}</h3>
             <div class="">
               <!-- TODO: Sort by category and by name so adding/removing is less jarring -->
               <ToppingItem
@@ -69,7 +69,7 @@
           @click="goBack()"
           class="mx-auto mt-6 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
         >
-          Add to Cart
+          {{ $t('customize.addToCart') }}
         </button>
       </div>
     </template>
