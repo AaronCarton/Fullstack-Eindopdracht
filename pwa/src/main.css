@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-bg {
+  background-image: url(./assets/HomeBG.jpg);
+}
+
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 15px;
+    height: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f8f8f8;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #a5a5a5;
+  }
+
+  .scrollbar_cart::-webkit-scrollbar {
+    width: 12px;
+    height: 20px;
+  }
+
+  .scrollbar_cart::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f8f8f8;
+  }
+
+  .scrollbar_cart::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  .scrollbar_cart::-webkit-scrollbar-thumb:hover {
+    background: #a5a5a5;
+  }
+}

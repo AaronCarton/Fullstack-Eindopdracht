@@ -1,8 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3003);
+  const app = await NestFactory.create(AppModule)
+  app.useGlobalPipes(new ValidationPipe())
+  const PORT: number = +process.env.PORT || 3006
+  await app.listen(PORT)
+
+  console.info(`\n👋 Visit ${await app.getUrl()}/graphql`)
 }
-bootstrap();
+bootstrap()

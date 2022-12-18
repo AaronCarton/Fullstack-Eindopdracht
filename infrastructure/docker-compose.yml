@@ -1,15 +1,45 @@
 version: '3.1'
-
 services:
+  pwa:
+    depends_on:
+      - api
+    container_name: pizzatime_pwa
+    build: 
+      context: ./pwa
+      dockerfile: Dockerfile
+    environment:
+      API_URL: http://localhost:3008/graphql
+      SOCKET_URL: ws://[::1]:3008
+    ports:
+      - 8091:8082
+  api:
+    depends_on:
+      - mongodb
+    container_name: pizzatime_api
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/project_api
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials
+    secrets:
+      - gcp-credentials
+    ports:
+      - 3008:3006
   mongodb:
     image: mongo
     restart: on-failure:5
     ports:
-      - 27027:27017
+      - 27007:27017
     environment:
       MONGO_INITDB_DATABASE: project_api
     volumes:
-      - dbvolume:/data/db
+      - fswdProjectVolume:/data/db
 
 volumes:
-  dbvolume:
+  fswdProjectVolume:
+    name: fswd_MongoDB
+
+secrets:
+  gcp-credentials:
+    file: /Users/aestas/Documents/VSC_workspace/Howest/FSWD/FSWD_project/api/fswd-project-pizzatime-firebase-adminsdk.json

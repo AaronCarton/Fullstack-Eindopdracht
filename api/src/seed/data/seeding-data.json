@@ -1,0 +1,352 @@
+{
+  "users": [
+    {
+      "_id": "9372acafb55506be4070f4dc",
+      "uid": "EmesbcKXgrrIOHYoWOWfL32",
+      "role": 1
+    }
+  ],
+  "toppings": [
+    {
+      "_id": "63409b2f2bf7174a20eb7a51",
+      "category": "sauce",
+      "name": "Tomato Sauce",
+      "description": "The classic sauce for pizza",
+      "price": 2.13,
+      "stock": 26
+    },
+    {
+      "_id": "634984c9129c7754f8e3e4db",
+      "category": "cheese",
+      "name": "Mozzarella",
+      "description": "The cheesiest of cheeses",
+      "price": 2.43,
+      "stock": 34
+    },
+    {
+      "_id": "634984d3129c7754f8e3e4dc",
+      "category": "meat",
+      "name": "Spicy meat",
+      "description": "Spicy meat for a spicy pizza",
+      "price": 1.76,
+      "stock": 12
+    },
+    {
+      "_id": "634984d9129c7754f8e3e4dd",
+      "category": "vegetable",
+      "name": "Mushroom",
+      "description": "Plop won't be happy about this",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984e0129c7754f8e3e4de",
+      "category": "vegetable",
+      "name": "Pineapple",
+      "description": "The sin of the pizza world",
+      "price": 1.23,
+      "stock": 3
+    },
+    {
+      "_id": "634984e6129c7754f8e3e4df",
+      "category": "vegetable",
+      "name": "Onion",
+      "description": "The vegetable that makes you cry",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984ec129c7754f8e3e4e0",
+      "category": "vegetable",
+      "name": "Peppers",
+      "description": "Spicy peppers for a spicy pizza",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634984f2129c7754f8e3e4e1",
+      "category": "meat",
+      "name": "Smoked bacon",
+      "description": "The best meat for a pizza",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "6356b8395b2d452e28045fc9",
+      "category": "meat",
+      "name": "Pepperoni",
+      "description": "Pepperoni for the meat pizza",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "6348309cdfe8e72a086b73bb",
+      "category": "vegetable",
+      "name": "Paprika",
+      "description": "Green and red paprika",
+      "price": 1.23,
+      "stock": 23
+    },
+    {
+      "_id": "634830a3dfe8e72a086b73bc",
+      "category": "vegetable",
+      "name": "Olive",
+      "description": "Black olives",
+      "price": 1.23,
+      "stock": 23
+    }
+  ],
+  "pizzas": [
+    {
+      "_id": "63409bbd2bf7174a20eb7a52",
+      "name": "Margherita",
+      "description": "The classic pizza",
+      "basePrice": 12.43,
+      "toppingsIds": ["63409b2f2bf7174a20eb7a51", "634984c9129c7754f8e3e4db"]
+    },
+    {
+      "_id": "63409bc32bf7174a20eb7a53",
+      "name": "Pepperoni",
+      "description": "The meat pizza",
+      "basePrice": 13.43,
+      "toppingsIds": [
+        "63409b2f2bf7174a20eb7a51",
+        "634984c9129c7754f8e3e4db",
+        "6356b8395b2d452e28045fc9"
+      ]
+    },
+    {
+      "_id": "63409bc92bf7174a20eb7a54",
+      "name": "Hawaiian",
+      "description": "The pineapple pizza",
+      "basePrice": 13.43,
+      "toppingsIds": [
+        "63409b2f2bf7174a20eb7a51",
+        "634984c9129c7754f8e3e4db",
+        "634984e0129c7754f8e3e4de",
+        "634984d9129c7754f8e3e4dd"
+      ]
+    },
+    {
+      "_id": "63409bce2bf7174a20eb7a55",
+      "name": "Veggie",
+      "description": "The vegetarian pizza",
+      "basePrice": 13.43,
+      "toppingsIds": [
+        "63409b2f2bf7174a20eb7a51",
+        "634984c9129c7754f8e3e4db",
+        "634984d9129c7754f8e3e4dd",
+        "634984e0129c7754f8e3e4de",
+        "634984e6129c7754f8e3e4df"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "_id": "638c312e3f6f89d4940e65c6",
+      "category": "drink",
+      "name": "Pepsi",
+      "description": "mmmm, bepis",
+      "price": 2.1,
+      "stock": 24,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    },
+    {
+      "_id": "638c31283f6f89d4940e65c5",
+      "category": "dessert",
+      "name": "Tiramisu",
+      "description": "A fluffy Italian dessert that will make you feel like you're walking on clouds",
+      "price": 3.3,
+      "stock": 24,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    },
+    {
+      "_id": "638c31233f6f89d4940e65c4",
+      "category": "dessert",
+      "name": "Brownies",
+      "description": "Indulge in the rich and fudgy goodness of a freshly baked batch of brownies",
+      "price": 4.0,
+      "stock": 0,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    },
+    {
+      "_id": "638c31123f6f89d4940e65c3",
+      "category": "drink",
+      "name": "Red Wine",
+      "description": "Savor the bold and complex flavors of a glass of red wine",
+      "price": 19.4,
+      "stock": 5,
+      "createdAt": "1670127743480",
+      "updatedAt": "1670127743480"
+    }
+  ],
+  "orders": [
+    {
+      "_id": "638792b859c05dacbcb4dbbd",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "status": "DELIVERED",
+      "address": "Vogellaan 1, 1234 AB, Amsterdam",
+      "deliveryTime": "1669829304451",
+      "deliveryType": "DELIVERY",
+      "reviewId": "63879df46ceca7c179a0e6e6",
+      "paymentMethod": "VISA",
+      "lat": 50.82611,
+      "lng": 3.270026,
+      "extras": [],
+      "items": [
+        {
+          "basePrice": 13.43,
+          "name": "Pepperoni",
+          "size": "medium",
+          "toppings": [
+            {
+              "category": "sauce",
+              "default": false,
+              "name": "Tomato Sauce",
+              "price": 2.13
+            },
+            {
+              "category": "cheese",
+              "default": false,
+              "name": "Mozzarella",
+              "price": 2.43
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Pepperoni",
+              "price": 1.23
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Spicy meat",
+              "price": 1.76
+            }
+          ],
+          "type": "classic"
+        }
+      ]
+    },
+    {
+      "_id": "6384080c92ca44563689e56d",
+      "customerId": "6tGR0EesbcKXgrrIOHYoWOWfL32",
+      "status": "DELIVERING",
+      "address": "Vogellaan 1, 1234 AB, Amsterdam",
+      "deliveryTime": "1669597195925",
+      "deliveryType": "DELIVERY",
+      "paymentMethod": "PAYPAL",
+      "lat": 50.844554,
+      "lng": 3.196217,
+      "extras": [
+        {
+          "category": "drink",
+          "name": "Pepsi",
+          "price": 2.1
+        }
+      ],
+      "items": [
+        {
+          "basePrice": 12.43,
+          "name": "Margherita",
+          "size": "medium",
+          "toppings": [
+            {
+              "category": "sauce",
+              "default": false,
+              "name": "Tomato Sauce",
+              "price": 2.13
+            },
+            {
+              "category": "cheese",
+              "default": false,
+              "name": "Mozzarella",
+              "price": 2.43
+            },
+            {
+              "category": "meat",
+              "default": false,
+              "name": "Spicy meat",
+              "price": 1.76
+            }
+          ],
+          "type": "classic"
+        }
+      ]
+    },
+    {
+      "_id": "639e1d358df6a16f4c149cd3",
+      "status": "DELIVERED",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "deliveryType": "TAKEAWAY",
+      "reviewId": "639e1045a7b9af56699c6c85",
+      "extras": [
+        {
+          "name": "Red Wine",
+          "category": "drink",
+          "price": 19.4
+        }
+      ],
+      "items": [
+        {
+          "name": "Hawaiian",
+          "size": "large",
+          "type": "cheesyCrust",
+          "basePrice": 13.43,
+          "toppings": [
+            {
+              "name": "Tomato Sauce",
+              "category": "sauce",
+              "default": true,
+              "price": 2.13
+            },
+            {
+              "name": "Mozzarella",
+              "category": "cheese",
+              "default": true,
+              "price": 2.43
+            },
+            {
+              "name": "Pineapple",
+              "category": "vegetable",
+              "default": true,
+              "price": 1.23
+            },
+            {
+              "name": "Mushroom",
+              "category": "vegetable",
+              "default": true,
+              "price": 1.23
+            },
+            {
+              "name": "Pineapple",
+              "category": "vegetable",
+              "default": false,
+              "price": 1.23
+            }
+          ]
+        }
+      ],
+      "createdAt": "2022-12-17T19:49:09.082Z"
+    }
+  ],
+  "reviews": [
+    {
+      "_id": "63879df46ceca7c179a0e6e6",
+      "orderId": "638792b859c05dacbcb4dbbd",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "rating": 5,
+      "comment": "The pizza was delicious"
+    },
+    {
+      "_id": "639e1045a7b9af56699c6c85",
+      "orderId": "639e1d358df6a16f4c149cd3",
+      "customerId": "6tGR0EmesbcKXgrrIOHYoWOWfL32",
+      "rating": 1,
+      "comment": "Absolutely terrible, my dissapointment is immeasurable and my day is ruined"
+    }
+  ]
+}

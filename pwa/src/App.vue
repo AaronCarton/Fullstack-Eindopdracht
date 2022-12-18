@@ -1,7 +1,21 @@
-<script setup lang="ts">
-export default {}
-</script>
-
 <template>
-  <p class="text-orange-500 text-4xl font-bold">It's pizza time</p>
+  <router-view></router-view>
 </template>
+
+<script lang="ts">
+import { provide, watch } from '@vue/runtime-core'
+import { DefaultApolloClient } from '@vue/apollo-composable'
+import useFirebase from './composables/useFirebase'
+import useGraphQL from './composables/useGraphQL'
+import useUser from './composables/useUser'
+import useAuthentication from './composables/useAuthentication'
+
+export default {
+  setup() {
+    const { apolloClient } = useGraphQL()
+    provide(DefaultApolloClient, apolloClient)
+
+    return {}
+  },
+}
+</script>

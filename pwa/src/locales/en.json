@@ -1,0 +1,43 @@
+{
+  "en": {
+    "languageChanged": "Language set to English",
+
+    "home.takeaway": "TAKEAWAY",
+    "home.delivery": "DELIVERY",
+
+    "overview.drinks": "Drinks",
+    "overview.desserts": "Desserts",
+
+    "customize.size": "Size",
+    "customize.type": "Type",
+    "customize.toppings": "Toppings",
+    "customize.addToCart": "Add to cart",
+
+    "cart.title": "Cart",
+    "cart.totalPrice": "Total price",
+    "cart.checkout": "Checkout",
+
+    "checkout.title": "Checkout",
+    "checkout.desiredMoment": "Select a desired moment",
+    "checkout.street": "Street",
+    "checkout.houseNumber": "House number",
+    "checkout.postal": "Postal code",
+
+    "account.previousOrders": "Previous orders",
+    "account.deliverOrder": "Deliver order",
+    "account.reviews": "Reviews",
+    "account.manageUsers": "Manage users",
+    "account.managePizzas": "Manage pizzas",
+    "account.manageToppings": "Manage toppings",
+
+    "order.title": "Your order has been placed",
+    "order.pending": "Pending",
+    "order.cooking": "Cooking",
+    "order.delivering": "Delivering",
+    "order.delivered": "Delivered",
+    "order.reviewTitle": "How was your experience?",
+    "order.reviewPlaceholder": "Leave a comment?",
+    "order.reviewButton": "Submit review",
+    "order.reviewSuccess": "Review submitted"
+  }
+}
