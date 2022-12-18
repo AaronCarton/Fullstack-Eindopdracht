@@ -1,7 +1,7 @@
 <template>
   <div class="col-span-1 row-span-5 row-start-auto flex flex-col rounded-lg bg-white">
     <div class="relative h-40">
-      <template v-if="outOfStock">
+      <template v-if="outOfStock()">
         <div
           class="absolute flex h-full w-full items-center justify-center rounded-t-lg bg-gray-800 bg-opacity-80"
         >
@@ -38,7 +38,7 @@
           }}
         </p>
         <button
-          :disabled="outOfStock"
+          :disabled="outOfStock()"
           @click="addItem(item)"
           class="self-center rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 disabled:opacity-50"
           data-cy="add"
@@ -66,7 +66,7 @@ export default {
   setup(props) {
     const { push } = useRouter()
     const { query } = useRoute()
-    const { cart, addToCart } = useCart()
+    const { cart, addToCart, allToppings } = useCart()
 
     const addItem = (item: Pizza | ExtraItem) => {
       const cartItem = addToCart(item)
@@ -78,9 +78,15 @@ export default {
         })
     }
 
-    const outOfStock = isPizza(props.item)
-      ? props.item.toppings.some((t) => t.stock === 0)
-      : props.item.stock === 0
+    const outOfStock = () => {
+      if (isPizza(props.item)) {
+        const toppings = props.item.toppings.map((t) => t.id)
+        console.log(props.item.name, toppings)
+
+        return toppings.some((t) => allToppings.value.find((tt) => tt.id === t)?.stock === 0)
+      }
+      return props.item.stock === 0
+    }
 
     return {
       isPizza,

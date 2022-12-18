@@ -8,9 +8,10 @@ services:
       context: ./pwa
       dockerfile: Dockerfile
     environment:
-      API_URL: http://localhost:3006/graphql
+      API_URL: http://localhost:3008/graphql
+      SOCKET_URL: ws://[::1]:3008
     ports:
-      - 8090:8082
+      - 8091:8082
   api:
     depends_on:
       - mongodb
@@ -24,7 +25,7 @@ services:
     secrets:
       - gcp-credentials
     ports:
-      - 3006:3006
+      - 3008:3006
   mongodb:
     image: mongo
     restart: on-failure:5
