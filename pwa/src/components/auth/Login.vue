@@ -72,12 +72,12 @@
       </button>
 
       <p class="mt-3 text-center text-sm font-semibold">
-        <RouterLink
-          to="/auth/register"
+        <button
+          @click.prevent="$router.push({ path: '/auth/register', query: $route.query })"
           class="rounded-md text-neutral-50 outline-none ring-neutral-300 hover:underline focus-visible:ring"
         >
           Don't have an account yet?
-        </RouterLink>
+        </button>
       </p>
     </form>
   </div>

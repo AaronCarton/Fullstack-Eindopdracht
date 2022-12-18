@@ -18,7 +18,7 @@
               :key="user.uid"
               class="border-b-2 border-neutral-300 last:border-b-0"
             >
-              <td class="py-4 px-6">{{ user.displayName || 'Ooga' }}</td>
+              <td class="py-4 px-6">{{ user.displayName || 'Test' }}</td>
               <td class="py-4 px-6">
                 <RoleToggle :user="user" />
               </td>
