@@ -20,12 +20,7 @@
             >
               <td class="py-4 px-6">{{ user.displayName || 'Ooga' }}</td>
               <td class="py-4 px-6">
-                <span
-                  :class="`rounded-xl ${
-                    user.role === 'ADMIN' ? 'bg-yellow-600' : 'bg-slate-500'
-                  } px-2.5 py-1 font-medium capitalize text-gray-100`"
-                  >{{ user.role.toLowerCase() }}</span
-                >
+                <RoleToggle :user="user" />
               </td>
               <td class="py-4 px-6">
                 {{ new Date(user.createdAt).toLocaleDateString() }}
@@ -59,15 +54,18 @@
 
 <script lang="ts">
 import { useQuery } from '@vue/apollo-composable'
-import { GET_ALL_USERS } from '../../../graphql/query.users'
 import { computed, watch } from 'vue-demi'
 import { Trash, Loader2 } from 'lucide-vue-next'
+
+import RoleToggle from './components/RoleToggle.vue'
 import User from '../../../interfaces/user.interface'
+import { GET_ALL_USERS } from '../../../graphql/query.users'
 
 export default {
   components: {
     Trash,
     Loader2,
+    RoleToggle,
   },
   setup() {
     const { result, loading, error } = useQuery(GET_ALL_USERS)

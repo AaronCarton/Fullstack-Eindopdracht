@@ -11,3 +11,13 @@ export const CREATE_NEW_USER = gql`
     }
   }
 `
+
+export const UPDATE_USER_ROLE = gql`
+  mutation UpdateUserRole($uid: String!, $role: Role!) {
+    updateUserRole(uid: $uid, role: $role) {
+      id
+      uid
+      role
+    }
+  }
+`
