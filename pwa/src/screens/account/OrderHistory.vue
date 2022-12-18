@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full p-5">
+  <div class="relative w-full p-5">
     <h2 class="mb-4 text-xl font-medium">Order History</h2>
-    <div>
+    <div class="h-full overflow-auto">
       <table class="text-md w-full border-neutral-700 text-left text-neutral-800">
         <thead class="border-b-2 border-neutral-300 text-sm font-medium uppercase text-neutral-600">
           <tr>
