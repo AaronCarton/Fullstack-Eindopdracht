@@ -64,6 +64,18 @@
               <p class="align-middle">Manage Toppings</p>
             </router-link>
           </template>
+          <div
+            @click="
+              () => {
+                logout()
+                $router.push('/')
+              }
+            "
+            class="mt-auto flex cursor-pointer content-center items-center justify-center rounded-bl-xl border-t-2 border-neutral-300 py-4 px-10 align-middle font-medium hover:bg-neutral-300"
+          >
+            <LogOut class="mr-auto h-6 w-6 text-red-700" />
+            <p class="mx-auto align-middle text-red-700">Logout</p>
+          </div>
         </div>
         <div class="w-full">
           <router-view></router-view>
@@ -75,7 +87,8 @@
 
 <script lang="ts">
 import useUser from '../../composables/useUser'
-import { Star, User, History, Settings, Bike } from 'lucide-vue-next'
+import { Star, User, History, Settings, Bike, LogOut } from 'lucide-vue-next'
+import useAuthentication from '../../composables/useAuthentication'
 export default {
   components: {
     Star,
@@ -83,11 +96,14 @@ export default {
     User,
     History,
     Settings,
+    LogOut,
   },
   setup() {
+    const { logout } = useAuthentication()
     const { user, Role } = useUser()
 
     return {
+      logout,
       isAdmin: user.value?.role === Role.ADMIN,
       isDriver: user.value?.role === Role.DRIVER,
     }
