@@ -11,7 +11,7 @@ services:
       API_URL: http://localhost:3008/graphql
       SOCKET_URL: ws://[::1]:3008
     ports:
-      - 8091:8082
+      - 8098:8082
   api:
     depends_on:
       - mongodb

@@ -5,6 +5,7 @@ import '@unocss/reset/tailwind.css'
 import 'uno.css'
 import 'animate.css'
 import './main.css'
+import '../public/assets/Favicon.svg'
 
 import App from './App.vue'
 

@@ -3,9 +3,9 @@
   "short_name": "PT",
   "icons": [
     {
-      "src": "/assets/favicon.svg",
+      "src": "/assets/Logo.png",
       "sizes": "400x400",
-      "type": "image/svg"
+      "type": "image/png"
     }
   ],
   "theme_color": "#b91c1c",
