@@ -18,6 +18,7 @@ services:
       dockerfile: Dockerfile
     environment:
       API_URL: http://localhost:3006/graphql
+      SOCKET_URL: ws://[::1]:3006
     ports:
       - 8090:8082
   api:
