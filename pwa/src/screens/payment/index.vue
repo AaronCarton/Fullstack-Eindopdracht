@@ -7,7 +7,7 @@
     <div class="justify-self-start px-6 py-0">
       <!--Payment methodes-->
 
-      <div class="mx-auto my-0 grid grid-cols-2 gap-5">
+      <div class="mx-auto my-0 grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div>
           <div class="flex flex-col gap-1">
             <h2 class="mb-3 text-lg font-semibold lg:text-2xl">
@@ -91,45 +91,47 @@
             <div v-else>
               <div class="gap-3 rounded-lg">
                 <div class="flex flex-col gap-1">
-                  <label class="font-medium lg:text-lg" for="">{{ $t('checkout.street') }}</label>
+                  <label class="font-medium lg:text-lg" for="street">{{
+                    $t('checkout.street')
+                  }}</label>
                   <input
                     type="text"
-                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
+                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
                     placeholder="ex. Nowherestreet"
                     :value="user?.street"
+                    id="street"
                   />
                 </div>
                 <div class="col-span-1 flex flex-col gap-1">
-                  <label class="font-medium lg:text-lg" for="">{{
+                  <label class="font-medium lg:text-lg" for="houseNr">{{
                     $t('checkout.houseNumber')
                   }}</label>
                   <input
                     type="number"
-                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 hover:border-neutral-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
+                    class="h-auto rounded-lg border-2 border-neutral-200 bg-white p-2 outline-none hover:border-neutral-300 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-red-300"
                     placeholder="ex. 155"
                     maxlength="4"
-                    :value="user?.houseNumber"
+                    :value="user?.houseNumber || this.value"
+                    id="houseNr"
                   />
                 </div>
                 <div class="col-span-1 flex flex-col gap-1">
                   <label class="font-medium lg:text-lg" for="pC">{{ $t('checkout.postal') }}</label>
                   <div
-                    class="group flex justify-between rounded-lg border-2 border-neutral-300 p-2 hover:border-neutral-500"
+                    class="group flex justify-between rounded-lg border-2 border-neutral-200 p-2 hover:border-neutral-300"
                   >
                     <input
                       type="text"
-                      class="peer w-full bg-white focus:outline-none"
+                      class="w-full bg-white focus:outline-none"
                       placeholder="ex. Kortrijk or 8500"
                       id="pC"
                       v-model="city"
-                      peer
                     />
                     <Clear
                       @click="emptyInput()"
                       class="cursor-pointer rounded-full active:bg-red-200"
                     />
                   </div>
-                  <div></div>
                 </div>
               </div>
             </div>
@@ -397,6 +399,7 @@ export default {
     const selectedTime = ref('As soon as possible')
 
     const city = ref('')
+
     enum postalCodes {
       Heule = 8501,
       Kortrijk = 8500,
@@ -461,14 +464,11 @@ export default {
 
     watch(time, () => {
       makeTimes()
-      console.log(selectedTime.value)
     })
 
     watch(city, () => {
-      console.log(city.value)
-      if (postalCodes[city.value as keyof typeof postalCodes]) {
-        console.log('true')
-        city.value = city.value + ' ' + postalCodes[city.value as keyof typeof postalCodes]
+      if (postalCodes[city.value]) {
+        city.value = city.value + ' ' + postalCodes[city.value]
       }
       if (user.value?.city) {
         city.value = user.value?.city
