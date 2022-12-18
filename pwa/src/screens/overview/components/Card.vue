@@ -41,6 +41,7 @@
           :disabled="outOfStock"
           @click="addItem(item)"
           class="self-center rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 disabled:opacity-50"
+          data-cy="add"
         >
           Add
         </button>

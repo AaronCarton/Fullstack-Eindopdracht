@@ -3,16 +3,22 @@
   <div :class="`main-bg sm:bg-cover`">
     <div class="bg-opacity-65 min-h-screen bg-black">
       <!--Link to account page-->
-      <RouterLink class="group absolute right-1 m-5 flex items-center gap-4" to="/account">
+      <RouterLink
+        class="group absolute right-1 m-5 flex items-center gap-4"
+        to="/account"
+        data-cy="account"
+      >
         <p
           v-if="user"
           class="duration-250 font-semibold text-neutral-50 opacity-80 transition-all ease-out group-hover:opacity-100"
+          data-cy="account-name"
         >
           {{ user?.displayName }}
         </p>
         <p
           v-else
           class="duration-250 font-semibold text-neutral-50 opacity-80 transition-all ease-out group-hover:opacity-100"
+          data-cy="login-button"
         >
           Login
         </p>
@@ -32,6 +38,7 @@
           <RouterLink
             to="/takeaway"
             class="duration-250 rounded-2 mx-8 w-[65%] border-2 border-slate-50 py-2 px-2 text-center text-2xl font-extrabold text-slate-50 transition-all ease-out hover:bg-slate-50 hover:text-black"
+            data-cy="takeaway-button"
           >
             {{ $t('home.takeaway') }}
           </RouterLink>
@@ -45,6 +52,7 @@
           <RouterLink
             to="/delivery"
             class="duration-250 rounded-2 mx-8 w-[65%] border-2 border-slate-50 py-2 px-2 text-center text-2xl font-extrabold text-slate-50 transition-all ease-out hover:bg-slate-50 hover:text-black"
+            data-cy="delivery-button"
           >
             {{ $t('home.delivery') }}
           </RouterLink>

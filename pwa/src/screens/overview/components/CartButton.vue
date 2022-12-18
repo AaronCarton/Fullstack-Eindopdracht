@@ -2,6 +2,7 @@
   <button
     @click="setIsOpen(true)"
     class="fixed right-3 bottom-3 rounded-full bg-neutral-700 p-4 shadow-md hover:bg-gray-800 xl:hidden"
+    data-cy="cart-button"
   >
     <span
       v-if="cart.items.length > 0"
@@ -147,13 +148,13 @@
               <div class="text-center text-xl font-semibold">€{{ getCartTotal() }}</div>
             </div>
             <div class="mt-4 flex flex-col space-y-2">
-              <RouterLink
+              <button
                 class="rounded-lg bg-red-700 p-3 text-center font-bold text-white hover:bg-red-800 focus:ring-2 focus:ring-red-400"
-                to="/overview/payment"
-                @click="setIsOpen(false)"
+                @click="setIsOpen(false), checkout()"
+                data-cy="checkout-cartbtn"
               >
                 Checkout
-              </RouterLink>
+              </button>
             </div>
           </div>
         </div>
@@ -213,7 +214,14 @@ export default {
       //@ts-ignore
       return (price + item.toppings.reduce((acc, t) => acc + t.price, 0)).toFixed(2)
     }
-
+    const checkout = () => {
+      push({
+        name: 'payment',
+        query: {
+          ...searchQuery.value,
+        },
+      })
+    }
     const editItem = (id: string, item: Pizza | ExtraItem) => {
       if (isPizza(item))
         push({
@@ -244,6 +252,7 @@ export default {
       deliveryType: searchQuery.value.type,
       checkoutButtonRef,
       isOpen,
+      checkout,
       // @ts-ignore
       setIsOpen(value) {
         isOpen.value = value

@@ -1,7 +1,7 @@
 <template>
-  <div class="col-span-4 grid grid-cols-5 rounded-lg bg-neutral-100">
+  <div class="col-span-4 grid grid-cols-5 rounded-lg bg-neutral-100" data-cy="pizza-customize">
     <template v-if="pizza && orderItem">
-      <div class="relative col-span-2">
+      <div class="relative col-span-2" data-cy>
         <div
           class="absolute flex h-10 w-10 items-center rounded-tl-lg rounded-br-lg bg-neutral-100 p-2"
         >
@@ -24,6 +24,7 @@
               :group="'size'"
               :names="Object.values(PizzaSize)"
               :value="orderItem.item.size"
+              data-cy="pizza-size"
             />
           </div>
           <div class="">
@@ -33,6 +34,7 @@
               :group="'type'"
               :names="Object.values(PizzaType)"
               :value="orderItem.item.type"
+              data-cy="pizza-type"
             />
           </div>
         </div>
@@ -61,6 +63,7 @@
                 :topping="topping"
                 :onClick="handleToppingAdd"
                 :type="'add'"
+                data-cy="pizza-topping"
               />
             </div>
           </div>
@@ -68,6 +71,7 @@
         <button
           @click="goBack()"
           class="mx-auto mt-6 w-3/5 rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 active:bg-red-800"
+          data-cy="add-custom"
         >
           {{ $t('customize.addToCart') }}
         </button>

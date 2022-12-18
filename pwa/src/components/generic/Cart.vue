@@ -1,5 +1,8 @@
 <template>
-  <div class="z-50 hidden grow-0 flex-col justify-between rounded-lg bg-neutral-50 xl:flex">
+  <div
+    class="z-50 hidden grow-0 flex-col justify-between rounded-lg bg-neutral-50 xl:flex"
+    data-cy="cart"
+  >
     <div class="overflow-hidden">
       <div class="flex items-center justify-between rounded-t-lg bg-red-700 p-3">
         <h2 class="text-2xl font-semibold text-neutral-50">Order</h2>
@@ -48,6 +51,7 @@
       <button
         class="focus-visible::ring-2 w-full rounded-lg bg-red-700 px-6 py-2 text-center font-bold text-neutral-50 hover:bg-red-800 focus:outline-none focus-visible:ring-red-300"
         @click="checkout"
+        data-cy="checkout-cart"
       >
         {{ $t('cart.checkout') }}
       </button>

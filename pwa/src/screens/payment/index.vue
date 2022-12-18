@@ -157,7 +157,7 @@
         </div>
         <div>
           <h2 class="mb-3 text-lg font-semibold capitalize lg:text-2xl">Payment Methods</h2>
-          <RadioGroup v-model="selectedMethode">
+          <RadioGroup v-model="selectedMethode" data-cy="payment-methodes">
             <RadioGroupOption value="bancontact" class="focus:outline-none" v-slot="{ checked }">
               <li
                 class="ne mb-3 list-none rounded-lg border-2 border-neutral-200 p-3 font-semibold text-neutral-600 focus:outline-none"
@@ -165,6 +165,7 @@
                   ' border-neutral-400 bg-neutral-100 text-neutral-900 ': checked,
                   ' bg-none  hover:border-neutral-500': !checked,
                 }"
+                data-cy="bancontact"
               >
                 <div v-auto-animate>
                   <div class="flex cursor-pointer justify-between">
@@ -315,6 +316,7 @@
       <button
         @click="submitOrder"
         class="w-[65%] rounded-lg bg-red-700 px-6 py-2 font-bold text-neutral-50 hover:bg-red-800"
+        data-cy="pay-button"
       >
         Pay
       </button>

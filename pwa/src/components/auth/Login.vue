@@ -30,13 +30,14 @@
             type="email"
             name="email"
             autocomplete="email"
+            data-cy="email"
           />
         </label>
       </div>
 
       <div class="mt-3">
-        <label class="mb-1 block text-neutral-500 focus-within:text-neutral-900" for="password">
-          <span class="mb-2 block">Password</span>
+        <label class="mb-1 block text-neutral-100 focus-within:text-neutral-50" for="password">
+          <span class="mb-2 block font-bold">Password</span>
 
           <input
             v-model="userInput.password"
@@ -45,6 +46,7 @@
             type="password"
             name="password"
             autocomplete="current-password"
+            data-cy="password"
           />
         </label>
 
@@ -61,6 +63,7 @@
       <button
         class="rounded-2 duration-250 mt-6 flex w-full items-center justify-center rounded-md border-2 border-neutral-50 py-2 px-3 text-2xl font-extrabold text-neutral-50 outline-none ring-neutral-300 transition-all ease-out hover:bg-neutral-50 hover:text-neutral-900 focus-visible:ring"
         :disabled="loading"
+        data-cy="login"
       >
         <span v-if="!loading">Login</span>
         <div v-else>

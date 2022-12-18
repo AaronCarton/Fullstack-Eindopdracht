@@ -4,6 +4,7 @@
       <div
         v-if="items.length > 0"
         class="grid-rows-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        data-cy="pizza-overview"
       >
         <Card
           v-for="item of items"
