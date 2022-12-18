@@ -65,12 +65,7 @@
             </router-link>
           </template>
           <div
-            @click="
-              () => {
-                logout()
-                $router.push('/')
-              }
-            "
+            @click="handleLogout()"
             class="mt-auto flex cursor-pointer content-center items-center justify-center rounded-bl-xl border-t-2 border-neutral-300 py-4 px-10 align-middle font-medium hover:bg-neutral-300"
           >
             <LogOut class="mr-auto h-6 w-6 text-red-700" />
@@ -89,6 +84,7 @@
 import useUser from '../../composables/useUser'
 import { Star, User, History, Settings, Bike, LogOut } from 'lucide-vue-next'
 import useAuthentication from '../../composables/useAuthentication'
+import { useRouter } from 'vue-router'
 export default {
   components: {
     Star,
@@ -99,11 +95,17 @@ export default {
     LogOut,
   },
   setup() {
-    const { logout } = useAuthentication()
+    const router = useRouter()
     const { user, Role } = useUser()
+    const { logout } = useAuthentication()
+
+    const handleLogout = () => {
+      logout()
+      router.push('/')
+    }
 
     return {
-      logout,
+      handleLogout,
       isAdmin: user.value?.role === Role.ADMIN,
       isDriver: user.value?.role === Role.DRIVER,
     }
