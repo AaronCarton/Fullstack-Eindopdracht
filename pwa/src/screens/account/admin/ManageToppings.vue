@@ -16,6 +16,7 @@ import { useQuery } from '@vue/apollo-composable'
 import ToppingCard from './components/ToppingCard.vue'
 import { TOPPINGS } from '../../../graphql/query.topping'
 import Topping from '../../../interfaces/topping.interface'
+import useCart from '../../../composables/useCart'
 
 export default {
   components: {
@@ -23,10 +24,12 @@ export default {
   },
   setup() {
     const toppings: Ref<Topping[]> = ref([])
+    const { loadToppings } = useCart()
     const { result, loading, onResult } = useQuery(TOPPINGS)
 
     onResult((result) => {
       toppings.value = result.data.toppings
+      loadToppings() // reload toppings
     })
 
     return { result, loading, toppings }

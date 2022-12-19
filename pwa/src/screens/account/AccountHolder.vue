@@ -94,6 +94,8 @@ import useUser from '../../composables/useUser'
 import { Star, User, History, Settings, Bike, ArrowLeft as Back, LogOut } from 'lucide-vue-next'
 import useAuthentication from '../../composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import useCart from '../../composables/useCart'
 export default {
   components: {
     Back,
@@ -107,6 +109,8 @@ export default {
   setup() {
     const router = useRouter()
     const { user, Role } = useUser()
+    const toast = useToast()
+    const { allToppings } = useCart()
     const { logout } = useAuthentication()
 
     const handleLogout = () => {
@@ -116,6 +120,12 @@ export default {
 
     const closeAccountHolder = () => {
       router.push('/')
+    }
+
+    if (user.value?.role === 'ADMIN') {
+      allToppings.value?.forEach((t) => {
+        if (t.stock <= 5) toast.warning(`${t.name} is running low! Only ${t.stock} left!`)
+      })
     }
 
     return {
