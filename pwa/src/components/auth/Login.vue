@@ -90,6 +90,7 @@ import { Loader2, X } from 'lucide-vue-next'
 
 import { useRouter, useRoute } from 'vue-router'
 import useAuthentication from '../../composables/useAuthentication'
+import useUser from '../../composables/useUser'
 
 export default defineComponent({
   components: {
@@ -98,6 +99,7 @@ export default defineComponent({
   },
 
   setup() {
+    const { loadUser } = useUser()
     const { replace } = useRouter()
     const { redirectedFrom } = useRoute()
     const { login } = useAuthentication()
@@ -122,7 +124,11 @@ export default defineComponent({
         .then((u) => {
           // TODO: fix bug when redirecting from /takeaway
           // becomes /auth/overview?type=takeaway
-          replace({ path: redirectedFrom?.path || '/' })
+          loadUser().then(() => {
+            console.log('User loaded')
+
+            replace({ path: redirectedFrom?.path || '/' })
+          })
         })
         .catch((error) => {
           errorMessage.value = error.message
