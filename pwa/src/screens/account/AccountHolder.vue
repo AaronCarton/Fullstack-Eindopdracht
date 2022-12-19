@@ -4,6 +4,14 @@
     <div class="container z-10 mx-auto w-full">
       <div class="divide-x-3 flex h-[30rem] divide-neutral-300 rounded-xl bg-neutral-200 shadow-md">
         <div class="flex w-80 flex-col">
+          <div class="absolute top-0 left-0 h-10 w-10">
+            <button
+              @click="closeAccountHolder"
+              class="flex h-full w-full items-center justify-center rounded-br-lg bg-red-700 hover:bg-red-600"
+            >
+              <Back class="h-7 w-7 stroke-white" />
+            </button>
+          </div>
           <router-link
             to="/account/details"
             class="flex content-center items-center rounded-tl-xl border-b-2 border-neutral-300 py-4 px-10 align-middle font-medium hover:bg-neutral-300"
@@ -83,11 +91,12 @@
 
 <script lang="ts">
 import useUser from '../../composables/useUser'
-import { Star, User, History, Settings, Bike, LogOut } from 'lucide-vue-next'
+import { Star, User, History, Settings, Bike, ArrowLeft as Back, LogOut } from 'lucide-vue-next'
 import useAuthentication from '../../composables/useAuthentication'
 import { useRouter } from 'vue-router'
 export default {
   components: {
+    Back,
     Star,
     Bike,
     User,
@@ -105,10 +114,15 @@ export default {
       router.push('/')
     }
 
+    const closeAccountHolder = () => {
+      router.push('/')
+    }
+
     return {
       handleLogout,
       isAdmin: user.value?.role === Role.ADMIN,
       isDriver: user.value?.role === Role.DRIVER,
+      closeAccountHolder,
     }
   },
 }
